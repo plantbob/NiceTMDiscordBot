@@ -1,8 +1,6 @@
 # Windows image file caches
 Thumbs.db
 node_modules
-.gitignore
-.gitattributes
 config/token.js
 
 # Folder config file

@@ -11,4 +11,6 @@ client.on('message', msg => {
   }
 });
 
-client.login('token');
+token = require("./config/token.js")
+
+client.login(token);
