@@ -7,6 +7,6 @@ client.on('ready', function() {
 
 token = require("./config/token.js");
 
-require("./command/interpreter.js")(client);
+require("./eventHandling/interpreter.js")(client);
 
 client.login(token.token);

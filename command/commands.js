@@ -1,5 +1,5 @@
 // Message = message object that initiated command
-// Params = The parameters of the command, starts at index 1
+// Params = The parameters of the command
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
@@ -12,10 +12,9 @@ var commands = {
     message.react('™');
   },
   "!oldman" : function(message, params, globals) { // To test parameters
-    if (!params[1]) {
+    if (!params[0]) {
       message.channel.send("What did you say? Say something afterwards for a change!");
     } else {
-      params.shift(); // Remove first element
       message.channel.send("Get off my lawn! And take your " + params.join(" ") + " with you!");
     }
   }
