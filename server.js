@@ -1,16 +1,17 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.username}!`);
+client.on('ready', function() {
+  console.log('Logged in as ' + client.user.username + '!');
 });
 
-client.on('message', msg => {
+client.on('message', function(msg) {
   if (msg.content === 'nice') {
-    msg.react(":tm:");
+    msg.react('™');
+    console.log(msg.author.username + "'s nice has been trademarked.");
   }
 });
 
-token = require("./config/token.js")
+token = require("./config/token.js");
 
 client.login(token.token);
