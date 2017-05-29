@@ -6,11 +6,11 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
+  if (msg.content === 'nice') {
+    msg.react(":tm:");
   }
 });
 
 token = require("./config/token.js")
 
-client.login(token);
+client.login(token.token);
