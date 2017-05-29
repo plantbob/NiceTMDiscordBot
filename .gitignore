@@ -1,6 +1,9 @@
 # Windows image file caches
 Thumbs.db
-ehthumbs.db
+node_modules
+.gitignore
+.gitattributes
+config/token.js
 
 # Folder config file
 Desktop.ini
