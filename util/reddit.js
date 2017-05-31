@@ -7,7 +7,7 @@ module.exports.getRandomUrl = function(subreddit, callback) {
     var listing = JSON.parse(body);
     var children = listing.data.children; // Get list
     var post = children[getRandomInt(1, 25)];
-    if (post.kind && post.kind == "t3") { // Make sure post is a link
+    if (post && post.kind && post.kind == "t3") { // Make sure post is a link
       var postdata = post.data;
       callback(postdata.url);
       return;
