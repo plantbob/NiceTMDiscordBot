@@ -8,5 +8,6 @@ client.on('ready', function() {
 token = require("./config/token.js");
 
 require("./eventHandling/interpreter.js")(client);
+require("./eventHandling/newUser.js")(client);
 
 client.login(token.token);
