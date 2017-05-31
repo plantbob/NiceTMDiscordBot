@@ -12,7 +12,9 @@ var commands = {
     message.channel.send("Pong!");
   },
   "nice" : function(message, params, globals) {
-    message.react('™');
+    if (params[0] == null) {
+      message.react('™');
+    }
   },
   "!oldman" : function(message, params, globals) { // To test parameters
     if (!params[0]) {
@@ -22,7 +24,7 @@ var commands = {
     }
   },
   "!humourme" : function(message, params, globals) {
-    reddit.getRandomUrl("funny", function(url) {
+    reddit.getRandomUrl("i_irl", function(url) {
       if (url) {
         message.channel.send(url);
       } else {
@@ -63,6 +65,15 @@ var commands = {
 
         message.channel.send("", {files: ["map.jpg"]});
     });
+  },
+  "!test" : function(message, params, globals) {
+    if (message.author.username != "tjpc3") {
+      message.reply("Only the Robot Overlord is permitted to run this command.");
+    } else {
+      message.guild.fetchMember(message.author).then(function(member) {
+        member.addRole("318560521802481665"); // "Expendables role id"
+      });
+    }
   }
 }
 
