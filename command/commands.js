@@ -1,11 +1,12 @@
 var reddit = require("../util/reddit.js");
+var exec = require('child_process').exec;
 
 // Message = message object that initiated command
 // Params = The parameters of the command
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m, github")
+    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland")
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");
@@ -48,6 +49,20 @@ var commands = {
   },
   "!github" : function(message, params, globals) {
     message.channel.send("https://github.com/tjpc3/NiceTMDiscordBot");
+  },
+  "!genisland" : function(message, params, globals) {
+    message.channel.send("One island coming up!");
+    var child = exec('java -jar ./jars/genisland.jar',
+      function (error, stdout, stderr){
+        console.log("Output of Jar file: " + stdout);
+        if(error !== null){
+          console.log("Error running Jar file: " + error);
+          message.channel.send("Error: Shit hit the fan.");
+          return;
+        }
+
+        message.channel.send("", {files: ["map.jpg"]});
+    });
   }
 }
 
