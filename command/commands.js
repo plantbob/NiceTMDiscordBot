@@ -5,7 +5,7 @@ var reddit = require("../util/reddit.js");
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m")
+    message.channel.send("Commands: help, ping, oldman, humourme, m, github")
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");
@@ -45,6 +45,9 @@ var commands = {
     } else {
       message.channel.send("Please add nsfw to the channel name, this is reddit afterall.");
     }
+  },
+  "!github" : function(message, params, globals) {
+    message.channel.send("https://github.com/tjpc3/NiceTMDiscordBot");
   }
 }
 
