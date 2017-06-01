@@ -55,8 +55,7 @@ var commands = {
   "!genisland" : function(message, params, globals) {
     message.channel.send("One island coming up!");
     var child = exec('java -jar ./jars/genisland.jar',
-      function (error, stdout, stderr){
-        console.log("Output of Jar file: " + stdout);
+      function (error, stdout, stderr) {
         if(error !== null){
           console.log("Error running Jar file: " + error);
           message.channel.send("Error: Shit hit the fan.");
