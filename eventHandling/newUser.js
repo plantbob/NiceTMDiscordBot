@@ -6,7 +6,7 @@ module.exports = function(client) {
     try {
       member.addRole("318560521802481665");
     } catch (exception) {
-      logUtil("Exception while adding role to new user.", logUtil.STATUS_WARNING);
+      logUtil.log("Exception while adding role to new user.", logUtil.STATUS_WARNING);
       console.log(exception);
     }
     member.guild.defaultChannel.send("Welcome " + member.user.toString() + " to your new robot masters for all of eternity!");
