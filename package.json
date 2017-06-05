@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/tjpc3/NiceTMDiscordBot#readme",
   "dependencies": {
-    "discord.js": "^11.1.0"
+    "discord.js": "^11.1.0",
+    "node-cache": "^4.1.1"
   }
 }
