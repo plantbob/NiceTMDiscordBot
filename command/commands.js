@@ -69,10 +69,22 @@ var commands = {
     if (message.author.username != "tjpc3") {
       message.reply("Only the Robot Overlord is permitted to run this command.");
     } else {
-      message.guild.fetchMember(message.author).then(function(member) {
-        member.addRole("318560521802481665"); // "Expendables role id"
-      });
+
+        console.log(channels[k]);
+      
     }
+  },
+  "!count" : function(message, params, globals) {
+    var count = globals.get("count");
+    if (count == undefined) {
+      globals.set("count", 0);
+      count = 0;
+    } else {
+      globals.set("count", count + 1);
+      count++;
+    }
+    message.channel.send("Current count for this server is " + count + "!");
+    return globals;
   }
 }
 
