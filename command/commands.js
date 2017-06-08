@@ -81,26 +81,8 @@ var commands = {
         }
         return;
       }
-      var voiceChannel = discordUtil.findVoiceChannel(message.author, message.guild);
-      if (voiceChannel != null) {
-        console.log(voiceChannel.name);
-
-        voiceChannel.join().then(function(connection) {
-
-          var streamOptions = { seek: 0, volume: 1 };
-          var stream = ytdl(params[0], { filter : 'audioonly' });
-          var dispatcher = connection.playStream(stream, streamOptions);
-
-        }).catch(function(err) { // Catch error
-          logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
-          console.log(err);
-        });
-      } else {
-        console.log("No voice channel found.");
-
-        if (message.guild.voiceConnection) {
-          message.guild.voiceConnection.disconnect();
-        }
+      for (var k in message.guild.roles.array()) {
+        console.log(message.guild.roles.array()[k]);
       }
     }
   },
