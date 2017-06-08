@@ -1,3 +1,5 @@
+process.title = "NiceTMDiscordBot"; // This allows it to be closed easier
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
 

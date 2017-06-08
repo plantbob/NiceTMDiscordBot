@@ -1,0 +1,4 @@
+"scripts": {
+    "start": "app.js"
+    , "stop": "pkill --signal SIGINT NiceTMDiscordBot"
+}
