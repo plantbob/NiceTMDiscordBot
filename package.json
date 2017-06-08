@@ -17,7 +17,13 @@
   },
   "homepage": "https://github.com/tjpc3/NiceTMDiscordBot#readme",
   "dependencies": {
+    "bufferutil": "^3.0.1",
     "discord.js": "^11.1.0",
-    "node-cache": "^4.1.1"
+    "erlpack": "github:hammerandchisel/erlpack",
+    "node-cache": "^4.1.1",
+    "node-opus": "^0.2.6",
+    "opusscript": "0.0.3",
+    "request": "^2.81.0",
+    "ytdl-core": "^0.14.2"
   }
 }
