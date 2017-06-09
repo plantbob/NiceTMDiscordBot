@@ -11,7 +11,7 @@ var exec = require('child_process').exec;
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play")
+    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, link");
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");
@@ -123,6 +123,9 @@ var commands = {
     } else {
       message.channel.send("Please provide the youtube video url.");
     }
+  },
+  "!link" : function(message, params, globals) {
+    message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0 Add me to your server whydontcha?");
   }
 }
 
