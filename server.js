@@ -1,5 +1,7 @@
 process.title = "NiceTMDiscordBot"; // This allows it to be closed easier
 
+const youtubeUtil = require("./util/youtube.js");
+
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
@@ -50,4 +52,4 @@ rl.on('SIGINT', function() {
 logUtil.log("Logging into Discord.", logUtil.STATUS_INFO);
 token = require("./config/token.js");
 
-client.login(token.token);
+client.login(token.discordToken);

@@ -32,8 +32,10 @@ module.exports.init = function(client) {
   var commandPath = require("path").join(__dirname, "command"); // Get command folder
 
   fs.readdirSync(commandPath).forEach(function(file) { // Add each commandSearch function to an array
-    searchFunctions.push(require("./command/" + file));
-    logUtil.log("Loaded command list /eventHandling/command/" + file, logUtil.STATUS_INFO)
+    if (file.endsWith(".js")) {
+      searchFunctions.push(require("./command/" + file));
+      logUtil.log("Loaded command list /eventHandling/command/" + file, logUtil.STATUS_INFO)
+    }
   });
 
   client.on('message', function(msg) {
