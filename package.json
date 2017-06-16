@@ -4,8 +4,8 @@
   "description": "Reacts to \"nice\" with TM",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-    , "stop": "pkill --signal SIGINT NiceTMDiscordBot"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stop": "pkill --signal SIGINT NiceTMDiscordBot"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,6 @@
     "node-opus": "^0.2.6",
     "opusscript": "0.0.3",
     "request": "^2.81.0",
-    "ytdl-core": "^0.14.2"
+    "ytdl-core": "^0.14.4"
   }
 }

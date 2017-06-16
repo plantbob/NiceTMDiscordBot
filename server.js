@@ -23,10 +23,14 @@ var handlers = [];
 var normalizedPath = path.join(__dirname, "eventHandling");
 
 fs.readdirSync(normalizedPath).forEach(function(file) {
-  logUtil.log("Loading ./eventHandling/" + file, logUtil.STATUS_INFO);
-  var handler = require("./eventHandling/" + file);
-  handler.init(client);
-  handlers.push(handler); // Load all files and all all their close functions to the end of the array
+  if (file.endsWith(".js")) { // So it doesn't load folders
+    logUtil.log("Loading /eventHandling/" + file, logUtil.STATUS_INFO);
+
+    var handler = require("./eventHandling/" + file);
+    handler.init(client);
+
+    handlers.push(handler); // Load all files and all all their close functions to the end of the array
+  }
 });
 
 rl.on('SIGINT', function() {

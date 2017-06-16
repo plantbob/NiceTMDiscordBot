@@ -1,8 +1,5 @@
-const reddit = require("../util/reddit.js");
-const discordUtil = require("../util/discordUtil.js");
-const logUtil = require("../util/logging.js");
-
-const ytdl = require("ytdl-core");
+const reddit = require("../../util/reddit.js");
+const logUtil = require("../../util/logging.js");
 
 var exec = require('child_process').exec;
 
@@ -97,32 +94,6 @@ var commands = {
     }
     message.channel.send("Current count for this server is " + count + "!");
     return globals;
-  },
-  "!play" : function(message, params, globals) {
-    if (params[0] != undefined) {
-      var channel = discordUtil.findVoiceChannel(message.author, message.guild);
-
-      if (channel == null) {
-        message.channel.send("Please join a voice channel.");
-        return;
-      }
-
-      channel.join().then(function(connection) {
-
-        discordUtil.playYoutubeVideo(connection, params[0]);
-
-      }).catch(function(err) { // Catch error
-        logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
-        console.log(err);
-      });
-
-      var result = discordUtil.playYoutubeVideo();
-      if (result != true) {
-        message.channel.send("There was an error trying to play youtube video " + params[0]);
-      }
-    } else {
-      message.channel.send("Please provide the youtube video url.");
-    }
   },
   "!link" : function(message, params, globals) {
     message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0 Add me to your server whydontcha?");

@@ -1,10 +1,10 @@
 const logUtil = require("../util/logging.js");
-const commandSearch = require("../command/commands.js");
 
 const nodecache = require("node-cache");
 const fs = require("fs");
 
 var globalList;
+var searchFunctions = [];
 
 module.exports = {};
 
@@ -29,9 +29,23 @@ module.exports.init = function(client) {
     globalList = {};
   }
 
+  var commandPath = require("path").join(__dirname, "command"); // Get command folder
+
+  fs.readdirSync(commandPath).forEach(function(file) { // Add each commandSearch function to an array
+    searchFunctions.push(require("./command/" + file));
+    logUtil.log("Loaded command list /eventHandling/command/" + file, logUtil.STATUS_INFO)
+  });
+
   client.on('message', function(msg) {
     var words = msg.content.split(" "); // Split message into array
-    var command = commandSearch(words[0]);
+
+    var command;
+    for (var i in searchFunctions) { // Search for command
+      command = searchFunctions[i](words[0]);
+
+      if (command) // Exit for loop if command is found
+        break;
+    }
 
     if (command) { // Command exists
       if (!globalList[msg.guild]) { // If global variables exist for this scene
