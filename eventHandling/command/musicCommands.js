@@ -26,13 +26,17 @@ var commands = {
             message.channel.send("Invalid youtube link or id.");
           } else {
             channel.join().then(function(connection) {
+              message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
+                var musicQueue = globals.get("musicQueue"); // Get queue
+                musicQueue.push({"id" : id, "user" : member.nickname, "title" : data.snippet.title}); // Add music to queue
+                globals.set("musicQueue", musicQueue); // Set queue
 
-              var musicQueue = globals.get("musicQueue"); // Get queue
-              musicQueue.push(id); // Add music to queue
-              globals.set("musicQueue", musicQueue); // Set queue
+                message.channel.send("`" + member.nickname + "` added `" + data.snippet.title + "` to the queue.");
 
-              message.channel.send("Added `" + data.snippet.title + "` to the queue.");
-
+                if (message.deletable) {
+                  message.delete(); // So the music channel isn't filled with youtube videos
+                }
+              });
             }).catch(function(err) { // Catch error
               logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
               console.log(err);
@@ -51,7 +55,44 @@ var commands = {
     } catch (exception) {
       // The mp3 doesn't exist so this line will always error
     }
+  },
+  "!queue" : function(message, params, globals) {
+    var dmChannel = message.author.dmChannel;
+    if (!dmChannel) {
+      message.author.createDM().then(function (dmChannel) { // Make the dm channel if one doesn't exist
+        message.reply("Look at your DMs.");
+        var musicQueue = globals.get("musicQueue");
+        listQueue(dmChannel, musicQueue);
+      }).catch(function (exception) {
+        message.reply("Something went wrong with trying to DM you.");
+      });
+      return;
+    }
+
+    message.reply("Look at your DMs.");
+    var musicQueue = globals.get("musicQueue");
+    listQueue(dmChannel, musicQueue);
   }
+}
+
+function listQueue(dmChannel, musicQueue) { // This function is used only in the "!queue" command to make it look nicer
+  if (!musicQueue) {
+    dmChannel.send("There is no music queued");
+    return;
+  }
+  if (musicQueue.length == 0) {
+    dmChannel.send("There is no music queued");
+    return;
+  }
+
+  var messageToSend = "```Current queue: ";
+  for (var i in musicQueue) { // Iterate through the queue
+    var iPlusOne = parseInt(i) + 1; // parseInt because reasons
+    messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ".");
+  }
+  messageToSend += "```";
+
+  dmChannel.send(messageToSend);
 }
 
 module.exports.searchFunction = function(command) {
@@ -72,7 +113,7 @@ module.exports.loop = function(globals, guild) {
     }
 
     if (musicQueue.length != 0) { // If there are songs queued
-      var id = musicQueue.shift(); // shift removes and returns the first element in an array
+      var id = musicQueue.shift().id; // shift removes and returns the first element in an array
       globals.set("musicQueue", musicQueue); // Set musicqueue
 
       youtubeUtil.getVideoDataFromId(id, "contentDetails", function(data) {

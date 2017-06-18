@@ -40,6 +40,10 @@ module.exports.init = function(client) {
   });
 
   client.on('message', function(msg) {
+    if (!msg.guild) { // Message was send in DM
+      return; // Don't process DM messages
+    }
+
     var words = msg.content.split(" "); // Split message into array
 
     var command;
