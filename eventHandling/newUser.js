@@ -20,6 +20,6 @@ module.exports.init = function(client) {
   });
 }
 
-module.exports.close = function() {
+module.exports.close = function(client) {
 
 }

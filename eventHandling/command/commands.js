@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, link");
+    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, skip, link");
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");
@@ -92,7 +92,9 @@ var commands = {
       globals.set("count", count + 1);
       count++;
     }
+
     message.channel.send("Current count for this server is " + count + "!");
+
     return globals;
   },
   "!link" : function(message, params, globals) {
@@ -100,6 +102,14 @@ var commands = {
   }
 }
 
-module.exports = function(command) {
+module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
+}
+
+module.exports.loop = function(globals, guild) {
+
+}
+
+module.exports.close = function(globals, guild) {
+
 }

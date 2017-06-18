@@ -6,10 +6,11 @@ const urlParser = require('url');
 
 const token = require("../config/token.js");
 
-module.exports.getVideoSnippetFromId = function (id, callback) { // Returns snippet of data from video using video id (null if id is invalid)
+module.exports.getVideoDataFromId = function (id, part, callback) { // Returns piece of data from video using video id (null if id is invalid)
+
   if (id.length != 11) callback(null); // Video ids are always 11 characters
 
-  var params = {"part" : "snippet",
+  var params = {"part" : part,
                 "id" : id,
                 "auth" : token.googleAPIToken};
 
@@ -18,7 +19,7 @@ module.exports.getVideoSnippetFromId = function (id, callback) { // Returns snip
       callback(null);
     } else {
       if (response.items && response.items[0]) {
-        callback(response.items[0].snippet);
+        callback(response.items[0]);
       } else {
         callback(null);
       }

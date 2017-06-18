@@ -4,7 +4,7 @@ const nodecache = require("node-cache");
 const fs = require("fs");
 
 var globalList;
-var searchFunctions = [];
+var commandInterpreters = [];
 
 module.exports = {};
 
@@ -33,7 +33,8 @@ module.exports.init = function(client) {
 
   fs.readdirSync(commandPath).forEach(function(file) { // Add each commandSearch function to an array
     if (file.endsWith(".js")) {
-      searchFunctions.push(require("./command/" + file));
+      var commandInterpreter = require("./command/" + file);
+      commandInterpreters.push(commandInterpreter);
       logUtil.log("Loaded command list /eventHandling/command/" + file, logUtil.STATUS_INFO)
     }
   });
@@ -42,36 +43,82 @@ module.exports.init = function(client) {
     var words = msg.content.split(" "); // Split message into array
 
     var command;
-    for (var i in searchFunctions) { // Search for command
-      command = searchFunctions[i](words[0]);
+    for (var i in commandInterpreters) { // Search for command
+      command = commandInterpreters[i].searchFunction(words[0]);
 
       if (command) // Exit for loop if command is found
         break;
     }
 
     if (command) { // Command exists
-      if (!globalList[msg.guild]) { // If global variables exist for this scene
-        globalList[msg.guild] = new nodecache();
+      if (!globalList[msg.guild.id]) { // If global variables exist for this scene
+        globalList[msg.guild.id] = new nodecache();
       }
 
       logUtil.log("User " + msg.author.username + " running command " + words.join(" "), logUtil.STATUS_INFO);
       try {
         words.shift(); // Remove first item in words array
-        var newGlobals = command(msg, words, globalList[msg.guild]);
+        var newGlobals = command(msg, words, globalList[msg.guild.id]);
         if (newGlobals != undefined) {
-          globalList[msg.guild] = newGlobals;
+          globalList[msg.guild.id] = newGlobals;
         }
       } catch (exception) {
-        logUtil.log("Caught error running command", logUtil.STATUS_WARNING);
+        logUtil.log("Caught error running command", logUtil.STATUS_ERROR);
         console.log(exception);
       }
-    } else { // Command doesn't exist
+    } else { // Command doesn't exist so do nothing
 
     }
   });
+
+  client.on('ready', function() { // Only start the loop when the server is up and running
+    setInterval(function() { // Use setInterval to make this run asynchronously
+      var guildsArray = client.guilds.array();
+        for (var i in guildsArray) {
+          var tempGlobals = globalList[guildsArray[i].id];
+          if (!tempGlobals) {
+            tempGlobals = new nodecache(); // Default globals if there are none
+          }
+
+          for (var j in commandInterpreters) {
+            try {
+              var newGlobals = commandInterpreters[j].loop(tempGlobals, guildsArray[i]); // Run with empty globals
+              if (newGlobals != undefined) // The function returned a value
+              tempGlobals = newGlobals; // Set the globals
+            } catch (exception) {
+              logUtil.log("Caught error while running loop for guild " + guildsArray[i].name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
+              console.log(exception);
+            }
+          }
+
+          globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
+        }
+    }, 100); // Run this function every 100 milliseconds
+  });
 }
 
-module.exports.close = function() { // This function will run on server close
+module.exports.close = function(client) { // This function will run on server close
+  logUtil.log("Closing command interpreters...", logUtil.STATUS_INFO);
+
+  var guildsArray = client.guilds.array();
+  for (var i in guildsArray) {
+    var tempGlobals = globalList[guildsArray[i].id];
+    if (!tempGlobals) {
+      tempGlobals = new nodecache(); // Default globals if there are none
+    }
+    for (var j in commandInterpreters) {
+      try {
+        var newGlobals = commandInterpreters[j].close(tempGlobals, guildsArray[i]); // Run with empty globals
+        if (newGlobals != undefined) // The function returned a value
+        tempGlobals = newGlobals; // Set the globals
+      } catch (exception) {
+        logUtil.log("Caught error while running close function for guild " + guildsArray[i].name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
+        console.log(exception);
+      }
+    }
+    globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
+  }
+
   logUtil.log("Saving globals to database.json file...", logUtil.STATUS_INFO);
 
   var dataToSave = {};

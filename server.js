@@ -40,7 +40,7 @@ rl.on('SIGINT', function() {
 
   for (var i = 0; i < handlers.length; i++) {
     if(handlers[i]) {
-      handlers[i].close();
+      handlers[i].close(client);
     }
   }
 
