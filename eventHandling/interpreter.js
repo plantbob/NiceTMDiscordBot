@@ -75,8 +75,15 @@ module.exports.init = function(client) {
     }
   });
 
+  var debounce = false; // The setInterval uses a debounce
+
   client.on('ready', function() { // Only start the loop when the server is up and running
     setInterval(function() { // Use setInterval to make this run asynchronously
+      if (debounce == true) {
+        return;
+      }
+      debounce = true;
+
       var guildsArray = client.guilds.array();
         for (var i in guildsArray) {
           var tempGlobals = globalList[guildsArray[i].id];
@@ -97,7 +104,9 @@ module.exports.init = function(client) {
 
           globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
         }
-    }, 100); // Run this function every 100 milliseconds
+
+        debounce = false;
+    }, 2000); // Run this function every 2 seconds
   });
 }
 

@@ -130,7 +130,7 @@ module.exports.loop = function(globals, guild) {
 
     if (musicQueue.length != 0) { // If there are songs queued
       var id = musicQueue.shift().id; // shift removes and returns the first element in an array
-      globals.set("musicQueue", musicQueue); // Set musicqueue
+      globals.set("musicQueue", musicQueue); // Set musicQueue
 
       youtubeUtil.getVideoDataFromId(id, "contentDetails", function(data) {
         if (!data) {
