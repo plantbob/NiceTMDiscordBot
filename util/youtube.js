@@ -62,7 +62,6 @@ module.exports.getVideoDataFromSearchQuery = function (query, part, callback) { 
 
   youtube.search.list(params, function(err, response) {
     if (err) {
-      console.log("test");
       callback(null);
     } else {
       if (response.items && response.items[0]) {
@@ -71,11 +70,9 @@ module.exports.getVideoDataFromSearchQuery = function (query, part, callback) { 
         } else if (response.items[1].snippet.liveBroadcastContent == "none") { // First option isn't a video and second option is
           callback(response.items[1]);
         } else { // Both options aren't videos
-        console.log("test2");
           callback(null);
         }
       } else {
-        console.log("test3");
         callback(null)
       }
     }
