@@ -15,7 +15,7 @@ module.exports.init = function(client) {
 
     globalList = {}; // Init empty object
 
-    for (var i in dataToRetrieve) {
+    for (var i in dataToRetrieve) { // TODO : Figure out why this doesn't save music queues
       var cacheNew = new nodecache(); // Create empty cache
 
       for (var j in dataToRetrieve[i]) {
