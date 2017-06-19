@@ -10,11 +10,16 @@ var songQueue = []; // Stores songs
 var commands = {
   "!play" : function(message, params, globals) {
     if (params[0] != undefined) {
-      var channel = discordUtil.findVoiceChannel(message.author, message.guild);
+      var channel;
+      if (message.guild.voiceConnection) {
+        channel = message.guild.voiceConnection.channel;
+      } else {
+        channel = discordUtil.findVoiceChannel(message.author, message.guild);
 
-      if (channel == null) {
-        message.channel.send("Please join a voice channel.");
-        return;
+        if (channel == null) {
+          message.channel.send("Please join a voice channel.");
+          return;
+        }
       }
 
       var id = youtubeUtil.getIdFromUrl(params[0]); // Get Id
