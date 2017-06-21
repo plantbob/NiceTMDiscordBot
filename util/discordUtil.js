@@ -20,26 +20,17 @@ module.exports.findVoiceChannel = function(user, guild) { // Returns the voice c
 }
 
 module.exports.playYoutubeVideo = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
-  //try {
+  try {
     var streamOptions = { seek: 0, volume: 1 };
-    var stream = ytdl(video, { filter : 'audioonly' });
+    var audioStream = ytdl(video, { filter : 'audioonly' });
 
-    console.log("test3");
-    var logStream = new stream.Writable();
-    logStream._write = function (chunk, encoding, data) {
-      console.log("Log data: " + chunk.toString());
-      done(chunk);
-    }
+    //audioStream.pipe(logUtil.logStream());
 
-    console.log("test");
-    stream.pipe(logStream);
-    console.log("test2");
-
-    var dispatcher = connection.playStream(stream, streamOptions);
-  //} catch (exception) {
+    var dispatcher = connection.playStream(audioStream, streamOptions);
+  } catch (exception) {
     if (exception.name != "TypeError") {
       return exception; // It always throws a TypeError so just return true
     }
-  //}
+  }
   return true;
 }
