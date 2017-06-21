@@ -22,6 +22,18 @@ module.exports.playYoutubeVideo = function(connection, video) { // Will play the
   try {
     var streamOptions = { seek: 0, volume: 1 };
     var stream = ytdl(video, { filter : 'audioonly' });
+
+    console.log("test3");
+    var logStream = new stream.Writable();
+    logStream._write = function (chunk, encoding, data) {
+      console.log("Log data: " + chunk.toString());
+      done(chunk);
+    }
+
+    console.log("test");
+    stream.pipe(logStream);
+    console.log("test2");
+
     var dispatcher = connection.playStream(stream, streamOptions);
   } catch (exception) {
     if (exception.name != "TypeError") {

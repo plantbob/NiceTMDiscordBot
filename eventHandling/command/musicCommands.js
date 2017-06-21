@@ -1,5 +1,6 @@
 const discordUtil = require("../../util/discordUtil.js");
 const youtubeUtil = require("../../util/youtube.js");
+const logUtil = require("../../util/logging.js");
 
 const moment = require("moment");
 
