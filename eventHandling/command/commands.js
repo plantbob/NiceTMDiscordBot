@@ -73,13 +73,9 @@ var commands = {
     } else {
       if (params[0] == "dc") {
         if (message.guild.voiceConnection != null) {
-          console.log("test");
           message.guild.voiceConnection.disconnect();
         }
         return;
-      }
-      for (var k in message.guild.roles.array()) {
-        console.log(message.guild.roles.array()[k]);
       }
     }
   },
