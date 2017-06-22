@@ -10,41 +10,10 @@ var songQueue = []; // Stores songs
 
 var commands = {
   "!play" : function(message, params, globals) {
-    if (params[0] != undefined) {
-      var channel;
-      if (message.guild.voiceConnection) {
-        channel = message.guild.voiceConnection.channel;
-      } else {
-        channel = discordUtil.findVoiceChannel(message.author, message.guild);
-
-        if (channel == null) {
-          message.channel.send("Please join a voice channel.");
-          return;
-        }
-      }
-
-      var id = youtubeUtil.getIdFromUrl(params[0]); // Get Id
-      if (id == null) {
-        youtubeUtil.getVideoDataFromSearchQuery(params.join(" "), "snippet", function(data) { // Iterperet the parameters as a search term
-          if (!data) {
-            message.channel.send("Invalid search query.");
-          } else {
-            data.id = data.id.videoId; // Because data is formatted differently for getVideoDataFromId than getVideoDataFromSearchQuery for some reason
-            addToMusicQueue(data, message, globals, channel);
-          }
-        });
-      } else {
-        youtubeUtil.getVideoDataFromId(id, "snippet", function(data) {
-          if (!data) {
-            message.channel.send("Invalid youtube link or id.");
-          } else {
-            addToMusicQueue(data, message, globals, channel);
-          }
-        });
-      }
-    } else {
-      message.channel.send("Please provide the youtube video url or a search term.");
-    }
+    thePlayCommand(message, params, globals, false);
+  },
+  "!earrape" : function(message, params, globals) {
+    thePlayCommand(message, params, globals, true);
   },
   "!skip" : function(message, params, globals) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
@@ -93,11 +62,11 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   dmChannel.send(messageToSend);
 }
 
-function addToMusicQueue(data, message, globals, channel) { // Used in the "!play" command
+function addToMusicQueue(data, message, globals, channel, isLOUD) { // Used in the "!play" command
   channel.join().then(function(connection) {
     message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
-      musicQueue.push({"id" : data.id, "user" : member.nickname, "title" : data.snippet.title}); // Add music to queue
+      musicQueue.push({"id" : data.id, "user" : member.nickname, "title" : data.snippet.title, "isLOUD" : isLOUD}); // Add music to queue
       globals.set("musicQueue", musicQueue); // Set queue
 
       if (member.nickname == null) { // The nickname is null sometimes
@@ -114,6 +83,42 @@ function addToMusicQueue(data, message, globals, channel) { // Used in the "!pla
     logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
     console.log(err);
   });
+}
+
+function thePlayCommand (message, params, globals, isLOUD) { // Is the play command
+  if (params[0] != undefined) {
+    var channel;
+    if (message.guild.voiceConnection) {
+      channel = message.guild.voiceConnection.channel;
+    } else {
+      channel = discordUtil.findVoiceChannel(message.author, message.guild);
+      if (channel == null) {
+        message.channel.send("Please join a voice channel.");
+        return;
+      }
+    }
+    var id = youtubeUtil.getIdFromUrl(params[0]); // Get Id
+    if (id == null) {
+      youtubeUtil.getVideoDataFromSearchQuery(params.join(" "), "snippet", function(data) { // Iterperet the parameters as a search term
+        if (!data) {
+          message.channel.send("Invalid search query.");
+        } else {
+          data.id = data.id.videoId; // Because data is formatted differently for getVideoDataFromId than getVideoDataFromSearchQuery for some reason
+          addToMusicQueue(data, message, globals, channel, isLOUD);
+        }
+      });
+    } else {
+      youtubeUtil.getVideoDataFromId(id, "snippet", function(data) {
+        if (!data) {
+          message.channel.send("Invalid youtube link or id.");
+        } else {
+          addToMusicQueue(data, message, globals, channel, isLOUD);
+        }
+      });
+    }
+  } else {
+    message.channel.send("Please provide the youtube video url or a search term.");
+  }
 }
 
 module.exports.searchFunction = function(command) {
@@ -134,7 +139,9 @@ module.exports.loop = function(globals, guild) {
     }
 
     if (musicQueue.length != 0) { // If there are songs queued
-      var id = musicQueue.shift().id; // shift removes and returns the first element in an array
+      var temp = musicQueue.shift(); // Get the song
+      var id = temp.id; // Get the id
+      var isLOUD = temp.isLOUD; // He He he
       globals.set("musicQueue", musicQueue); // Set musicQueue
 
       youtubeUtil.getVideoDataFromId(id, "contentDetails", function(data) {
@@ -144,7 +151,11 @@ module.exports.loop = function(globals, guild) {
           if (!guild.voiceConnection) {
             musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
           } else {
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, id); // Play the video
+            if (!isLOUD) {
+              var result = discordUtil.playYoutubeVideo(guild.voiceConnection, id); // Play the video normally
+            } else {
+              var result = discordUtil.playYoutubeVideoLOUD(guild.voiceConnection, id); // Play the video better
+            }
 
             if (result != true) {
               //message.channel.send("There was an error trying to play youtube video https://youtube.com/watch?v=" + id); // Say there was an error and display the video

@@ -18,6 +18,7 @@
     "discord.js": "^11.1.0",
     "ebml": "^2.2.0",
     "erlpack": "github:hammerandchisel/erlpack",
+    "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^19.0.0",
     "moment": "^2.18.1",
     "node-cache": "^4.1.1",

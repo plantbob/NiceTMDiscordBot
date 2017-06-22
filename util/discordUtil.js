@@ -1,8 +1,11 @@
 const ytdl = require("ytdl-core");
 const stream = require('stream');
 const fs = require('fs');
+const ffmpeg = require('fluent-ffmpeg');
 
 const logUtil = require("./logging.js");
+
+const Duplex = require('stream').Duplex;
 
 module.exports = {};
 
@@ -22,53 +25,41 @@ module.exports.findVoiceChannel = function(user, guild) { // Returns the voice c
   return null; // Nothing found
 }
 
-const ebml = require('ebml');
-
-module.exports.playYoutubeVideo = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
-  //try {
+module.exports.playYoutubeVideoLOUD = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
+  try {
     var streamOptions = { seek: 0, volume: 1 };
     var audioStream = ytdl(video, { filter : 'audioonly' });
 
-    // audioStream.pipe(logUtil.logStream());
-    // var logText = fs.createWriteStream("sound.txt");
-    // audioStream.pipe(logText);
+    var audio = ffmpeg(audioStream)
+    .withAudioCodec('libvorbis')
+    .audioFilters('volume=50')
+    .format('webm');
 
-    const decoder = new ebml.Decoder();
-    const encoder = new ebml.Encoder();
-
-    audioStream.pipe(decoder);
-
-    decoder.on('data', function(chunk) {
-      //console.log(chunk);
-      try {
-        if (chunk[1].name == "SimpleBlock") {
-          var tempBuffer = Buffer.alloc(chunk[1].dataSize, chunk[1].data);
-
-          for (var i = 5; i < chunk[1].dataSize; i++) {
-            if (getRandomInt(1, 20) == -1)  {
-              tempBuffer.writeUIntBE(getRandomInt(0, 255), i, 1);
-            }
-          }
-
-          chunk[1].data = tempBuffer;
-        }
-      } catch (exception) {
-      }
-
-      encoder.write(chunk);
-    });
-
-    var dispatcher = connection.playStream(encoder, streamOptions);
-  // } catch (exception) {
-  //   if (exception.name != "TypeError") {
-  //     return exception; // It always throws a TypeError so just return true
-  //   }
-  // }
+    var dispatcher = connection.playStream(audio, streamOptions);
+  } catch (exception) {
+    if (exception.name != "TypeError") {
+      return exception; // It always throws a TypeError so just return true
+    }
+  }
   return true;
 }
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+module.exports.playYoutubeVideo = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
+  try {
+    var streamOptions = { seek: 0, volume: 1 };
+    var audioStream = ytdl(video, { filter : 'audioonly' });
+    
+    var dispatcher = connection.playStream(audioStream, streamOptions);
+  } catch (exception) {
+    if (exception.name != "TypeError") {
+      return exception; // It always throws a TypeError so just return true
+    }
+  }
+  return true;
 }
+
+// function getRandomInt(min, max) {
+//   min = Math.ceil(min);
+//   max = Math.floor(max);
+//   return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+// }
