@@ -28,9 +28,9 @@ module.exports.log = function(message, status) {
 
 module.exports.logStream = function() { // Returns Writable stream that can be used to log data
   var logStream = new stream.Writable();
-  logStream._write = function (chunk, encoding, data) {
+  logStream._write = function (chunk, encoding, done) {
     console.log("Log data: " + chunk.toString());
-    done(chunk);
+    done();
   }
 
   return logStream;

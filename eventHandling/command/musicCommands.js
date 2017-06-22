@@ -100,7 +100,11 @@ function addToMusicQueue(data, message, globals, channel) { // Used in the "!pla
       musicQueue.push({"id" : data.id, "user" : member.nickname, "title" : data.snippet.title}); // Add music to queue
       globals.set("musicQueue", musicQueue); // Set queue
 
-      message.channel.send("`" + member.nickname + "` added `" + data.snippet.title + "` to the queue.");
+      if (member.nickname == null) { // The nickname is null sometimes
+        message.channel.send("`" + message.author.username + "` added `" + data.snippet.title + "` to the queue.");
+      } else {
+        message.channel.send("`" + member.nickname + "` added `" + data.snippet.title + "` to the queue.");
+      }
 
       if (message.deletable) {
         message.delete(); // So the music channel isn't filled with youtube videos
