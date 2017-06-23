@@ -97,7 +97,7 @@ module.exports.init = function(client) {
 
           globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
         }
-    }, 2000); // Run this function every 2 seconds
+    }, 5000); // Run this function every 5 seconds
   });
 }
 
