@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, earrape, skip, queue, link");
+    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, earrape, nightcore, skip, queue, link");
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");

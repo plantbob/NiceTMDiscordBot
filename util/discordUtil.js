@@ -44,11 +44,31 @@ module.exports.playYoutubeVideoLOUD = function(connection, video) { // Will play
   return true;
 }
 
+module.exports.playYoutubeVideoFAST = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
+  try {
+    var streamOptions = { seek: 0, volume: 1 };
+    var audioStream = ytdl(video, { filter : 'audioonly' });
+
+    var audio = ffmpeg(audioStream)
+    .withAudioCodec('libvorbis')
+    .audioFilters('atempo=0.7')
+    .audioFilters('asetrate=r=88200')
+    .format('webm');
+
+    var dispatcher = connection.playStream(audio, streamOptions);
+  } catch (exception) {
+    if (exception.name != "TypeError") {
+      return exception; // It always throws a TypeError so just return true
+    }
+  }
+  return true;
+}
+
 module.exports.playYoutubeVideo = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
     var streamOptions = { seek: 0, volume: 1 };
     var audioStream = ytdl(video, { filter : 'audioonly' });
-    
+
     var dispatcher = connection.playStream(audioStream, streamOptions);
   } catch (exception) {
     if (exception.name != "TypeError") {

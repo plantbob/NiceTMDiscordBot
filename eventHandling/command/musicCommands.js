@@ -10,10 +10,13 @@ var songQueue = []; // Stores songs
 
 var commands = {
   "!play" : function(message, params, globals) {
-    thePlayCommand(message, params, globals, false);
+    thePlayCommand(message, params, globals, 1);
   },
   "!earrape" : function(message, params, globals) {
-    thePlayCommand(message, params, globals, true);
+    thePlayCommand(message, params, globals, 2);
+  },
+  "!nightcore" : function(message, params, globals) {
+    thePlayCommand(message, params, globals, 3);
   },
   "!skip" : function(message, params, globals) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
@@ -62,18 +65,20 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   dmChannel.send(messageToSend);
 }
 
-function addToMusicQueue(data, message, globals, channel, isLOUD) { // Used in the "!play" command
+function addToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
   channel.join().then(function(connection) {
     message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
-      musicQueue.push({"id" : data.id, "user" : member.nickname, "title" : data.snippet.title, "isLOUD" : isLOUD}); // Add music to queue
-      globals.set("musicQueue", musicQueue); // Set queue
 
       if (member.nickname == null) { // The nickname is null sometimes
+        musicQueue.push({"id" : data.id, "user" : message.author.username, "title" : data.snippet.title, "type" : type}); // Add music to queue
         message.channel.send("`" + message.author.username + "` added `" + data.snippet.title + "` to the queue.");
       } else {
+        musicQueue.push({"id" : data.id, "user" : member.nickname, "title" : data.snippet.title, "type" : type}); // Add music to queue
         message.channel.send("`" + member.nickname + "` added `" + data.snippet.title + "` to the queue.");
       }
+
+      globals.set("musicQueue", musicQueue); // Set queue
 
       if (message.deletable) {
         message.delete(); // So the music channel isn't filled with youtube videos
@@ -85,7 +90,7 @@ function addToMusicQueue(data, message, globals, channel, isLOUD) { // Used in t
   });
 }
 
-function thePlayCommand (message, params, globals, isLOUD) { // Is the play command
+function thePlayCommand (message, params, globals, type) { // Is the play command
   if (params[0] != undefined) {
     var channel;
     if (message.guild.voiceConnection) {
@@ -104,7 +109,7 @@ function thePlayCommand (message, params, globals, isLOUD) { // Is the play comm
           message.channel.send("Invalid search query.");
         } else {
           data.id = data.id.videoId; // Because data is formatted differently for getVideoDataFromId than getVideoDataFromSearchQuery for some reason
-          addToMusicQueue(data, message, globals, channel, isLOUD);
+          addToMusicQueue(data, message, globals, channel, type);
         }
       });
     } else {
@@ -112,7 +117,7 @@ function thePlayCommand (message, params, globals, isLOUD) { // Is the play comm
         if (!data) {
           message.channel.send("Invalid youtube link or id.");
         } else {
-          addToMusicQueue(data, message, globals, channel, isLOUD);
+          addToMusicQueue(data, message, globals, channel, type);
         }
       });
     }
@@ -141,7 +146,7 @@ module.exports.loop = function(globals, guild) {
     if (musicQueue.length != 0) { // If there are songs queued
       var temp = musicQueue.shift(); // Get the song
       var id = temp.id; // Get the id
-      var isLOUD = temp.isLOUD; // He He he
+      var type = temp.type; // He He he
       globals.set("musicQueue", musicQueue); // Set musicQueue
 
       youtubeUtil.getVideoDataFromId(id, "contentDetails", function(data) {
@@ -151,10 +156,15 @@ module.exports.loop = function(globals, guild) {
           if (!guild.voiceConnection) {
             musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
           } else {
-            if (!isLOUD) {
-              var result = discordUtil.playYoutubeVideo(guild.voiceConnection, id); // Play the video normally
-            } else {
-              var result = discordUtil.playYoutubeVideoLOUD(guild.voiceConnection, id); // Play the video better
+            switch (type) {
+              case 1:
+                var result = discordUtil.playYoutubeVideo(guild.voiceConnection, id); // Play the video normally
+                break;
+              case 2:
+                var result = discordUtil.playYoutubeVideoLOUD(guild.voiceConnection, id); // Play the video better
+                break;
+              default:
+                var result = discordUtil.playYoutubeVideoFAST(guild.voiceConnection, id); // Play the video even better
             }
 
             if (result != true) {
