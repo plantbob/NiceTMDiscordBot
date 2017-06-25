@@ -132,6 +132,7 @@ module.exports.searchFunction = function(command) {
 
 module.exports.loop = function(globals, guild) {
   var timeOfEnd = globals.get("timeOfEnd");
+
   if (!timeOfEnd) {
     timeOfEnd = -1;
   }
@@ -170,12 +171,13 @@ module.exports.loop = function(globals, guild) {
             if (result != true) {
               //message.channel.send("There was an error trying to play youtube video https://youtube.com/watch?v=" + id); // Say there was an error and display the video
             } else {
-              timeOfEnd = moment.duration(data.contentDetails.duration).asMilliseconds() + moment().valueOf(); // Store the UNIX timestamp when the video will end
+              var durationOfSong = moment.duration(data.contentDetails.duration).asMilliseconds();
               if (type == 3) {
-                globals.set("timeOfEnd", timeOfEnd / 1.4); // Because even better is faster
-              } else {
-                globals.set("timeOfEnd", timeOfEnd);
+                durationOfSong /= 1.4; // Because even better is faster
               }
+
+              timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
+              globals.set("timeOfEnd", timeOfEnd);
             }
           }
         }
