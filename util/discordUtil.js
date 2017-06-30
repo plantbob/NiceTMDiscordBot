@@ -36,12 +36,13 @@ module.exports.playYoutubeVideoLOUD = function(connection, video) { // Will play
     .format('webm');
 
     var dispatcher = connection.playStream(audio, streamOptions);
+
+    return dispatcher;
   } catch (exception) {
     if (exception.name != "TypeError") {
       return exception; // It always throws a TypeError so just return true
     }
   }
-  return true;
 }
 
 module.exports.playYoutubeVideoFAST = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
@@ -56,12 +57,13 @@ module.exports.playYoutubeVideoFAST = function(connection, video) { // Will play
     .format('webm');
 
     var dispatcher = connection.playStream(audio, streamOptions);
+
+    return dispatcher;
   } catch (exception) {
     if (exception.name != "TypeError") {
       return exception; // It always throws a TypeError so just return true
     }
   }
-  return true;
 }
 
 module.exports.playYoutubeVideo = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
@@ -70,12 +72,13 @@ module.exports.playYoutubeVideo = function(connection, video) { // Will play the
     var audioStream = ytdl(video, { filter : 'audioonly' });
 
     var dispatcher = connection.playStream(audioStream, streamOptions);
+
+    return dispatcher;
   } catch (exception) {
     if (exception.name != "TypeError") {
       return exception; // It always throws a TypeError so just return true
     }
   }
-  return true;
 }
 
 // function getRandomInt(min, max) {

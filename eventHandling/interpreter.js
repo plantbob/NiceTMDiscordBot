@@ -75,6 +75,8 @@ module.exports.init = function(client) {
     }
   });
 
+  // TODO: Instead of using a loop use an event queue in order to play new songs instantly
+
   client.on('ready', function() { // Only start the loop when the server is up and running
     setInterval(function() { // Use setInterval to make this run asynchronously
       var guildsArray = client.guilds.array();

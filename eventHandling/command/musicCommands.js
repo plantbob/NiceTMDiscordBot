@@ -168,7 +168,7 @@ module.exports.loop = function(globals, guild) {
                 var result = discordUtil.playYoutubeVideoFAST(guild.voiceConnection, id); // Play the video even better
             }
 
-            if (result != true) {
+            if (result instanceof Error) { // Check to see if an error was returned
               //message.channel.send("There was an error trying to play youtube video https://youtube.com/watch?v=" + id); // Say there was an error and display the video
             } else {
               var durationOfSong = moment.duration(data.contentDetails.duration).asMilliseconds();
@@ -177,7 +177,11 @@ module.exports.loop = function(globals, guild) {
               }
 
               timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
-              globals.set("timeOfEnd", timeOfEnd);
+              globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
+
+              result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
+                globals.set("timeOfEnd", timeOfEnd);
+              });
             }
           }
         }
