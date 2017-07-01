@@ -133,6 +133,8 @@ module.exports.searchFunction = function(command) {
 module.exports.loop = function(globals, guild) {
   var timeOfEnd = globals.get("timeOfEnd");
 
+  console.log(timeOfEnd);
+
   if (!timeOfEnd) {
     timeOfEnd = -1;
   }
@@ -180,7 +182,7 @@ module.exports.loop = function(globals, guild) {
               globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
 
               result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
-                globals.set("timeOfEnd", timeOfEnd);
+                globals.set("timeOfEnd", durationOfSong + moment().valueOf());
               });
             }
           }
