@@ -62,7 +62,7 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
     messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
     totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds();
   }
-  messageToSend += "\nTotal queue length: (" + formatDurationHHMMSS(moment.duration(totalDuration) + ")");
+  messageToSend += "\nTotal queue length: (" + formatDurationHHMMSS(moment.duration(totalDuration)) + ")";
   messageToSend += "```";
 
   dmChannel.send(messageToSend);
