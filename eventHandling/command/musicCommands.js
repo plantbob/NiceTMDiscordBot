@@ -18,6 +18,9 @@ var commands = {
   "!nightcore" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 3);
   },
+  "!hospital" : function(message, params, globals) {
+    thePlayCommand(message, params, globals, 4);
+  },
   "!skip" : function(message, params, globals) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
     try {
@@ -27,21 +30,15 @@ var commands = {
     }
   },
   "!queue" : function(message, params, globals) {
-    var dmChannel = message.author.dmChannel;
-    if (!dmChannel) {
-      message.author.createDM().then(function (dmChannel) { // Make the dm channel if one doesn't exist
+    discordUtil.getDMChannel(message.author, function(dmChannel) {
+      if (!dmChannel) {
+        message.reply("Something went wrong with trying to DM you.");
+      } else {
         message.reply("Look at your DMs.");
         var musicQueue = globals.get("musicQueue");
         listQueue(dmChannel, musicQueue);
-      }).catch(function (exception) {
-        message.reply("Something went wrong with trying to DM you.");
-      });
-      return;
-    }
-
-    message.reply("Look at your DMs.");
-    var musicQueue = globals.get("musicQueue");
-    listQueue(dmChannel, musicQueue);
+      }
+    });
   },
   "!noice" : function(message, params, globals) { // NOICE
     var timeOfEnd = globals.get("timeOfEnd");
@@ -192,10 +189,13 @@ module.exports.loop = function(globals, guild) {
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
             break;
           case 2:
-            var result = discordUtil.playYoutubeVideoLOUD(guild.voiceConnection, songToPlay.id); // Play the video better
+            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50']); // Play the video better
+            break;
+          case 3:
+            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
             break;
           default:
-            var result = discordUtil.playYoutubeVideoFAST(guild.voiceConnection, songToPlay.id); // Play the video even better
+            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
         }
         if (result instanceof Error) { // Check to see if an error was returned
           //message.channel.send("There was an error trying to play youtube video https://youtube.com/watch?v=" + id); // Say there was an error and display the video

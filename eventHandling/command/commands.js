@@ -1,14 +1,48 @@
 const reddit = require("../../util/reddit.js");
 const logUtil = require("../../util/logging.js");
+const discordUtil = require("../../util/discordUtil.js");
 
 var exec = require('child_process').exec;
+
+var helpMessage = "```"; // The message displayed on the help message
+helpMessage += "Miscallaneous Commands: ";
+helpMessage += "\n1. !help - U wot m8?";
+helpMessage += "\n2. !ping - Pong!";
+helpMessage += "\n3. !oldman [whatever] - And old man tells you get off his lawn and take whatever with you.";
+helpMessage += "\n4. !humourme - Gets a random picture from r/I_irl";
+helpMessage += "\n5. !m [subredit] - Gets a random picture from the specified subreddit, and it can only be run on nsfw channels.";
+helpMessage += "\n6. !github - Gives a link to the bot's source.";
+helpMessage += "\n7. !link - Gives a link so you can add this bot to your server!";
+helpMessage += "\n8. !genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
+helpMessage += "\n9. !noice - *POP* Noice!";
+
+helpMessage += "\n\nMusic Commands: ";
+helpMessage += "\n10. !play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n11. !earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n12. !nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n13. !hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n14. !queue - Lists the current queue.";
+helpMessage += "\n15. !skip - Skips the current song.";
+
+helpMessage += "```";
+
+
 
 // Message = message object that initiated command
 // Params = The parameters of the command
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
   "!help" : function(message, params, globals) {
-    message.channel.send("Commands: help, ping, oldman, humourme, m, github, genisland, play, earrape, nightcore, noice, skip, queue, link");
+    discordUtil.getDMChannel(message.author, function(dmChannel) {
+      if (!dmChannel) {
+        message.reply("Something went wrong with trying to DM you.");
+      } else {
+        message.reply("Look at your DMs.");
+
+
+        dmChannel.send(helpMessage); // Display help message
+      }
+    });
   },
   "!ping" : function(message, params, globals) {
     message.channel.send("Pong!");
@@ -94,7 +128,7 @@ var commands = {
     return globals;
   },
   "!link" : function(message, params, globals) {
-    message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0 Add me to your server whydontcha?");
+    message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0 \nAdd me to your server whydontcha?");
   }
 }
 
