@@ -42,6 +42,28 @@ var commands = {
     message.reply("Look at your DMs.");
     var musicQueue = globals.get("musicQueue");
     listQueue(dmChannel, musicQueue);
+  },
+  "!noice" : function(message, params, globals) { // NOICE
+    var timeOfEnd = globals.get("timeOfEnd");
+
+    if (timeOfEnd == -1) { // If no song is playing
+      var channel;
+      if (message.guild.voiceConnection) {
+        channel = message.guild.voiceConnection.channel;
+      } else {
+        channel = discordUtil.findVoiceChannel(message.author, message.guild);
+        if (channel == null) {
+          message.channel.send("Please join a voice channel.");
+          return;
+        }
+      }
+
+      channel.join().then(function(connection) {
+        discordUtil.playYoutubeVideoLOUD(connection, "h3uBr0CCm58"); // NOICE id
+      });
+    } else {
+      message.reply("A song is currently playing so no.");
+    }
   }
 }
 
