@@ -198,7 +198,8 @@ module.exports.loop = function(globals, guild) {
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
         }
         if (result instanceof Error) { // Check to see if an error was returned
-          //message.channel.send("There was an error trying to play youtube video https://youtube.com/watch?v=" + id); // Say there was an error and display the video
+          logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
+          console.log(result);
         } else {
           var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
           if (songToPlay.type == 3) {
