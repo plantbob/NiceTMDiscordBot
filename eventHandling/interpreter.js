@@ -4,6 +4,8 @@ const nodecache = require("node-cache");
 const fs = require("fs");
 const EventEmitter = require('events');
 
+const Discord = require("discord.js");
+
 var globalList;
 var commandInterpreters = [];
 
@@ -45,15 +47,21 @@ module.exports.init = function(client) {
   });
 
   client.on('message', function(msg) {
-    if (!msg.guild) { // Message was send in DM
+    if (!msg.guild) { // Message was sent in DM
       return; // Don't process DM messages
     }
 
     var words = msg.content.split(" "); // Split message into array
 
+    var customPrefix = globalList[msg.guild.id].get("prefix");
+    if (customPrefix && customPrefix != ";;") {
+      words[0] = words[0].replace(";;", "") // Invalidate the default prefix
+      words[0] = words[0].replace(customPrefix, ";;"); // Replace the custom prefix with the prefix that is recognized
+    }
+
     var command;
     for (var i in commandInterpreters) { // Search for command
-      command = commandInterpreters[i].searchFunction(words[0]);
+      command = commandInterpreters[i].searchFunction(words[0]); // Replace the custom prefix with the template
 
       if (command) // Exit for loop if command is found
         break;
@@ -79,8 +87,6 @@ module.exports.init = function(client) {
 
     }
   });
-
-  // TODO: Instead of using a loop use an event queue in order to play new songs instantly
 
   client.on('ready', function() { // Only start the loop when the server is up and running
     updateEmitter.on('update', function(guild) {

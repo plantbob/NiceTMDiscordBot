@@ -25,6 +25,10 @@ helpMessage += "\n14. ;;queue - Lists the current queue.";
 helpMessage += "\n15. ;;skip - Skips the current song.";
 helpMessage += "\n15. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
+helpMessage += "\n\nPrefix Commands: ";
+helpMessage += "\n15. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n15. ;;resetprefix - Resets the prefix to \";;\".";
+
 helpMessage += "```";
 
 
@@ -40,8 +44,12 @@ var commands = {
       } else {
         message.reply("Look at your DMs.");
 
-
-        dmChannel.send(helpMessage); // Display help message
+        var customPrefix = globals.get("prefix");
+        if (customPrefix && customPrefix != ";;") {
+          dmChannel.send(helpMessage.replace(/;;/g, customPrefix)); // Display help message with the custom prefix. /;;/g makes it replace all occurances of ;;
+        } else {
+          dmChannel.send(helpMessage); // Display help message normally
+        }
       }
     });
   },
