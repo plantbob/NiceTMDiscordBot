@@ -9,19 +9,19 @@ module.exports = {};
 var songQueue = []; // Stores songs
 
 var commands = {
-  "!play" : function(message, params, globals) {
+  ";;play" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 1);
   },
-  "!earrape" : function(message, params, globals) {
+  ";;earrape" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 2);
   },
-  "!nightcore" : function(message, params, globals) {
+  ";;nightcore" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 3);
   },
-  "!hospital" : function(message, params, globals) {
+  ";;hospital" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 4);
   },
-  "!skip" : function(message, params, globals) {
+  ";;skip" : function(message, params, globals) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
     try {
       message.guild.voiceConnection.playFile('non existant mp3.mp3'); // This stops what the bot is playing so it will try to play this mp3
@@ -29,7 +29,7 @@ var commands = {
       // The mp3 doesn't exist so this line will always error
     }
   },
-  "!queue" : function(message, params, globals) {
+  ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
       if (!dmChannel) {
         message.reply("Something went wrong with trying to DM you.");
@@ -40,7 +40,7 @@ var commands = {
       }
     });
   },
-  "!noice" : function(message, params, globals) { // NOICE
+  ";;noice" : function(message, params, globals) { // NOICE
     var timeOfEnd = globals.get("timeOfEnd");
 
     if (timeOfEnd == -1) { // If no song is playing
