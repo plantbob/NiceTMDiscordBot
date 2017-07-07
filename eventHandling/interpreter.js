@@ -99,7 +99,7 @@ module.exports.init = function(client) {
           }
           for (var j in commandInterpreters) {
             try {
-              var newGlobals = commandInterpreters[j].update(tempGlobals, guildsArray[i]); // Run with empty globals
+              var newGlobals = commandInterpreters[j].update(tempGlobals, guildsArray[i], updateEmitter); // Run with empty globals
               if (newGlobals != undefined) // The function returned a value
               tempGlobals = newGlobals; // Set the globals
             } catch (exception) {
