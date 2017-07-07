@@ -23,6 +23,7 @@ helpMessage += "\n12. ;;nightcore [url/id/search term] - Adds a youtube video to
 helpMessage += "\n13. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
 helpMessage += "\n14. ;;queue - Lists the current queue.";
 helpMessage += "\n15. ;;skip - Skips the current song.";
+helpMessage += "\n15. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "```";
 
@@ -136,7 +137,7 @@ module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
 }
 
-module.exports.loop = function(globals, guild) {
+module.exports.update = function(globals, guild) {
 
 }
 

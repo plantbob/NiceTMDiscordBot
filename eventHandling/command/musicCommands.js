@@ -3,23 +3,28 @@ const youtubeUtil = require("../../util/youtube.js");
 const logUtil = require("../../util/logging.js");
 
 const moment = require("moment");
+const Discord = require("discord.js");
 
 module.exports = {};
 
 var songQueue = []; // Stores songs
 
 var commands = {
-  ";;play" : function(message, params, globals) {
+  ";;play" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 1);
+    updateEmitter.emit('update', message.guild); // Play the song
   },
-  ";;earrape" : function(message, params, globals) {
+  ";;earrape" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 2);
+    updateEmitter.emit('update', message.guild);
   },
-  ";;nightcore" : function(message, params, globals) {
+  ";;nightcore" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 3);
+    updateEmitter.emit('update', message.guild);
   },
-  ";;hospital" : function(message, params, globals) {
+  ";;hospital" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 4);
+    updateEmitter.emit('update', message.guild);
   },
   ";;skip" : function(message, params, globals) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
@@ -56,10 +61,15 @@ var commands = {
       }
 
       channel.join().then(function(connection) {
-        discordUtil.playYoutubeVideoLOUD(connection, "h3uBr0CCm58"); // NOICE id
+        discordUtil.playYoutubeVideo(connection, "h3uBr0CCm58", ['volume=50']); // NOICE id
       });
     } else {
       message.reply("A song is currently playing so no.");
+    }
+  },
+  ";;dc" : function(message, params, globals) {
+    if (message.guild.voiceConnection && message.member.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
+      message.guild.voiceConnection.disconnect();
     }
   }
 }
@@ -78,8 +88,13 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   var totalDuration = 0;
   for (var i in musicQueue) { // Iterate through the queue
     var iPlusOne = parseInt(i) + 1; // parseInt because reasons
-    messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
-    totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds();
+    if (type == 3 || type == 4) { // Because even better is faster
+      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration) / 1.4) + ")");
+      totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds() / 1.4;
+    } else {
+      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
+      totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds();
+    }
   }
   messageToSend += "\nTotal queue length: (" + formatDurationHHMMSS(moment.duration(totalDuration)) + ")";
   messageToSend += "```";
@@ -102,7 +117,11 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
       }
 
       musicQueue.push(newSong);
-      message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
+      if (type == 3 || type == 4) { // Because even better is faster
+        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration) / 1.4) + "`");
+      } else {
+        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
+      }
 
       globals.set("musicQueue", musicQueue); // Set queue
 
@@ -161,13 +180,17 @@ module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
 }
 
-module.exports.loop = function(globals, guild) {
+module.exports.update = function(globals, guild, updateEmitter) {
   var timeOfEnd = globals.get("timeOfEnd");
 
   console.log(timeOfEnd);
 
   if (!timeOfEnd) {
     timeOfEnd = -1;
+  }
+
+  if (moment().valueOf() > timeOfEnd) { // The video has ended
+    timeOfEnd = -1; // Play the next video on the next playthrough
   }
 
   if (timeOfEnd == -1) { // No song is playing
@@ -207,18 +230,19 @@ module.exports.loop = function(globals, guild) {
           }
           timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
           globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
+
           result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
             globals.set("timeOfEnd", durationOfSong + moment().valueOf());
+          });
+
+          result.on('end', function() { // Play the next song when this one ends
+            updateEmitter.emit('update', guild);
           });
         }
       }
     }
 
     globals.set("musicQueue", musicQueue);
-  } else { // Song is playing
-    if (moment().valueOf() > timeOfEnd) { // The video has ended
-      timeOfEnd = -1; // Play the next video on the next playthrough
-    }
   }
 
   globals.set("timeOfEnd", timeOfEnd);

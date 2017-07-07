@@ -25,47 +25,6 @@ module.exports.findVoiceChannel = function(user, guild) { // Returns the voice c
   return null; // Nothing found
 }
 
-module.exports.playYoutubeVideoLOUD = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
-  try {
-    var streamOptions = { seek: 0, volume: 1 };
-    var audioStream = ytdl(video, { filter : 'audioonly' });
-
-    var audio = ffmpeg(audioStream)
-    .withAudioCodec('libvorbis')
-    .audioFilters('volume=50')
-    .format('webm');
-
-    var dispatcher = connection.playStream(audio, streamOptions);
-
-    return dispatcher;
-  } catch (exception) {
-    if (exception.name != "TypeError") {
-      return exception; // It always throws a TypeError so just return true
-    }
-  }
-}
-
-module.exports.playYoutubeVideoFAST = function(connection, video) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
-  try {
-    var streamOptions = { seek: 0, volume: 1 };
-    var audioStream = ytdl(video, { filter : 'audioonly' });
-
-    var audio = ffmpeg(audioStream)
-    .withAudioCodec('libvorbis')
-    .audioFilters('atempo=0.7')
-    .audioFilters('asetrate=r=88200')
-    .format('webm');
-
-    var dispatcher = connection.playStream(audio, streamOptions);
-
-    return dispatcher;
-  } catch (exception) {
-    if (exception.name != "TypeError") {
-      return exception; // It always throws a TypeError so just return true
-    }
-  }
-}
-
 module.exports.playYoutubeVideo = function(connection, video, audioFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
     var streamOptions = { seek: 0, volume: 1 };
