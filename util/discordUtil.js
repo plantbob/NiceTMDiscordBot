@@ -96,7 +96,7 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters) { //
 module.exports.getDMChannel = function(user, callback) { // Attempts to get DM channel and makes new one if one doesn't already exist
   var dmChannel = user.dmChannel;
   if (!dmChannel) {
-    message.author.createDM().then(function (dmChannel) { // Make the dm channel if one doesn't exist
+    user.createDM().then(function (dmChannel) { // Make the dm channel if one doesn't exist
       callback(dmChannel);
     }).catch(function (exception) {
       callback(false);
