@@ -202,7 +202,7 @@ module.exports.loop = function(globals, guild) {
           console.log(result);
         } else {
           var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
-          if (songToPlay.type == 3) {
+          if (songToPlay.type == 3 || songToPlay.type == 4) {
             durationOfSong /= 1.4; // Because even better is faster
           }
           timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
