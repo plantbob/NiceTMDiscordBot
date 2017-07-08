@@ -175,11 +175,9 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function skipSong(message, globals) { // Used in the skip and dc commands
-  globals.set("timeOfEnd", -1); // Make the music bot stop playing
-  try {
-    message.guild.voiceConnection.playFile('non existant mp3.mp3'); // This stops what the bot is playing so it will try to play this mp3
-  } catch (exception) {
-    // The mp3 doesn't exist so this line will always error
+  if (message.guild.voiceConnection.dispatcher) {
+    globals.set("timeOfEnd", -1); // Make the music bot stop playing
+    message.guild.voiceConnection.dispatcher.end(); // End the current stream
   }
 }
 
