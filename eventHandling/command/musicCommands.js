@@ -107,7 +107,7 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
                      "user" : message.author.username,
                      "title" : data.snippet.title,
                      "type" : type,
-                     "duration" : data.contentDetails.duration}
+                     "duration" :  moment.duration(data.contentDetails.duration).asMilliseconds()}
 
       if (newSong.type == 3 || newSong.type == 4) {
         newSong.duration = Math.floor(newSong.duration / 1.4);
