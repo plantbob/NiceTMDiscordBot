@@ -132,9 +132,7 @@ var commands = {
       count++;
     }
 
-    message.channel.send("Current count for this server is " + count + "!");
-
-    return globals;
+    message.channel.send("Current count for this server is " + count);
   },
   ";;link" : function(message, params, globals) {
     message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0 \nAdd me to your server whydontcha?");

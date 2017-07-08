@@ -27,12 +27,7 @@ var commands = {
     updateEmitter.emit('update', message.guild);
   },
   ";;skip" : function(message, params, globals) {
-    globals.set("timeOfEnd", -1); // Make the music bot stop playing
-    try {
-      message.guild.voiceConnection.playFile('non existant mp3.mp3'); // This stops what the bot is playing so it will try to play this mp3
-    } catch (exception) {
-      // The mp3 doesn't exist so this line will always error
-    }
+    skipSong(message, globals);
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
@@ -72,12 +67,10 @@ var commands = {
       message.guild.voiceConnection.disconnect();
 
       globals.set("musicQueue", []);
-      globals.set("timeOfEnd" , 0);
+      skipSong(message, globals);
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
-
-    return globals;
   }
 }
 
@@ -180,6 +173,15 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
     }
   } else {
     message.channel.send("Please provide the youtube video url or a search term.");
+  }
+}
+
+function skipSong(message, globals) { // Used in the skip and dc commands
+  globals.set("timeOfEnd", -1); // Make the music bot stop playing
+  try {
+    message.guild.voiceConnection.playFile('non existant mp3.mp3'); // This stops what the bot is playing so it will try to play this mp3
+  } catch (exception) {
+    // The mp3 doesn't exist so this line will always error
   }
 }
 
