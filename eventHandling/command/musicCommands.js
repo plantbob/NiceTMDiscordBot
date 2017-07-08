@@ -72,6 +72,7 @@ var commands = {
       message.guild.voiceConnection.disconnect();
 
       globals.set("musicQueue", []);
+      globals.set("timeOfEnd" , 0);
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
