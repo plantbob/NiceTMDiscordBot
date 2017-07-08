@@ -70,7 +70,13 @@ var commands = {
   ";;dc" : function(message, params, globals) {
     if (message.guild.voiceConnection && message.member.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
       message.guild.voiceConnection.disconnect();
+
+      globals.set("musicQueue", []);
+    } else {
+      message.channel.send("You need administrator permission to run this command")
     }
+
+    return globals;
   }
 }
 
@@ -182,8 +188,6 @@ module.exports.searchFunction = function(command) {
 
 module.exports.update = function(globals, guild, updateEmitter) {
   var timeOfEnd = globals.get("timeOfEnd");
-
-  console.log(timeOfEnd);
 
   if (!timeOfEnd) {
     timeOfEnd = -1;
