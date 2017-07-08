@@ -89,7 +89,7 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   for (var i in musicQueue) { // Iterate through the queue
     var iPlusOne = parseInt(i) + 1; // parseInt because reasons
     if (type == 3 || type == 4) { // Because even better is faster
-      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration) / 1.4) + ")");
+      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration / 1.4)) + ")");
       totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds() / 1.4;
     } else {
       messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
@@ -118,7 +118,7 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
 
       musicQueue.push(newSong);
       if (type == 3 || type == 4) { // Because even better is faster
-        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration) / 1.4) + "`");
+        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration / 1.4)) + "`");
       } else {
         message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
       }
