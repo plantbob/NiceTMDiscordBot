@@ -88,13 +88,9 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   var totalDuration = 0;
   for (var i in musicQueue) { // Iterate through the queue
     var iPlusOne = parseInt(i) + 1; // parseInt because reasons
-    if (type == 3 || type == 4) { // Because even better is faster
-      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration / 1.4)) + ")");
-      totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds() / 1.4;
-    } else {
-      messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
-      totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds();
-    }
+    messageToSend += "\n" + (iPlusOne + ". " + musicQueue[i].title + " queued by " + musicQueue[i].user + ". (" + formatDurationHHMMSS(moment.duration(musicQueue[i].duration)) + ")");
+
+    totalDuration += moment.duration(musicQueue[i].duration).asMilliseconds();
   }
   messageToSend += "\nTotal queue length: (" + formatDurationHHMMSS(moment.duration(totalDuration)) + ")";
   messageToSend += "```";
@@ -112,16 +108,18 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
                      "title" : data.snippet.title,
                      "type" : type,
                      "duration" : data.contentDetails.duration}
+
+      if (newSong.type == 3 || newSong.type == 4) {
+        newSong.duration = Math.floor(newSong.duration / 1.4);
+      }
+
       if (member.nickname != null) {
         newSong.user = member.nickname;
       }
 
       musicQueue.push(newSong);
-      if (type == 3 || type == 4) { // Because even better is faster
-        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration / 1.4)) + "`");
-      } else {
-        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
-      }
+
+      message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
 
       globals.set("musicQueue", musicQueue); // Set queue
 
@@ -232,9 +230,6 @@ module.exports.update = function(globals, guild, updateEmitter) {
           console.log(result);
         } else {
           var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
-          if (songToPlay.type == 3 || songToPlay.type == 4) {
-            durationOfSong /= 1.4; // Because even better is faster
-          }
           timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
           globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
 
