@@ -91,6 +91,8 @@ module.exports.init = function(client) {
   client.on('ready', function() { // Only start the loop when the server is up and running
     updateEmitter.on('update', function(guild) {
       if (!guild) { // No guild was specified so update all guilds
+        logUtil.log("Updating all servers.");
+
         var guildsArray = client.guilds.array();
         for (var i in guildsArray) {
           var tempGlobals = globalList[guildsArray[i].id];
@@ -110,6 +112,8 @@ module.exports.init = function(client) {
           globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
         }
       } else { // Find guild and run the functions for that guild
+        logUtil.log("Updating server " + guild.name + ".");
+
         var tempGlobals = globalList[guild.id];
         if (!tempGlobals) {
           tempGlobals = new nodecache(); // Default globals if there are none
