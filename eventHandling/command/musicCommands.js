@@ -175,7 +175,7 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function skipSong(message, globals) { // Used in the skip and dc commands
-  if (message.guild.voiceConnection.dispatcher) {
+  if (message.guild.voiceConnection.dispatcher != null) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
     message.guild.voiceConnection.dispatcher.end(); // End the current stream
   }
