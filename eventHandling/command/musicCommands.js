@@ -64,10 +64,10 @@ var commands = {
   },
   ";;dc" : function(message, params, globals) {
     if (message.guild.voiceConnection && message.member.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
-      message.guild.voiceConnection.disconnect();
-
       globals.set("musicQueue", []);
+
       skipSong(message, globals);
+      message.guild.voiceConnection.disconnect();
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
@@ -175,7 +175,7 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function skipSong(message, globals) { // Used in the skip and dc commands
-  if (message.guild.voiceConnection.dispatcher != null) {
+  if (message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
     globals.set("timeOfEnd", -1); // Make the music bot stop playing
     message.guild.voiceConnection.dispatcher.end(); // End the current stream
   }
@@ -210,6 +210,8 @@ module.exports.update = function(globals, guild, updateEmitter) {
       if (!guild.voiceConnection) {
         musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
       } else {
+        logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
+
         switch (songToPlay.type) {
           case 1:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
