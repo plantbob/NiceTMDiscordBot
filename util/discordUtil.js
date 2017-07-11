@@ -30,8 +30,6 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
     var streamOptions = { seek: 0, volume: 1 };
     var audioStream;
 
-    console.log("test");
-
     if ((audioFilters && audioFilters.length > 0) || (complexFilters && complexFilters.length > 0)) {
       var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 

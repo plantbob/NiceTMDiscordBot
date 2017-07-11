@@ -34,12 +34,10 @@ var commands = {
       if (message.deletable) {
         message.delete();
       }
-
-      return globals;
+    } else {
+      thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
+      updateEmitter.emit('update', message.guild);
     }
-
-    thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
-    updateEmitter.emit('update', message.guild);
   },
   ";;skip" : function(message, params, globals) {
     skipSong(message, globals);
