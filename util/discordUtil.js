@@ -71,8 +71,8 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
     .format('webm');
 
     var completedAudioStream = ffmpeg(cutAudioStream)
-    .input(modifiedAudioStream) // Add the modified audio stream to the end
     .withAudioCodec('libvorbis')
+    .input(modifiedAudioStream) // Add the modified audio stream to the end
     .format('webm');
 
     var dispatcher = connection.playStream(completedAudioStream, streamOptions);
