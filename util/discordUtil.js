@@ -30,14 +30,28 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
     var streamOptions = { seek: 0, volume: 1 };
     var audioStream;
 
-    if ((audioFilters && audioFilters.length > 0) || (complexFilters && complexFilters.length > 0)) {
+    if ((audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {
       var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
       audioStream = ffmpeg(rawAudioStream)
       .withAudioCodec('libvorbis')
-      .audioFilters(audioFilters || []) // Add audio filters
-      .complexFilter(complexFilters || [])
+      .audioFilters(audioFilters) // Add audio filters
+      .complexFilter(complexFilters)
       .format('webm');
+    } else if (!(audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {
+        var rawAudioStream = ytdl(video, { filter : 'audioonly' });
+
+        audioStream = ffmpeg(rawAudioStream)
+        .withAudioCodec('libvorbis')
+        .complexFilter(complexFilters)
+        .format('webm');
+    } else if ((audioFilters && audioFilters.length > 0) && !(complexFilters && complexFilters.length > 0)) {
+        var rawAudioStream = ytdl(video, { filter : 'audioonly' });
+
+        audioStream = ffmpeg(rawAudioStream)
+        .withAudioCodec('libvorbis')
+        .audioFilters(audioFilters) // Add audio filters
+        .format('webm');
     } else {
       audioStream = ytdl(video, { filter : 'audioonly' });
     }
