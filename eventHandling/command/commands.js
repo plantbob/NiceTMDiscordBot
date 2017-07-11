@@ -19,15 +19,16 @@ helpMessage += "\n9. ;;noice - *POP* Noice!";
 helpMessage += "\n\nMusic Commands: ";
 helpMessage += "\n10. ;;play [url/id/search term] - Adds a youtube video to the queue.";
 helpMessage += "\n11. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n12. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n13. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n14. ;;queue - Lists the current queue.";
-helpMessage += "\n15. ;;skip - Skips the current song.";
-helpMessage += "\n15. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n12. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n13. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n14. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n15. ;;queue - Lists the current queue.";
+helpMessage += "\n16. ;;skip - Skips the current song.";
+helpMessage += "\n17. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: ";
-helpMessage += "\n15. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n15. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n18. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n19. ;;resetprefix - Resets the prefix to \";;\".";
 
 helpMessage += "```";
 

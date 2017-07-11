@@ -26,7 +26,7 @@ var commands = {
     thePlayCommand(message, params, globals, 4);
     updateEmitter.emit('update', message.guild);
   },
-  ";;secret" : function(message, params, globals, updateEmitter) {
+  ";;madness" : function(message, params, globals, updateEmitter) {
     var time = parseInt(params.shift());
     if (!time || time < 0) {
       message.channel.send("Invalid time.");
