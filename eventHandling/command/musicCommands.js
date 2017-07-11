@@ -239,7 +239,7 @@ module.exports.update = function(globals, guild, updateEmitter) {
           case 4:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
           default:
-            var result = discordUtil.playYoutubeVideoWaitFilter(guild.voiceConnection, songToPlay.id, ['volume=50'], parseInt(type.substr(1))); // Remove first character from type string to get time in seconds
+            var result = discordUtil.playYoutubeVideoWaitFilter(guild.voiceConnection, songToPlay.id, ['volume=50'], parseInt(songToPlay.type.substr(1))); // Remove first character from type string to get time in seconds
         }
         if (result instanceof Error) { // Check to see if an error was returned
           logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
