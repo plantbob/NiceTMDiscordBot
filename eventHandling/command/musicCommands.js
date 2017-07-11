@@ -207,10 +207,12 @@ module.exports.update = function(globals, guild, updateEmitter) {
       var songToPlay = musicQueue.shift(); // Get the song
       globals.set("musicQueue", musicQueue); // Set musicQueue
 
+      logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
+
       if (!guild.voiceConnection) {
         musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
       } else {
-        logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
+        logUtil.log("Song " + songToPlay.title + " about to run play function on " + guild.name + ".");
 
         switch (songToPlay.type) {
           case 1:
