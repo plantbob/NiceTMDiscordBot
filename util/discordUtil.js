@@ -81,7 +81,7 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
     var dispatcher = connection.playStream(completedAudioStream, streamOptions);
 
     dispatcher.on("end", function() {
-      fs.unlink(randFilename); // Delete the file when the bot closes
+      fs.unlinkSync(randFilename); // Delete the file when the bot closes
     });
 
     return dispatcher;
