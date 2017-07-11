@@ -59,7 +59,7 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
 
     var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
-    var randFilename = "S" + Math.random(). + ".webm";
+    var randFilename = "S" + Math.random() + ".webm";
 
     var modifiedAudioStream = ffmpeg(rawAudioStream)
     .withAudioCodec('libvorbis')
