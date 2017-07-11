@@ -273,6 +273,6 @@ function formatDurationHHMMSS(duration) {
   return Math.floor(duration.asHours()) + moment.utc(duration.asMilliseconds()).format(":mm:ss");
 }
 
-module.exports.close = function(globals, guild) { // Runs on close
+module.exports.close = function(globals, guild) { // Runs on close // TODO: Make this delete the files produced by !secret command
   globals.set("timeOfEnd", -1); // So the bot won't wait while playing nothing
 }

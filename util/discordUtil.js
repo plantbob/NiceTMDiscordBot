@@ -59,11 +59,14 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
 
     var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
+    var randFilename = "S" + Math.random(). + ".webm";
+
     var modifiedAudioStream = ffmpeg(rawAudioStream)
     .withAudioCodec('libvorbis')
     .audioFilters(audioFilters) // Add audio filters
     .setStartTime(waitTime) // Cut the first specified seconds
-    .format('webm');
+    .format('webm')
+    .output(randFilename); // Save the random file
 
     var cutAudioStream = ffmpeg(rawAudioStream)
     .withAudioCodec('libvorbis')
@@ -72,12 +75,14 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
 
     var completedAudioStream = ffmpeg(cutAudioStream)
     .withAudioCodec('libvorbis')
-    //.input(modifiedAudioStream) // Add the modified audio stream to the end
+    .input(randFilename) // Add the modified audio stream to the end
     .format('webm');
 
-    modifiedAudioStream.output(completedAudioStream);
-
     var dispatcher = connection.playStream(completedAudioStream, streamOptions);
+
+    dispatcher.on("end", function() {
+      fs.unlink(randFilename); // Delete the file when the bot closes
+    });
 
     return dispatcher;
   } catch (exception) {
