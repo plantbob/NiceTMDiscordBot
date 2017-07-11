@@ -35,7 +35,7 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
   }
 });
 
-rl.on('SIGINT', function() {
+rl.on('SIGINT', function() { // TODO: Delete all files in temp directory afterwards
   logUtil.log("Running close functions...", logUtil.STATUS_INFO);
 
   for (var i = 0; i < handlers.length; i++) {

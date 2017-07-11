@@ -27,12 +27,15 @@ var commands = {
     updateEmitter.emit('update', message.guild);
   },
   ";;secret" : function(message, params, globals, updateEmitter) {
-    var time = params.shift();
+    var time = parseInt(params.shift());
     if (!time || time < 0) {
       message.channel.send("Invalid time.");
+
       if (message.deletable) {
         message.delete();
       }
+
+      return globals;
     }
 
     thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
@@ -239,8 +242,9 @@ module.exports.update = function(globals, guild, updateEmitter) {
           case 4:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
           default:
-            var result = discordUtil.playYoutubeVideoWaitFilter(guild.voiceConnection, songToPlay.id, ['volume=50'], parseInt(songToPlay.type.substr(1))); // Remove first character from type string to get time in seconds
+            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
         }
+
         if (result instanceof Error) { // Check to see if an error was returned
           logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
           console.log(result);
@@ -273,6 +277,6 @@ function formatDurationHHMMSS(duration) {
   return Math.floor(duration.asHours()) + moment.utc(duration.asMilliseconds()).format(":mm:ss");
 }
 
-module.exports.close = function(globals, guild) { // Runs on close // TODO: Make this delete the files produced by !secret command
+module.exports.close = function(globals, guild) { // Runs on close
   globals.set("timeOfEnd", -1); // So the bot won't wait while playing nothing
 }

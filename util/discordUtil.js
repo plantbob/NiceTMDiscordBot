@@ -1,11 +1,11 @@
 const ytdl = require("ytdl-core");
-const stream = require('stream');
+const PassThrough = require('stream').PassThrough;
 const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 
 const logUtil = require("./logging.js");
 
-const Duplex = require('stream').Duplex;
+const tempDir = __dirname.substring(0, __dirname.length - 5) + "\\temp\\";
 
 module.exports = {};
 
@@ -25,64 +25,26 @@ module.exports.findVoiceChannel = function(user, guild) { // Returns the voice c
   return null; // Nothing found
 }
 
-module.exports.playYoutubeVideo = function(connection, video, audioFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
+module.exports.playYoutubeVideo = function(connection, video, audioFilters, complexFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
     var streamOptions = { seek: 0, volume: 1 };
     var audioStream;
 
-    if (audioFilters && audioFilters.length > 0) {
+    console.log("test");
+
+    if ((audioFilters && audioFilters.length > 0) || (complexFilters && complexFilters.length > 0)) {
       var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
       audioStream = ffmpeg(rawAudioStream)
       .withAudioCodec('libvorbis')
-      .audioFilters(audioFilters) // Add audio filters
+      .audioFilters(audioFilters || []) // Add audio filters
+      .complexFilter(complexFilters || [])
       .format('webm');
-
     } else {
       audioStream = ytdl(video, { filter : 'audioonly' });
     }
 
     var dispatcher = connection.playStream(audioStream, streamOptions);
-
-    return dispatcher;
-  } catch (exception) {
-    if (exception.name != "TypeError") {
-      return exception; // It always throws a TypeError so just return true
-    }
-  }
-}
-
-module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFilters, waitTime) { // Plays youtbue video and applys audioFilters after specified waitTime
-  try {
-    var streamOptions = { seek: 0, volume: 1 };
-    var audioStream;
-
-    var rawAudioStream = ytdl(video, { filter : 'audioonly' });
-
-    var randFilename = "S" + Math.random() + ".webm";
-
-    var modifiedAudioStream = ffmpeg(rawAudioStream)
-    .withAudioCodec('libvorbis')
-    .audioFilters(audioFilters) // Add audio filters
-    .setStartTime(waitTime) // Cut the first specified seconds
-    .format('webm')
-    .output(randFilename); // Save the random file
-
-    var cutAudioStream = ffmpeg(rawAudioStream)
-    .withAudioCodec('libvorbis')
-    .setDuration(waitTime) // Cut this to the specified seconds
-    .format('webm');
-
-    var completedAudioStream = ffmpeg(cutAudioStream)
-    .withAudioCodec('libvorbis')
-    .input(randFilename) // Add the modified audio stream to the end
-    .format('webm');
-
-    var dispatcher = connection.playStream(completedAudioStream, streamOptions);
-
-    dispatcher.on("end", function() {
-      fs.unlinkSync(randFilename); // Delete the file when the bot closes
-    });
 
     return dispatcher;
   } catch (exception) {

@@ -3,6 +3,7 @@ Thumbs.db
 node_modules
 config/token.js
 database.json
+temp
 
 # Folder config file
 Desktop.ini
