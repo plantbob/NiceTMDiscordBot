@@ -65,13 +65,17 @@ module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFil
     .setStartTime(waitTime) // Cut the first specified seconds
     .format('webm');
 
-    var completeAudioStream = ffmpeg(rawAudioStream)
+    var cutAudioStream = ffmpeg(rawAudioStream)
     .withAudioCodec('libvorbis')
     .setDuration(waitTime) // Cut this to the specified seconds
-    .mergeAdd(modifiedAudioStream) // Add the modified audio stream to the end
     .format('webm');
 
-    var dispatcher = connection.playStream(completeAudioStream, streamOptions);
+    var completedAudioStream = ffmpeg(cutAudioStream)
+    .input(modifiedAudioStream) // Add the modified audio stream to the end
+    .withAudioCodec('libvorbis')
+    .format('webm');
+
+    var dispatcher = connection.playStream(completedAudioStream, streamOptions);
 
     return dispatcher;
   } catch (exception) {
