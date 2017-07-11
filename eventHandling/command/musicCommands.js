@@ -26,6 +26,18 @@ var commands = {
     thePlayCommand(message, params, globals, 4);
     updateEmitter.emit('update', message.guild);
   },
+  ";;secret" : function(message, params, globals, updateEmitter) {
+    var time = params.shift();
+    if (!time || time < 0) {
+      message.channel.send("Invalid time.");
+      if (message.deletable) {
+        message.delete();
+      }
+    }
+
+    thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
+    updateEmitter.emit('update', message.guild);
+  },
   ";;skip" : function(message, params, globals) {
     skipSong(message, globals);
   },
@@ -224,8 +236,10 @@ module.exports.update = function(globals, guild, updateEmitter) {
           case 3:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
             break;
-          default:
+          case 4:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
+          default:
+            var result = discordUtil.playYoutubeVideoWaitFilter(guild.voiceConnection, songToPlay.id, ['volume=50'], parseInt(type.substr(1))); // Remove first character from type string to get time in seconds
         }
         if (result instanceof Error) { // Check to see if an error was returned
           logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);

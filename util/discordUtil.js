@@ -52,6 +52,35 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters) { //
   }
 }
 
+module.exports.playYoutubeVideoWaitFilter = function(connection, video, audioFilters, waitTime) { // Plays youtbue video and applys audioFilters after specified waitTime
+  try {
+    var streamOptions = { seek: 0, volume: 1 };
+    var audioStream;
+
+    var rawAudioStream = ytdl(video, { filter : 'audioonly' });
+
+    var modifiedAudioStream = ffmpeg(rawAudioStream)
+    .withAudioCodec('libvorbis')
+    .audioFilters(audioFilters) // Add audio filters
+    .setStartTime(waitTime) // Cut the first specified seconds
+    .format('webm');
+
+    var completeAudioStream = ffmpeg(rawAudioStream)
+    .withAudioCodec('libvorbis')
+    .setDuration(waitTime) // Cut this to the specified seconds
+    .mergeAdd(modifiedAudioStream) // Add the modified audio stream to the end
+    .format('webm');
+
+    var dispatcher = connection.playStream(completeAudioStream, streamOptions);
+
+    return dispatcher;
+  } catch (exception) {
+    if (exception.name != "TypeError") {
+      return exception; // It always throws a TypeError so just return true
+    }
+  }
+}
+
 module.exports.getDMChannel = function(user, callback) { // Attempts to get DM channel and makes new one if one doesn't already exist
   var dmChannel = user.dmChannel;
   if (!dmChannel) {
