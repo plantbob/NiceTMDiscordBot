@@ -258,6 +258,8 @@ module.exports.update = function(globals, guild, updateEmitter) {
 
           result.on('end', function() { // Play the next song when this one ends
             updateEmitter.emit('update', guild);
+            globals.set("timeOfEnd", -1);
+            logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
           });
         }
       }
