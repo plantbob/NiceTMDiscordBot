@@ -209,6 +209,7 @@ module.exports.update = function(globals, guild, updateEmitter) {
   }
 
   if (timeOfEnd == -1) { // No song is playing
+    console.log("Guild " + guild.name + " has timeOfEnd value: " + timeOfEnd);
     var musicQueue = globals.get("musicQueue");
   //  console.log("Queue:" + musicQueue + " Server: " + guild.name);
     if (!musicQueue) {
