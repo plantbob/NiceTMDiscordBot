@@ -115,9 +115,9 @@ var commands = {
         interimResults: false // If you want interim results, set this to true
       };
 
-      const speech = Speech();
+      var speechAPI = Speech();
 
-      const recognizeStream = speech.createRecognizeStream(request)
+      const recognizeStream = speechAPI.createRecognizeStream(request)
       .on('error', console.error)
       .on('data', (data) => {
         console.log(`Transcription: ${data.results}`);
