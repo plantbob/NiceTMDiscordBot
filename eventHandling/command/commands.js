@@ -26,9 +26,13 @@ helpMessage += "\n15. ;;queue - Lists the current queue.";
 helpMessage += "\n16. ;;skip - Skips the current song.";
 helpMessage += "\n17. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
-helpMessage += "\n\nPrefix Commands: ";
+helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
 helpMessage += "\n18. ;;changeprefix [prefix] - Changes the command prefix.";
 helpMessage += "\n19. ;;resetprefix - Resets the prefix to \";;\".";
+
+helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
+helpMessage += "\n20. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n21. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
