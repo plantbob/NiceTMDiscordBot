@@ -146,7 +146,7 @@ module.exports.init = function(client) {
     var joinMessage = tempGlobals.get("newMemberMessage");
     if (joinMessage) {
       try {
-        member.guild.defaultChannel.send(joinMessage.replace("{{name}}", "@" + member.id));
+        member.guild.defaultChannel.send(joinMessage.replace("{{name}}", member.user.username));
       } catch (exception) {
 
       }
