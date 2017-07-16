@@ -4,8 +4,6 @@ const nodecache = require("node-cache");
 const fs = require("fs");
 const EventEmitter = require('events');
 
-const Discord = require("discord.js");
-
 var globalList;
 var commandInterpreters = [];
 
@@ -137,6 +135,22 @@ module.exports.init = function(client) {
     setInterval(function() { // Use setInterval to make this run asynchronously
       updateEmitter.emit('update');
     }, 5000); // Run this function every 5 seconds
+  });
+
+  client.on("guildMemberAdd", function(member) { // For displaying guild join messages
+    var tempGlobals = globalList[guild.id];
+    if (!tempGlobals) {
+      tempGlobals = new nodecache(); // Default globals if there are none
+    }
+
+    var joinMessage = tempGlobals.get("newMemberMessage");
+    if (joinMessage) {
+      try {
+        member.guild.defaultChannel.send(joinMessage.replace("{{name}}", member.id));
+      } catch (exception) {
+
+      }
+    }
   });
 }
 
