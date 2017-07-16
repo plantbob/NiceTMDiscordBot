@@ -5,6 +5,9 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
+const Speech = require('@google-cloud/speech');
+const speech = Speech();
+
 module.exports = {};
 
 var songQueue = []; // Stores songs
@@ -85,6 +88,45 @@ var commands = {
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
+  },
+  ";;listen" : function(message, params, globals) {
+    if (message.author.username != "tjpc3") {
+      message.reply("No.");
+      return;
+    }
+
+    var channel;
+    if (message.guild.voiceConnection) {
+      channel = message.guild.voiceConnection.channel;
+    } else {
+      channel = message.member.voiceChannel;
+      if (channel == null) {
+        message.channel.send("Please join a voice channel.");
+        return;
+      }
+    }
+
+    channel.join().then(function(connection) {
+      const request = {
+        config: {
+          encoding: 'LINEAR16', // Set it to PCM
+          sampleRateHertz: 16000, // A wild guess?
+          languageCode: 'en-US' // 'Murica
+        },
+        interimResults: false // If you want interim results, set this to true
+      };
+
+      const recognizeStream = speech.createRecognizeStream(request)
+      .on('error', console.error)
+      .on('data', (data) => {
+        console.log(`Transcription: ${data.results}`);
+      });
+
+      var reciever = connection.createReceiver();
+      var audioStream = receiver.createPCMStream(message.author);
+
+      audioStream.pipe(recognizeStream);
+    });
   }
 }
 
