@@ -1,4 +1,4 @@
-const Dicord = require("discord.js");
+const Discord = require("discord.js");
 
 // Message = message object that initiated command
 // Params = The parameters of the command
