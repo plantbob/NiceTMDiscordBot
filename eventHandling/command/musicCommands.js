@@ -6,7 +6,6 @@ const moment = require("moment");
 const Discord = require("discord.js");
 
 const Speech = require('@google-cloud/speech');
-const speech = Speech();
 
 module.exports = {};
 
@@ -115,6 +114,8 @@ var commands = {
         },
         interimResults: false // If you want interim results, set this to true
       };
+
+      const speech = Speech();
 
       const recognizeStream = speech.createRecognizeStream(request)
       .on('error', console.error)
