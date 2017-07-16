@@ -5,8 +5,8 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
-//const Speech = require('@google-cloud/speech');
-//const speech = Speech();
+const Speech = require('@google-cloud/speech');
+const speech = Speech();
 
 module.exports = {};
 
