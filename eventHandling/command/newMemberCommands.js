@@ -7,9 +7,9 @@ var commands = {
   ";;setjoinmessage" : function(message, params, globals) {
     if (params[0]) {
       if (message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
-        var message = params.join(" ");
-        globals.set("newMemberMessage", message);
-        message.channel.send("Join message set to: " + message);
+        var joinMessage = params.join(" ");
+        globals.set("newMemberMessage", joinMessage);
+        message.channel.send("Join message set to: " + joinMessage);
       } else {
         message.channel.send("You need to be an administrator to run this command.");
       }
