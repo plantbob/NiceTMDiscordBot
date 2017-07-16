@@ -61,7 +61,8 @@ var commands = {
       if (message.guild.voiceConnection) {
         channel = message.guild.voiceConnection.channel;
       } else {
-        channel = discordUtil.findVoiceChannel(message.author, message.guild);
+        //channel = discordUtil.findVoiceChannel(message.author, message.guild);
+        channel = message.member.voiceChannel;
         if (channel == null) {
           message.channel.send("Please join a voice channel.");
           return;
@@ -152,12 +153,14 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
     if (message.guild.voiceConnection) {
       channel = message.guild.voiceConnection.channel;
     } else {
-      channel = discordUtil.findVoiceChannel(message.author, message.guild);
+      //channel = discordUtil.findVoiceChannel(message.author, message.guild);
+      channel = message.member.voiceChannel;
       if (channel == null) {
         message.channel.send("Please join a voice channel.");
         return;
       }
     }
+
     var id = youtubeUtil.getIdFromUrl(params[0]); // Get Id
     if (id == null) {
       youtubeUtil.getVideoDataFromSearchQuery(params.join(" "), "snippet", function(data) { // Iterperet the parameters as a search term
