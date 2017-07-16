@@ -6,7 +6,9 @@ const moment = require("moment");
 const Discord = require("discord.js");
 
 const SpeechAPI = require('@google-cloud/speech');
-const speech = SpeechAPI({});
+const speech = SpeechAPI({
+  projectId: require("../../config/token.js").projectId;
+});
 
 module.exports = {};
 
