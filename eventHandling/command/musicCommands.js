@@ -7,7 +7,7 @@ const Discord = require("discord.js");
 
 const SpeechAPI = require('@google-cloud/speech');
 const speech = SpeechAPI({
-  projectId: require("../../config/token.js").projectId;
+  projectId: require("../../config/token.js").projectId
 });
 
 module.exports = {};
