@@ -5,7 +5,8 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
-const Speech = require('@google-cloud/speech');
+const SpeechAPI = require('@google-cloud/speech');
+const speech = SpeechAPI({});
 
 module.exports = {};
 
@@ -115,9 +116,7 @@ var commands = {
         interimResults: false // If you want interim results, set this to true
       };
 
-      var speechAPI = Speech();
-
-      const recognizeStream = speechAPI.createRecognizeStream(request)
+      const recognizeStream = speech.createRecognizeStream(request)
       .on('error', console.error)
       .on('data', (data) => {
         console.log(`Transcription: ${data.results}`);
