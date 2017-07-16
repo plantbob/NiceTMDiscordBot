@@ -116,6 +116,9 @@ var commands = {
         interimResults: false // If you want interim results, set this to true
       };
 
+      console.log(speech);
+      console.log(speech.createRecognizeStream);
+
       const recognizeStream = speech.createRecognizeStream(request)
       .on('error', console.error)
       .on('data', (data) => {
