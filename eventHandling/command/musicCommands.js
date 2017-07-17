@@ -5,7 +5,6 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
-var ps = require('pocketsphinx').ps;
 var fs = require('fs');
 
 var pocketsphinx = require("../../lib/pocketsphinx.js");
