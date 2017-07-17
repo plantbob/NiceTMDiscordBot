@@ -113,19 +113,19 @@ var commands = {
 
       audioStream.pipe(fs.createWriteStream("voice_of_angel.raw")); // this file will always be my voicec btw
 
-      audioStream.on("end", function() {
-        var recognizer = new pocketsphinx.Recognizer();
-
-        recognizer.postMessage({command: 'initialize',
-                        callbackId: id,
-                        data: [["-hmm", "english"],
-                               ["-fwdflat", "no"],
-                               ["-dict", "english.dic"],
-                               ["-lm", "english.DMP"]]
-                        });
-
-        recognizer.delete();
-      });
+      // audioStream.on("end", function() {
+      //   var recognizer = new pocketsphinx.Recognizer();
+      //
+      //   recognizer.postMessage({command: 'initialize',
+      //                   callbackId: id,
+      //                   data: [["-hmm", "english"],
+      //                          ["-fwdflat", "no"],
+      //                          ["-dict", "english.dic"],
+      //                          ["-lm", "english.DMP"]]
+      //                   });
+      //
+      //   recognizer.delete();
+      // });
     });
   }
 }
