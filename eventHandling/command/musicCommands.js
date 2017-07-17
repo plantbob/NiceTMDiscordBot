@@ -116,7 +116,7 @@ var commands = {
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
       .format('mp3')
-      .output("test.mp3")
+      .output(fs.createWriteStream("test.mp3"))
       .on("end", function() {
         console.log("done");
       });
