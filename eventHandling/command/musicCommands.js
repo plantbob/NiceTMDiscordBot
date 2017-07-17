@@ -5,6 +5,8 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
+const ffmpeg = require("fluent-ffmpeg")
+
 var fs = require('fs');
 
 var pocketsphinx = require("../../lib/pocketsphinx.js");
@@ -111,7 +113,14 @@ var commands = {
       var reciever = connection.createReceiver();
       var audioStream = reciever.createPCMStream(message.author);
 
-      audioStream.pipe(fs.createWriteStream("voice_of_angel.raw")); // this file will always be my voicec btw
+      ffmpeg(audioStream)
+      .inputFormat('s32le')
+      .audioFrequency(16000)
+      .audioChannels(1)
+      .audioCodec('pcm_s16le')
+      .format('s16le')
+      .on('error', reject)
+      .pipe(fs.createWriteStream("voice_of_angel.raw"));
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
