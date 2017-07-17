@@ -111,17 +111,17 @@ var commands = {
 
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
-      receiver.on('pcm', function(user, chunk) {
-        if (user.id in PCMStreams) return; // Don't create another stream when we already have one
+      receiver.on('opus', function(user, chunk) {
+        if (user.id in OpusStreams) return; // Don't create another stream when we already have one
 
-        var audioStream = PCMStreams[user.id] = receiver.createPCMStream(user);
-        var writeStream = fs.createWriteStream(`user_${user.id}.raw`);
+        var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
+        var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
         writeStream.write(chunk);
         audioStream.on('data', function(chunk) {
           writeStream.write(chunk);
         });
         audioStream.on('end', function(chunk) {
-          delete PCMStreams[user.id];
+          delete OpusStreams[user.id];
         });
       });
 
@@ -142,7 +142,7 @@ var commands = {
   }
 }
 
-var PCMStreams = {};
+var OpusStreams = {};
 
 function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   if (!musicQueue) {
