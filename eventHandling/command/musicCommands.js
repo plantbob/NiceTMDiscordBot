@@ -5,10 +5,10 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
-const SpeechAPI = require('@google-cloud/speech');
-const speech = SpeechAPI({
-  projectId: require("../../config/token.js").projectId
-});
+var ps = require('pocketsphinx').ps;
+var fs = require('fs');
+
+var pocketsphinx = require("../../lib/pocketsphinx.js");
 
 module.exports = {};
 
@@ -109,28 +109,24 @@ var commands = {
     }
 
     channel.join().then(function(connection) {
-      const request = {
-        config: {
-          encoding: 'LINEAR16', // Set it to PCM
-          sampleRateHertz: 16000, // A wild guess?
-          languageCode: 'en-US' // 'Murica
-        },
-        interimResults: false // If you want interim results, set this to true
-      };
-
-      console.log(speech);
-      console.log(speech.createRecognizeStream);
-
-      const recognizeStream = speech.createRecognizeStream(request)
-      .on('error', console.error)
-      .on('data', (data) => {
-        console.log(`Transcription: ${data.results}`);
-      });
-
       var reciever = connection.createReceiver();
       var audioStream = receiver.createPCMStream(message.author);
 
-      audioStream.pipe(recognizeStream);
+      audioStream.pipe(fs.createWriteStream("voice_of_angel.raw")); // this file will always be my voicec btw
+
+      audioStream.on("end", funcion() {
+        var recognizer = new pocketsphinx.Recognizer();
+
+        recognizer.postMessage({command: 'initialize',
+                        callbackId: id,
+                        data: [["-hmm", "english"],
+                               ["-fwdflat", "no"],
+                               ["-dict", "english.dic"],
+                               ["-lm", "english.DMP"]]
+                        });
+
+        recognizer.delete();
+      });
     });
   }
 }
