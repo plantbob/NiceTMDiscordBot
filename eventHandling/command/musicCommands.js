@@ -113,17 +113,13 @@ var commands = {
       var reciever = connection.createReceiver();
       var audioStream = reciever.createOpusStream(message.author);
 
-      audioStream.on("start", function() {
-        console.log("start");
-      });
-
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
       .format('mp3')
+      .output("test.mp3")
       .on("end", function() {
         console.log("done");
-      })
-      .output("test.mp3");
+      });
 
 
 
