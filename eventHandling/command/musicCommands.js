@@ -115,7 +115,10 @@ var commands = {
 
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
-      .format('mp3');
+      .format('mp3')
+      .out("test.mp3");
+
+
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
