@@ -111,16 +111,11 @@ var commands = {
 
     channel.join().then(function(connection) {
       var reciever = connection.createReceiver();
-      var audioStream = reciever.createPCMStream(message.author);
+      var audioStream = reciever.creatOpusStream(message.author);
 
       ffmpeg(audioStream)
-      .inputFormat('s32le')
-      .audioFrequency(16000)
-      .audioChannels(1)
-      .audioCodec('pcm_s16le')
-      .format('s16le')
-      .on('error', reject)
-      .pipe(fs.createWriteStream("voice_of_angel.raw"));
+      .withAudioCodec('libopus')
+      .format('mp3');
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
