@@ -120,10 +120,10 @@ var commands = {
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
       .format('mp3')
-      .out("test.mp3")
       .on("end", function() {
         console.log("done");
-      });
+      })
+      .output("test.mp3");
 
 
 
