@@ -114,7 +114,7 @@ var commands = {
       var audioStream = reciever.creatOpusStream(message.author);
 
       ffmpeg(audioStream)
-      .withAudioCodec('libopus')
+      .withAudioCodec('libmp3lame')
       .format('mp3');
 
       // audioStream.on("end", function() {
