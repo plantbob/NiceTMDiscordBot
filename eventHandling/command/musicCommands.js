@@ -112,8 +112,17 @@ var commands = {
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
       receiver.on('pcm', function(user, chunk) {
-        var audioStream = receiver.createPCMStream(user);
-        audioStream.pipe(fs.createWriteStream("brainpower.raw"));
+        if (user.id in PCMStreams) return; // Don't create another stream when we already have one
+
+        var audioStream = PCMStreams[user.id] = receiver.createPCMStream(user);
+        var writeStream = fs.createWriteStream(`user_${user.id}.raw`);
+        writeStream.write(chunk);
+        audioStream.on('data', function(chunk) {
+          writeStream.write(chunk);
+        });
+        audioStream.on('end', function(chunk) {
+          delete PCMStreams[user.id];
+        });
       });
 
       // audioStream.on("end", function() {
@@ -132,6 +141,8 @@ var commands = {
     });
   }
 }
+
+var PCMStreams = {};
 
 function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   if (!musicQueue) {
