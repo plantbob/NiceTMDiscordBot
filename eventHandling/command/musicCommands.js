@@ -110,9 +110,11 @@ var commands = {
     }
 
     channel.join().then(function(connection) {
-      var reciever = connection.createReceiver();
-      var audioStream = reciever.createPCMStream(message.author);
-      audioStream.pipe(fs.createWriteStream("brainpower.raw"));
+      var receiver = connection.createReceiver();
+      receiver.on('pcm', function(user, chunk) {
+        var audioStream = receiver.createPCMStream(user);
+        audioStream.pipe(fs.createWriteStream("brainpower.raw"));
+      });
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
