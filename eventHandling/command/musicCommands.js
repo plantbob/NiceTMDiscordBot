@@ -111,12 +111,19 @@ var commands = {
 
     channel.join().then(function(connection) {
       var reciever = connection.createReceiver();
-      var audioStream = reciever.creatOpusStream(message.author);
+      var audioStream = reciever.createOpusStream(message.author);
+
+      audioStream.on("start", function() {
+        console.log("start");
+      });
 
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
       .format('mp3')
-      .out("test.mp3");
+      .out("test.mp3")
+      .on("end", function() {
+        console.log("done");
+      });
 
 
 
