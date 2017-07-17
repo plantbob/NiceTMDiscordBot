@@ -109,7 +109,7 @@ var commands = {
 
     channel.join().then(function(connection) {
       var reciever = connection.createReceiver();
-      var audioStream = receiver.createPCMStream(message.author);
+      var audioStream = reciever.createPCMStream(message.author);
 
       audioStream.pipe(fs.createWriteStream("voice_of_angel.raw")); // this file will always be my voicec btw
 
