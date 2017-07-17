@@ -111,7 +111,7 @@ var commands = {
 
     channel.join().then(function(connection) {
       var reciever = connection.createReceiver();
-      var audioStream = reciever.createOpusStream(message.author);
+      var audioStream = reciever.createPCMStream(message.author);
 
       ffmpeg(audioStream)
       .withAudioCodec('libmp3lame')
