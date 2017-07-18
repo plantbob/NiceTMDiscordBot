@@ -115,25 +115,26 @@ var commands = {
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
 
-      receiver.on('opus', function(user, chunk) {
+      receiver.on('pcm', function(user, chunk) {
         //if (user.id in OpusStreams) return; // Don't create another stream when we already have one
 
         // var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
         // var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
 
         if (!outStreams[user.id]) {
-          outStreams[user.id] = fs.createWriteStream(`user_${user.id}.mp3`);
+          outStreams[user.id] = fs.createWriteStream(`user_${user.id}.raw`);
         }
 
         if (!writeStreams[user.id]) {
           writeStreams[user.id] = new PassThrough();
+          writeStreams[user.id].pipe(outStreams[user.id]);
         }
 
         if (!decoderStreams[user.id]) {
-          decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
-          .output(outStreams[user.id])
-          .audioCodec('libmp3lame')
-          .format('mp3');
+          // decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
+          // .output(outStreams[user.id])
+          // .audioCodec('libmp3lame')
+          // .format('mp3');
         }
 
 
