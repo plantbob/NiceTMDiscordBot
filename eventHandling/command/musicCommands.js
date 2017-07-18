@@ -120,8 +120,8 @@ var commands = {
     var outFile = fs.createWriteStream("outFile.raw");
 
     channel.join().then(function(connection) {
-      DiscordIOClient.getAudioContext(channel.id, function(err, stream) {
-        stream.pipe(outFile);
+      DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
+        outStream.pipe(outFile);
       });
     }).catch(function(error) {
 
