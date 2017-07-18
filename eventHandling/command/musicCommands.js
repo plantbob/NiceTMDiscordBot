@@ -12,7 +12,7 @@ const ffmpeg = require("fluent-ffmpeg");
 
 const DiscordIO = require("discord.io");
 const DiscordIOClient = new DiscordIO.Client({
-  token: require("../../config/token.js").discordToken;
+  token: require("../../config/token.js").discordToken
 });
 
 var fs = require('fs');
