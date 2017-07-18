@@ -7,8 +7,13 @@ const Discord = require("discord.js");
 
 const ffmpeg = require("fluent-ffmpeg");
 
-const { PassThrough } = require('stream');
-const pass = new PassThrough();
+// const { PassThrough } = require('stream');
+// const pass = new PassThrough();
+
+const DiscordIO = require("discord.io");
+const DiscordIOClient = new DiscordIO.Client({
+  token: require("../../config/token.js").discordToken;
+});
 
 var fs = require('fs');
 
@@ -112,18 +117,26 @@ var commands = {
       }
     }
 
-    channel.join().then(function(connection) {
-      var receiver = connection.createReceiver();
+    var outFile = fs.createWriteStream("outFile.raw");
 
-      receiver.on('pcm', function(user, chunk) {
+    DiscordIOClient.joinVoiceChannel(channel.id, function() {
+      DiscordIOClient.getAudioContext(channel.id, function(stream) {
+        stream.pipe(outFile);
+      });
+    });
+
+    // channel.join().then(function(connection) {
+      // var receiver = connection.createReceiver();
+
+      // receiver.on('pcm', function(user, chunk) {
         //if (user.id in OpusStreams) return; // Don't create another stream when we already have one
 
         // var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
         // var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
 
-        if (!outStreams[user.id]) {
-          outStreams[user.id] = fs.createWriteStream(`user_${user.id}.raw`);
-        }
+        // if (!outStreams[user.id]) {
+        //   outStreams[user.id] = fs.createWriteStream(`user_${user.id}.raw`);
+        // }
 
         // if (!writeStreams[user.id]) {
         //   writeStreams[user.id] = new PassThrough();
@@ -139,14 +152,14 @@ var commands = {
 
 
 
-        outStreams[user.id].write(chunk);
+        // outStreams[user.id].write(chunk);
         // audioStream.on('data', function(chunk) {
         //   writeStream.write(chunk);
         // });
         // audioStream.on('end', function(chunk) {
         //   delete OpusStreams[user.id];
         // });
-      });
+      // });
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
