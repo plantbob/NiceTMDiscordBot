@@ -131,7 +131,7 @@ var commands = {
 
         if (!decoderStreams[user.id]) {
           decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
-          .out(outStreams[user.id])
+          .output(outStreams[user.id])
           .audioCodec('libmp3lame')
           .format('mp3');
         }
