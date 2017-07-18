@@ -174,7 +174,7 @@ var commands = {
       //
       //   recognizer.delete();
       // });
-    });
+    // });
   }
 }
 
