@@ -125,21 +125,21 @@ var commands = {
           outStreams[user.id] = fs.createWriteStream(`user_${user.id}.raw`);
         }
 
-        if (!writeStreams[user.id]) {
-          writeStreams[user.id] = new PassThrough();
-          writeStreams[user.id].pipe(outStreams[user.id]);
-        }
+        // if (!writeStreams[user.id]) {
+        //   writeStreams[user.id] = new PassThrough();
+        //   writeStreams[user.id].pipe(outStreams[user.id])
+        // }
 
-        if (!decoderStreams[user.id]) {
+        // if (!decoderStreams[user.id]) {
           // decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
           // .output(outStreams[user.id])
           // .audioCodec('libmp3lame')
           // .format('mp3');
-        }
+        // }
 
 
 
-        writeStreams[user.id].write(chunk);
+        outStreams[user.id].write(chunk);
         // audioStream.on('data', function(chunk) {
         //   writeStream.write(chunk);
         // });
