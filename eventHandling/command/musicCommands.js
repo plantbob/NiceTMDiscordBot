@@ -5,7 +5,10 @@ const logUtil = require("../../util/logging.js");
 const moment = require("moment");
 const Discord = require("discord.js");
 
-const ffmpeg = require("fluent-ffmpeg")
+const ffmpeg = require("fluent-ffmpeg");
+
+const { PassThrough } = require('stream');
+const pass = new PassThrough();
 
 var fs = require('fs');
 
@@ -111,18 +114,37 @@ var commands = {
 
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
-      receiver.on('opus', function(user, chunk) {
-        if (user.id in OpusStreams) return; // Don't create another stream when we already have one
 
-        var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
-        var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
-        writeStream.write(chunk);
-        audioStream.on('data', function(chunk) {
-          writeStream.write(chunk);
-        });
-        audioStream.on('end', function(chunk) {
-          delete OpusStreams[user.id];
-        });
+      receiver.on('opus', function(user, chunk) {
+        //if (user.id in OpusStreams) return; // Don't create another stream when we already have one
+
+        // var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
+        // var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
+
+        if (!outStreams[user.id]) {
+          outStreams[user.id] = fs.createWriteStream(`user_${user.id}.mp3`);
+        }
+
+        if (!writeStreams[user.id]) {
+          writeStreams[user.id] = new PassThrough();
+        }
+
+        if (!decoderStreams[user.id]) {
+          decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
+          .out(outStreams[user.id])
+          .audioCodec('libmp3lame')
+          .format('mp3');
+        }
+
+
+
+        writeStreams[user.id].write(chunk);
+        // audioStream.on('data', function(chunk) {
+        //   writeStream.write(chunk);
+        // });
+        // audioStream.on('end', function(chunk) {
+        //   delete OpusStreams[user.id];
+        // });
       });
 
       // audioStream.on("end", function() {
@@ -142,7 +164,10 @@ var commands = {
   }
 }
 
-var OpusStreams = {};
+//var OpusStreams = {};
+var outStreams = {};
+var writeStreams = {};
+var decoderStreams = {};
 
 function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   if (!musicQueue) {
