@@ -15,6 +15,14 @@ const DiscordIOClient = new DiscordIO.Client({
   token: require("../../config/token.js").discordToken
 });
 
+var ready = false;
+
+DiscordIOClient.on('ready', function() {
+  ready = true;
+});
+
+while(!ready){};
+
 var fs = require('fs');
 
 var pocketsphinx = require("../../lib/pocketsphinx.js");
@@ -119,7 +127,10 @@ var commands = {
 
     var outFile = fs.createWriteStream("outFile.raw");
 
-    DiscordIOClient.joinVoiceChannel(channel.id, function() {
+    DiscordIOClient.joinVoiceChannel(channel.id, function(err) {
+      if (err) {
+        console.log(err);
+      }
       DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
         if (err) {
           console.log(err);
