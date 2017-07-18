@@ -15,14 +15,6 @@ const DiscordIOClient = new DiscordIO.Client({
   token: require("../../config/token.js").discordToken
 });
 
-var ready = false;
-
-DiscordIOClient.on('ready', function() {
-  ready = true;
-});
-
-while(!ready){};
-
 var fs = require('fs');
 
 var pocketsphinx = require("../../lib/pocketsphinx.js");
