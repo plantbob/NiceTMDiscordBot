@@ -121,6 +121,9 @@ var commands = {
 
     channel.join().then(function(connection) {
       DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
+        if (err) {
+          console.log(err);
+        }
         outStream.pipe(outFile);
       });
     }).catch(function(error) {
