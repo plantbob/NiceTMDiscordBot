@@ -129,7 +129,7 @@ var commands = {
 
           rawPCMStream.pipe(outFileStream);
           rawPCMStream.on('end', function() {
-            message.channel.send("Listening to " + user.username);
+            message.channel.send("Stopped listening to " + user.username);
           });
         }
       });
