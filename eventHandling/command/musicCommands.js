@@ -51,7 +51,8 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    endSong(message, globals); // This will cause the next song to play because the stream ended
+    //endSong(message, globals); // This will cause the next song to play because the stream ended
+    playNextSong(globals, message.guild)
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
@@ -362,80 +363,7 @@ function playNextSong(globals, guild) {
 }
 
 module.exports.update = function(globals, guild, updateEmitter) {
-  // var timeOfEnd = globals.get("timeOfEnd");
-  //
-  // if (!timeOfEnd) {
-  //   timeOfEnd = -1;
-  // }
-  //
-  // if (moment().valueOf() > timeOfEnd) { // The video has ended
-  //   timeOfEnd = -1; // Play the next video on the next playthrough
-  // }
-  //
-  // if (timeOfEnd == -1) { // No song is playing
-  //   var musicQueue = globals.get("musicQueue");
-  // //  console.log("Queue:" + musicQueue + " Server: " + guild.name);
-  //   if (!musicQueue) {
-  //     musicQueue = [];
-  //   }
-  //
-  //   if (musicQueue.length != 0) { // If there are songs queued
-  //     var songToPlay = musicQueue.shift(); // Get the song
-  //     globals.set("musicQueue", musicQueue); // Set musicQueue
-  //
-  //     logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
-  //
-  //     if (!guild.voiceConnection) {
-  //       musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
-  //     } else {
-  //       logUtil.log("Song " + songToPlay.title + " about to run play function on " + guild.name + ".");
-  //
-  //       switch (songToPlay.type) {
-  //         case 1:
-  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
-  //           break;
-  //         case 2:
-  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50']); // Play the video better
-  //           break;
-  //         case 3:
-  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
-  //           break;
-  //         case 4:
-  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
-  //         default:
-  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
-  //       }
-  //
-  //       if (result instanceof Error) { // Check to see if an error was returned
-  //         logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
-  //         console.log(result);
-  //       } else {
-  //         var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
-  //         timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
-  //         globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
-  //
-  //         result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
-  //           globals.set("timeOfEnd", durationOfSong + moment().valueOf());
-  //           logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
-  //         });
-  //
-  //         result.on('end', function() { // Play the next song when this one ends
-  //           updateEmitter.emit('update', guild);
-  //           globals.set("timeOfEnd", -1);
-  //           logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
-  //         });
-  //       }
-  //     }
-  //   }
-  //
-  //   globals.set("musicQueue", musicQueue);
-  // } else {
-  //   console.log("Guild " + guild.name + " has timeOfEnd value: " + timeOfEnd);
-  // }
-  //
-  // globals.set("timeOfEnd", timeOfEnd);
-  //
-  // return globals; // Pass the updated globals list back
+
 }
 
 function formatDurationHHMMSS(duration) {
