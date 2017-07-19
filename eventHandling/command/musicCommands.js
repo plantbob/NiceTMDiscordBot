@@ -443,5 +443,5 @@ function formatDurationHHMMSS(duration) {
 }
 
 module.exports.close = function(globals, guild) { // Runs on close
-  globals.set("timeOfEnd", -1); // So the bot won't wait while playing nothing
+  globals.set("playing", false); // So the bot won't wait while playing nothing
 }
