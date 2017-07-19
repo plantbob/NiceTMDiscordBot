@@ -295,8 +295,8 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function endSong(message, globals) { // Used in the skip and dc commands
-  if (message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
-    message.guild.voiceConnection.dispatcher.end(); // End the current stream
+  if (message.guild.voiceConnection) {
+    message.guild.voiceConnection.stopPlaying(); // End the current stream
   }
 }
 
