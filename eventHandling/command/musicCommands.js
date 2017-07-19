@@ -361,10 +361,6 @@ function playNextSong(globals, guild) {
     globals.set("musicQueue", musicQueue);
 }
 
-module.exports.update = function(globals, guild, updateEmitter) {
-
-}
-
 function formatDurationHHMMSS(duration) {
   return Math.floor(duration.asHours()) + moment.utc(duration.asMilliseconds()).format(":mm:ss");
 }

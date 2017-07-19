@@ -6,10 +6,10 @@ const EventEmitter = require('events');
 
 var globalList;
 var commandInterpreters = [];
-
-class UpdateEmitter extends EventEmitter {}
-
-const updateEmitter = new UpdateEmitter();
+//
+// class UpdateEmitter extends EventEmitter {}
+//
+// const updateEmitter = new UpdateEmitter();
 
 module.exports = {};
 
@@ -73,7 +73,7 @@ module.exports.init = function(client) {
       logUtil.log("User " + msg.author.username + " running command " + words.join(" "), logUtil.STATUS_INFO);
       try {
         words.shift(); // Remove first item in words array
-        var newGlobals = command(msg, words, globalList[msg.guild.id], updateEmitter);
+        var newGlobals = command(msg, words, globalList[msg.guild.id]);
         if (newGlobals != undefined) {
           globalList[msg.guild.id] = newGlobals;
         }
@@ -87,54 +87,54 @@ module.exports.init = function(client) {
   });
 
   client.on('ready', function() { // Only start the loop when the server is up and running
-    updateEmitter.on('update', function(guild) {
-      if (!guild) { // No guild was specified so update all guilds
-        logUtil.log("Updating all servers.");
-
-        var guildsArray = client.guilds.array();
-        for (var i in guildsArray) {
-          var tempGlobals = globalList[guildsArray[i].id];
-          if (!tempGlobals) {
-            tempGlobals = new nodecache(); // Default globals if there are none
-          }
-          for (var j in commandInterpreters) {
-            try {
-              var newGlobals = commandInterpreters[j].update(tempGlobals, guildsArray[i], updateEmitter); // Run with empty globals
-              if (newGlobals != undefined) // The function returned a value
-              tempGlobals = newGlobals; // Set the globals
-            } catch (exception) {
-              logUtil.log("Caught error while running loop for guild " + guildsArray[i].name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
-              console.log(exception);
-            }
-          }
-          globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
-        }
-      } else { // Find guild and run the functions for that guild
-        logUtil.log("Updating server " + guild.name + ".");
-
-        var tempGlobals = globalList[guild.id];
-        if (!tempGlobals) {
-          tempGlobals = new nodecache(); // Default globals if there are none
-        }
-
-        for (var j in commandInterpreters) {
-          try {
-            var newGlobals = commandInterpreters[j].update(tempGlobals, guild, updateEmitter); // Run with empty globals
-            if (newGlobals != undefined) // The function returned a value
-            tempGlobals = newGlobals; // Set the globals
-          } catch (exception) {
-            logUtil.log("Caught error while running loop for guild " + guild.name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
-            console.log(exception);
-          }
-        }
-
-        globalList[guild.id] = tempGlobals; // Set the new globals
-      }
-    });
-
-    setInterval(function() { // Use setInterval to make this run asynchronously
-      updateEmitter.emit('update');
-    }, 5000); // Run this function every 5 seconds
+    // updateEmitter.on('update', function(guild) {
+    //   if (!guild) { // No guild was specified so update all guilds
+    //     logUtil.log("Updating all servers.");
+    //
+    //     var guildsArray = client.guilds.array();
+    //     for (var i in guildsArray) {
+    //       var tempGlobals = globalList[guildsArray[i].id];
+    //       if (!tempGlobals) {
+    //         tempGlobals = new nodecache(); // Default globals if there are none
+    //       }
+    //       for (var j in commandInterpreters) {
+    //         try {
+    //           var newGlobals = commandInterpreters[j].update(tempGlobals, guildsArray[i], updateEmitter); // Run with empty globals
+    //           if (newGlobals != undefined) // The function returned a value
+    //           tempGlobals = newGlobals; // Set the globals
+    //         } catch (exception) {
+    //           logUtil.log("Caught error while running loop for guild " + guildsArray[i].name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
+    //           console.log(exception);
+    //         }
+    //       }
+    //       globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
+    //     }
+    //   } else { // Find guild and run the functions for that guild
+    //     logUtil.log("Updating server " + guild.name + ".");
+    //
+    //     var tempGlobals = globalList[guild.id];
+    //     if (!tempGlobals) {
+    //       tempGlobals = new nodecache(); // Default globals if there are none
+    //     }
+    //
+    //     for (var j in commandInterpreters) {
+    //       try {
+    //         var newGlobals = commandInterpreters[j].update(tempGlobals, guild, updateEmitter); // Run with empty globals
+    //         if (newGlobals != undefined) // The function returned a value
+    //         tempGlobals = newGlobals; // Set the globals
+    //       } catch (exception) {
+    //         logUtil.log("Caught error while running loop for guild " + guild.name + " with interpreter " + j + ": ", logUtil.STATUS_ERROR);
+    //         console.log(exception);
+    //       }
+    //     }
+    //
+    //     globalList[guild.id] = tempGlobals; // Set the new globals
+    //   }
+    // });
+    //
+    // setInterval(function() { // Use setInterval to make this run asynchronously
+    //   updateEmitter.emit('update');
+    // }, 5000); // Run this function every 5 seconds
   });
 
   client.on("guildMemberAdd", function(member) { // For displaying guild join messages

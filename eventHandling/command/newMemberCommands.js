@@ -28,10 +28,6 @@ module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
 }
 
-module.exports.update = function(globals, guild) {
-
-}
-
 module.exports.close = function(globals, guild) {
 
 }
