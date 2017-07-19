@@ -7,11 +7,13 @@ const logUtil = require("./logging.js");
 
 const tempDir = __dirname.substring(0, __dirname.length - 5) + "\\temp\\";
 
+const miscConfig = require("../config/misc.js");
+
 module.exports = {};
 
 module.exports.playYoutubeVideo = function(connection, video, audioFilters, complexFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
-    var streamOptions = { seek: 0, volume: 1 };
+    var streamOptions = { seek: 0, volume: 1 , passes: miscConfig.playStreamPasses};
     var audioStream;
 
     if ((audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {

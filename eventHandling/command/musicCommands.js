@@ -7,13 +7,10 @@ const Discord = require("discord.js");
 
 const ffmpeg = require("fluent-ffmpeg");
 
-// const { PassThrough } = require('stream');
-// const pass = new PassThrough();
-
-const DiscordIO = require("discord.io");
-const DiscordIOClient = new DiscordIO.Client({
-  token: require("../../config/token.js").discordToken
-});
+// const DiscordIO = require("discord.io");
+// const DiscordIOClient = new DiscordIO.Client({
+//   token: require("../../config/token.js").discordToken
+// });
 
 var fs = require('fs');
 
@@ -54,7 +51,7 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    skipSong(message, globals);
+    endSong(message, globals); // This will cause the next song to play because the stream ended
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
@@ -94,7 +91,7 @@ var commands = {
     if (message.guild.voiceConnection && message.member.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
       globals.set("musicQueue", []);
 
-      skipSong(message, globals);
+      endSong(message, globals);
       message.guild.voiceConnection.disconnect();
     } else {
       message.channel.send("You need administrator permission to run this command")
@@ -119,17 +116,17 @@ var commands = {
 
     var outFile = fs.createWriteStream("outFile.raw");
 
-    DiscordIOClient.joinVoiceChannel(channel.id, function(err) {
-      if (err) {
-        console.log(err);
-      }
-      DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
-        if (err) {
-          console.log(err);
-        }
-        outStream.pipe(outFile);
-      });
-    });
+    // DiscordIOClient.joinVoiceChannel(channel.id, function(err) {
+    //   if (err) {
+    //     console.log(err);
+    //   }
+    //   DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
+    //     if (err) {
+    //       console.log(err);
+    //     }
+    //     outStream.pipe(outFile);
+    //   });
+    // });
 
     // channel.join().then(function(connection) {
       // var receiver = connection.createReceiver();
@@ -185,9 +182,9 @@ var commands = {
 }
 
 //var OpusStreams = {};
-var outStreams = {};
-var writeStreams = {};
-var decoderStreams = {};
+// var outStreams = {};
+// var writeStreams = {};
+// var decoderStreams = {};
 
 function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   if (!musicQueue) {
@@ -237,6 +234,12 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
       message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
 
       globals.set("musicQueue", musicQueue); // Set queue
+
+      var playing = globals.get("playing");
+      if (!playing) {
+        playNextSong(globals, message.guild);
+        globals.set("playing", true);
+      }
 
       if (message.deletable) {
         message.delete(); // So the music channel isn't filled with youtube videos
@@ -291,7 +294,7 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
   }
 }
 
-function skipSong(message, globals) { // Used in the skip and dc commands
+function endSong(message, globals) { // Used in the skip and dc commands
   if (message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
     message.guild.voiceConnection.dispatcher.end(); // End the current stream
   }
@@ -301,25 +304,16 @@ module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
 }
 
-module.exports.update = function(globals, guild, updateEmitter) {
-  var timeOfEnd = globals.get("timeOfEnd");
-
-  if (!timeOfEnd) {
-    timeOfEnd = -1;
-  }
-
-  if (moment().valueOf() > timeOfEnd) { // The video has ended
-    timeOfEnd = -1; // Play the next video on the next playthrough
-  }
-
-  if (timeOfEnd == -1) { // No song is playing
+function playNextSong(globals, guild) {
     var musicQueue = globals.get("musicQueue");
-  //  console.log("Queue:" + musicQueue + " Server: " + guild.name);
+
     if (!musicQueue) {
       musicQueue = [];
     }
 
     if (musicQueue.length != 0) { // If there are songs queued
+      globals.set("playing", true);
+
       var songToPlay = musicQueue.shift(); // Get the song
       globals.set("musicQueue", musicQueue); // Set musicQueue
 
@@ -350,32 +344,98 @@ module.exports.update = function(globals, guild, updateEmitter) {
           logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
           console.log(result);
         } else {
-          var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
-          timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
-          globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
-
           result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
-            globals.set("timeOfEnd", durationOfSong + moment().valueOf());
             logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
           });
 
           result.on('end', function() { // Play the next song when this one ends
-            updateEmitter.emit('update', guild);
-            globals.set("timeOfEnd", -1);
             logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
+            playNextSong(globals, guild);
           });
         }
       }
+    } else {
+      globals.set("playing", false);
     }
 
     globals.set("musicQueue", musicQueue);
-  } else {
-    console.log("Guild " + guild.name + " has timeOfEnd value: " + timeOfEnd);
-  }
+}
 
-  globals.set("timeOfEnd", timeOfEnd);
-
-  return globals; // Pass the updated globals list back
+module.exports.update = function(globals, guild, updateEmitter) {
+  // var timeOfEnd = globals.get("timeOfEnd");
+  //
+  // if (!timeOfEnd) {
+  //   timeOfEnd = -1;
+  // }
+  //
+  // if (moment().valueOf() > timeOfEnd) { // The video has ended
+  //   timeOfEnd = -1; // Play the next video on the next playthrough
+  // }
+  //
+  // if (timeOfEnd == -1) { // No song is playing
+  //   var musicQueue = globals.get("musicQueue");
+  // //  console.log("Queue:" + musicQueue + " Server: " + guild.name);
+  //   if (!musicQueue) {
+  //     musicQueue = [];
+  //   }
+  //
+  //   if (musicQueue.length != 0) { // If there are songs queued
+  //     var songToPlay = musicQueue.shift(); // Get the song
+  //     globals.set("musicQueue", musicQueue); // Set musicQueue
+  //
+  //     logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
+  //
+  //     if (!guild.voiceConnection) {
+  //       musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
+  //     } else {
+  //       logUtil.log("Song " + songToPlay.title + " about to run play function on " + guild.name + ".");
+  //
+  //       switch (songToPlay.type) {
+  //         case 1:
+  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
+  //           break;
+  //         case 2:
+  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50']); // Play the video better
+  //           break;
+  //         case 3:
+  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
+  //           break;
+  //         case 4:
+  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
+  //         default:
+  //           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
+  //       }
+  //
+  //       if (result instanceof Error) { // Check to see if an error was returned
+  //         logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
+  //         console.log(result);
+  //       } else {
+  //         var durationOfSong = moment.duration(songToPlay.duration).asMilliseconds();
+  //         timeOfEnd = durationOfSong + moment().valueOf(); // Calculate the UNIX timestamp when the video will end
+  //         globals.set("timeOfEnd", timeOfEnd); // Set the timeOfEnd before the song starts playing so it wont start playing another song
+  //
+  //         result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
+  //           globals.set("timeOfEnd", durationOfSong + moment().valueOf());
+  //           logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
+  //         });
+  //
+  //         result.on('end', function() { // Play the next song when this one ends
+  //           updateEmitter.emit('update', guild);
+  //           globals.set("timeOfEnd", -1);
+  //           logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
+  //         });
+  //       }
+  //     }
+  //   }
+  //
+  //   globals.set("musicQueue", musicQueue);
+  // } else {
+  //   console.log("Guild " + guild.name + " has timeOfEnd value: " + timeOfEnd);
+  // }
+  //
+  // globals.set("timeOfEnd", timeOfEnd);
+  //
+  // return globals; // Pass the updated globals list back
 }
 
 function formatDurationHHMMSS(duration) {
