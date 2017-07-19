@@ -124,7 +124,7 @@ var commands = {
         if (speaking) {
           message.channel.send("Listening to " + user.username);
 
-          const rawPCMStream = receiver.creatPCMStream(user);
+          const rawPCMStream = receiver.createPCMStream(user);
           const outFileStream = fs.createWriteStream("./pcm/" + user.username + "_" + guild.id + "_" + Date.now());
 
           rawPCMStream.pipe(outFileStream);
