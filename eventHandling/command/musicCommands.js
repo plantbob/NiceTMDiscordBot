@@ -23,19 +23,19 @@ var songQueue = []; // Stores songs
 var commands = {
   ";;play" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 1);
-    updateEmitter.emit('update', message.guild); // Play the song
+    //updateEmitter.emit('update', message.guild); // Play the song
   },
   ";;earrape" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 2);
-    updateEmitter.emit('update', message.guild);
+    //updateEmitter.emit('update', message.guild);
   },
   ";;nightcore" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 3);
-    updateEmitter.emit('update', message.guild);
+    //updateEmitter.emit('update', message.guild);
   },
   ";;hospital" : function(message, params, globals, updateEmitter) {
     thePlayCommand(message, params, globals, 4);
-    updateEmitter.emit('update', message.guild);
+    //updateEmitter.emit('update', message.guild);
   },
   ";;madness" : function(message, params, globals, updateEmitter) {
     var time = parseInt(params.shift());
@@ -65,9 +65,9 @@ var commands = {
     });
   },
   ";;noice" : function(message, params, globals) { // NOICE
-    var timeOfEnd = globals.get("timeOfEnd");
+    var playing = globals.get("playing");
 
-    if (timeOfEnd == -1) { // If no song is playing
+    if (playing) { // If no song is playing
       var channel;
       if (message.guild.voiceConnection) {
         channel = message.guild.voiceConnection.channel;
