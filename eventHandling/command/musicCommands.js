@@ -93,6 +93,7 @@ var commands = {
 
       endSong(message, globals);
       message.guild.voiceConnection.disconnect();
+      globals.set("playing", false);
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
