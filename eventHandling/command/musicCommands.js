@@ -51,8 +51,7 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    //endSong(message, globals); // This will cause the next song to play because the stream ended
-    playNextSong(globals, message.guild)
+    endSong(message, globals); // This will cause the next song to play because the stream ended
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
