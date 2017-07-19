@@ -14,7 +14,7 @@ const ffmpeg = require("fluent-ffmpeg");
 
 var fs = require('fs');
 
-var pocketsphinx = require("../../lib/pocketsphinx.js");
+//var pocketsphinx = require("../../lib/pocketsphinx.js");
 
 module.exports = {};
 
