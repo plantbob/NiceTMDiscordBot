@@ -117,53 +117,22 @@ var commands = {
 
     var outFile = fs.createWriteStream("outFile.raw");
 
-    // DiscordIOClient.joinVoiceChannel(channel.id, function(err) {
-    //   if (err) {
-    //     console.log(err);
-    //   }
-    //   DiscordIOClient.getAudioContext(channel.id, function(err, outStream) {
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //     outStream.pipe(outFile);
-    //   });
-    // });
+    channel.join().then(function(connection) {
+      var receiver = connection.createReceiver();
 
-    // channel.join().then(function(connection) {
-      // var receiver = connection.createReceiver();
+      connection.on('speaking', function(user, speaking) {
+        if (speaking) {
+          message.channel.send("Listening to " + user.username);
 
-      // receiver.on('pcm', function(user, chunk) {
-        //if (user.id in OpusStreams) return; // Don't create another stream when we already have one
+          const rawPCMStream = receiver.creatPCMStream(user);
+          const outFileStream = fs.createWriteStream("./pcm/" + user.username + "_" + guild.id + "_" + Date.now());
 
-        // var audioStream = OpusStreams[user.id] = receiver.createOpusStream(user);
-        // var writeStream = fs.createWriteStream(`user_${user.id}.opus`);
-
-        // if (!outStreams[user.id]) {
-        //   outStreams[user.id] = fs.createWriteStream(`user_${user.id}.raw`);
-        // }
-
-        // if (!writeStreams[user.id]) {
-        //   writeStreams[user.id] = new PassThrough();
-        //   writeStreams[user.id].pipe(outStreams[user.id])
-        // }
-
-        // if (!decoderStreams[user.id]) {
-          // decoderStreams[user.id] = ffmpeg(writeStreams[user.id])
-          // .output(outStreams[user.id])
-          // .audioCodec('libmp3lame')
-          // .format('mp3');
-        // }
-
-
-
-        // outStreams[user.id].write(chunk);
-        // audioStream.on('data', function(chunk) {
-        //   writeStream.write(chunk);
-        // });
-        // audioStream.on('end', function(chunk) {
-        //   delete OpusStreams[user.id];
-        // });
-      // });
+          rawPCMStream.pipe(outFileStream);
+          rawPCMStream.on('end', function() {
+            message.channel.send("Listening to " + user.username);
+          });
+        }
+      });
 
       // audioStream.on("end", function() {
       //   var recognizer = new pocketsphinx.Recognizer();
@@ -178,14 +147,9 @@ var commands = {
       //
       //   recognizer.delete();
       // });
-    // });
+    });
   }
 }
-
-//var OpusStreams = {};
-// var outStreams = {};
-// var writeStreams = {};
-// var decoderStreams = {};
 
 function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   if (!musicQueue) {
