@@ -9,31 +9,31 @@ helpMessage += "Miscallaneous Commands: ";
 helpMessage += "\n1. ;;help - U wot m8?";
 helpMessage += "\n2. ;;ping - Pong!";
 helpMessage += "\n3. ;;oldman [whatever] - And old man tells you get off his lawn and take whatever with you.";
-helpMessage += "\n5. ;;m [subredit] - Gets a random picture from the specified subreddit, and it can only be run on nsfw channels.";
-helpMessage += "\n4. ;;humourme - Gets a random picture from r/I_irl";
-helpMessage += "\n4. ;;meow - Gets a random picture from r/cats";
-helpMessage += "\n6. ;;github - Gives a link to the bot's source.";
-helpMessage += "\n7. ;;link - Gives a link so you can add this bot to your server!";
-helpMessage += "\n8. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
-helpMessage += "\n9. ;;noice - *POP* Noice!";
+helpMessage += "\n4. ;;m [subredit] - Gets a random picture from the specified subreddit, and it can only be run on nsfw channels.";
+helpMessage += "\n5. ;;humourme - Gets a random picture from r/I_irl";
+helpMessage += "\n6. ;;meow - Gets a random picture from r/cats";
+helpMessage += "\n7. ;;github - Gives a link to the bot's source.";
+helpMessage += "\n8. ;;link - Gives a link so you can add this bot to your server!";
+helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
+helpMessage += "\n10. ;;noice - *POP* Noice!";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n10. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n11. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n12. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n13. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n14. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n15. ;;queue - Lists the current queue.";
-helpMessage += "\n16. ;;skip - Skips the current song.";
-helpMessage += "\n17. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n11. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n12. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n13. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n14. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n15. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n16. ;;queue - Lists the current queue.";
+helpMessage += "\n17. ;;skip - Skips the current song.";
+helpMessage += "\n18. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n18. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n19. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n19. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n20. ;;resetprefix - Resets the prefix to \";;\".";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n20. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n21. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n21. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n22. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
