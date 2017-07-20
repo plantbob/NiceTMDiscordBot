@@ -76,7 +76,16 @@ var commands = {
       if (url) {
         message.channel.send(url);
       } else {
-        message.channel.send("There was an error reaching /r/funny. Blame Finland.");
+        message.channel.send("There was an error reaching /r/I_Irl. Blame Finland.");
+      }
+    });
+  },
+  ";;meow" : function(message, params, globals) {
+    reddit.getRandomUrl("cats", function(url) {
+      if (url) {
+        message.channel.send(url);
+      } else {
+        message.channel.send("There was an error reaching /r/cats. Blame Finland.");
       }
     });
   },
