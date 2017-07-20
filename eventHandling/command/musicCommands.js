@@ -7,14 +7,7 @@ const Discord = require("discord.js");
 
 const ffmpeg = require("fluent-ffmpeg");
 
-// const DiscordIO = require("discord.io");
-// const DiscordIOClient = new DiscordIO.Client({
-//   token: require("../../config/token.js").discordToken
-// });
-
 var fs = require('fs');
-
-var pocketsphinx = require("../../lib/pocketsphinx.js");
 
 module.exports = {};
 
@@ -131,19 +124,7 @@ var commands = {
           rawPCMStream.on('end', function() {
             message.channel.send("Stopped listening to " + user.username);
 
-            var recognizer = new pocketsphinx.Recognizer();
 
-            recognizer.postMessage({command: 'initialize',
-                            callbackId: id,
-                            data: [["-hmm", "english"],
-                                   ["-fwdflat", "no"],
-                                   ["-dict", "english.dic"],
-                                   ["-lm", "english.DMP"]]
-                            });
-
-            
-
-            recognizer.delete();
           });
         }
       });
