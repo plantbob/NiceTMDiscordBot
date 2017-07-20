@@ -108,12 +108,10 @@ var commands = {
       }
     }
 
-    var outFile = fs.createWriteStream("outFile.raw");
-
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
 
-      connection.on('speaking', function(user, speaking) {
+      function onSpeaking(user, speaking) {
         if (speaking) {
           message.channel.send("Listening to " + user.username);
 
@@ -123,11 +121,12 @@ var commands = {
           rawPCMStream.pipe(outFileStream);
           rawPCMStream.on('end', function() {
             message.channel.send("Stopped listening to " + user.username);
-
-
+            connection.removeListener('speaking', onSpeaking);
           });
         }
-      });
+      }
+
+      connection.on('speaking', onSpeaking);
     });
   }
 }
