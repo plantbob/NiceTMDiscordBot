@@ -116,10 +116,13 @@ var commands = {
           message.channel.send("Listening to " + user.username);
 
           const rawPCMStream = receiver.createPCMStream(user);
-          const outFileStream = fs.createWriteStream("./pcm/" + user.username + "_" + message.guild.id + "_" + Date.now() + ".pcm");
+          //const outFileStream = fs.createWriteStream("./pcm/" + user.username + "_" + message.guild.id + "_" + Date.now() + ".pcm");
 
-          rawPCMStream.pipe(outFileStream);
-          rawPCMStream.on('end', function() {
+          var convertedStream = ffmpeg(rawPCMStream)
+          .format("wav")
+          .withAudioCodec("pcm_s16le")
+          .output("./pcm/" + user.username + "_" + message.guild.id + "_" + Date.now() + ".wav")
+          .on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
             connection.removeListener('speaking', onSpeaking);
           });
