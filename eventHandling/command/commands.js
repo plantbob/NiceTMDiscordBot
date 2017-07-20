@@ -11,6 +11,7 @@ helpMessage += "\n2. ;;ping - Pong!";
 helpMessage += "\n3. ;;oldman [whatever] - And old man tells you get off his lawn and take whatever with you.";
 helpMessage += "\n5. ;;m [subredit] - Gets a random picture from the specified subreddit, and it can only be run on nsfw channels.";
 helpMessage += "\n4. ;;humourme - Gets a random picture from r/I_irl";
+helpMessage += "\n4. ;;meow - Gets a random picture from r/cats";
 helpMessage += "\n6. ;;github - Gives a link to the bot's source.";
 helpMessage += "\n7. ;;link - Gives a link so you can add this bot to your server!";
 helpMessage += "\n8. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
