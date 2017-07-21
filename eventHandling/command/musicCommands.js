@@ -130,7 +130,7 @@ var commands = {
           .inputOptions([
             '-ar 48000',
             '-ac 2',
-            //'-f s32le'
+            '-f s32le'
           ])
           .inputFormat('s32le')
           .toFormat('wav')
