@@ -69,21 +69,20 @@ module.exports.getDMChannel = function(user, callback) { // Attempts to get DM c
 module.exports.recordAudio = function(reciever, callback) { // Callback is given the file name and the user
 
   function onSpeaking(user, speaking) {
-      var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
+    var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
 
-      var rawPCMStream = receiver.createPCMStream(user);
-      var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
+    var rawPCMStream = receiver.createPCMStream(user);
+    var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
-      rawPCMStream.on("end", function() {
-          callback(fileName, user);
-      });
+    rawPCMStream.on("end", function() {
+        callback(fileName, user);
+    });
 
-      ffmpeg(rawPCMStream) // Read from the raw pcm file
-      .audioFilters('aresample=16000')
-      .inputFormat('s32le')
-      .toFormat('wav')
-      .pipe(outFileStream);
-    }
+    ffmpeg(rawPCMStream) // Read from the raw pcm file
+    .audioFilters('aresample=16000')
+    .inputFormat('s32le')
+    .toFormat('wav')
+    .pipe(outFileStream);
   }
 
   connection.on('speaking', onSpeaking);
