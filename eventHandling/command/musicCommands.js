@@ -119,8 +119,8 @@ var commands = {
 
           var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
 
-          const rawPCMStream = receiver.createPCMStream(user);
-          const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
+          var rawPCMStream = receiver.createPCMStream(user);
+          var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
