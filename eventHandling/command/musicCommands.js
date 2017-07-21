@@ -7,6 +7,8 @@ const Discord = require("discord.js");
 
 const ffmpeg = require("fluent-ffmpeg");
 
+const { exec } = require('child_process');
+
 var fs = require('fs');
 
 var token = require('../../config/token.js');
@@ -123,19 +125,17 @@ var commands = {
           var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
           rawPCMStream.on("end", function() {
-            message.channel.send("Stopped listening to " + user.username);
+
           });
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
-          // .inputOptions([
-          //   '-ar 48000',
-          //   '-ac 2',
-          //   '-f s32le'
-          // ])
           .audioFilters('asetrate=r=48000')
           .inputFormat('s32le')
           .toFormat('wav')
-          .pipe(outFileStream);
+          .pipe(outFileStream)
+          .on('end', function() {
+            message.channel.send("Stopped listening to " + user.username);
+          });
         }
       }
 
