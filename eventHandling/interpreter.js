@@ -2,15 +2,10 @@ const logUtil = require("../util/logging.js");
 
 const nodecache = require("node-cache");
 const fs = require("fs");
-const EventEmitter = require('events');
 
 var globalList;
 var commandInterpreters = [];
 //
-// class UpdateEmitter extends EventEmitter {}
-//
-// const updateEmitter = new UpdateEmitter();
-
 module.exports = {};
 
 module.exports.init = function(client) {
