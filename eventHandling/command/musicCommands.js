@@ -1,13 +1,12 @@
 const discordUtil = require("../../util/discordUtil.js");
 const youtubeUtil = require("../../util/youtube.js");
 const logUtil = require("../../util/logging.js");
+const pocketsphinxUtil = require("../../util/pocketsphinx.js");
 
 const moment = require("moment");
 const Discord = require("discord.js");
 
 const ffmpeg = require("fluent-ffmpeg");
-
-const { exec } = require('child_process');
 
 var fs = require('fs');
 
@@ -115,45 +114,13 @@ var commands = {
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
 
-      function onSpeaking(user, speaking) {
-        if (speaking) {
-          message.channel.send("Listening to " + user.username);
-
-          var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
-
-          var rawPCMStream = receiver.createPCMStream(user);
-          var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
-
-          rawPCMStream.on("end", function() {
-              message.channel.send("Stopped listening to " + user.username);
-
-              var pocketsphinxCommand = "pocketsphinx_continuous " +
-              "-infile " + token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav " +
-              "-hmm " + token.homeDirectory + "/pocketsphinx/model/en-us/en-us " +
-              "-lm " + token.homeDirectory + "/pocketsphinx/model/en-us/en-us.lm.bin " +
-              "-dict " + token.homeDirectory + "/pocketsphinx/model/en-us/cmudict-en-us.dict " +
-              "-nfft 2048 -logfn /dev/null";
-
-              exec(pocketsphinxCommand, function(err, stdout, stderr) {
-                if (err) {
-                  console.log(err);
-                  return;
-                }
-
-                message.channel.send("`" + user.username + "` said `" + stdout + "`");
-              });
-
-          });
-
-          ffmpeg(rawPCMStream) // Read from the raw pcm file
-          .audioFilters('aresample=16000')
-          .inputFormat('s32le')
-          .toFormat('wav')
-          .pipe(outFileStream);
-        }
-      }
-
-      connection.on('speaking', onSpeaking);
+      discordUtil.recordAudio(receiver, function(fileName, user) {
+        pocketsphinxUtil.analyze("pcm/" + fileName + ".wav", function(transcript) {
+          if (transcript) {
+            message.channel.send("`" + user.username + "` said `" + transcript + "`");
+          }
+        });
+      });
     });
   }
 }
