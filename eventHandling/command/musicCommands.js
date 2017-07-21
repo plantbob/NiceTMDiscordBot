@@ -124,18 +124,15 @@ var commands = {
           var rawPCMStream = receiver.createPCMStream(user);
           var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
-          rawPCMStream.on("end", function() {
-
+          outFileStream.on("end", function() {
+              message.channel.send("Stopped listening to " + user.username);
           });
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
           .audioFilters('asetrate=r=48000')
           .inputFormat('s32le')
           .toFormat('wav')
-          .pipe(outFileStream)
-          .on('end', function() {
-            message.channel.send("Stopped listening to " + user.username);
-          });
+          .pipe(outFileStream);
         }
       }
 
