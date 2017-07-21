@@ -124,8 +124,25 @@ var commands = {
           var rawPCMStream = receiver.createPCMStream(user);
           var outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
-          outFileStream.on("end", function() {
+          rawPCMStream.on("end", function() {
               message.channel.send("Stopped listening to " + user.username);
+
+              var pocketsphinxCommand = "pocketsphinx_continuous " +
+              "-infile " + token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav" +
+              "-hmm " + token.homeDirectory + "/pocketsphinx/model/en-us/en-us " +
+              "-lm " + token.homeDirectory + "/pocketsphinx/model/en-us/en-us.lm.bin " +
+              "-dict " + token.homeDirectory + "/pocketsphinx/model/en-us/cmudict-en-us.dict " +
+              "-nfft 2048 -logfn /dev/null";
+              
+              exec(pocketsphinxCommand, function(err, stdout, stderr) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+
+                message.channel.send(user.username + " said " + stdout);
+              });
+
           });
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
