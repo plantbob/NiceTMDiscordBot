@@ -46,8 +46,7 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    playNextSong(globals, message.guild);
-    //endSong(message, globals); // This will cause the next song to play because the stream ended
+    endSong(message, globals); // This will cause the next song to play because the stream ended
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
@@ -283,11 +282,11 @@ function playNextSong(globals, guild) {
           logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
           console.log(result);
         } else {
-          result.on('start', function() { // Reset the timer to account for the delay it took for the stream to start
+          result.once('start', function() { // Reset the timer to account for the delay it took for the stream to start
             logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
           });
 
-          result.on('end', function() { // Play the next song when this one ends
+          result.once('end', function() { // Play the next song when this one ends
             logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
             playNextSong(globals, guild);
           });
