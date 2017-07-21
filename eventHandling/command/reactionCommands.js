@@ -14,7 +14,8 @@ module.exports.searchFunction = function(command) {
     return function(message, params, globals) {
       if (params[0] == null) {
         message.react(commands[lowerCase]);
-      };
+      }
+    };
   }
 }
 
