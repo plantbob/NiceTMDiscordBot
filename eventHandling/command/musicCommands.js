@@ -129,8 +129,6 @@ var commands = {
             .format("wav")
             .withAudioCodec("pcm_s16le") // Wav file format
             .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
-
-            connection.removeListener('speaking', onSpeaking);
           });
 
           rawPCMStream.pipe(outputFileStream);
