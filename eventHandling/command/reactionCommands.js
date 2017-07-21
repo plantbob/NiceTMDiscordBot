@@ -10,7 +10,7 @@ var commands = {
 module.exports.searchFunction = function(command) {
   var lowerCase = command.toLowerCase();
 
-  if (lowercase) {
+  if (commands[lowerCase]) {
     return function(message, params, globals) {
       if (params[0] == null) {
         message.react(commands[lowerCase]);
