@@ -66,7 +66,7 @@ module.exports.getDMChannel = function(user, callback) { // Attempts to get DM c
   callback(dmChannel);
 }
 
-module.exports.recordAudio = function(connection,guild, callback) { // Callback is given the file name and the user
+module.exports.recordAudio = function(connection, guild, callback) { // Callback is given the file name and the user
   var receiver = connection.createReceiver();
 
   function onSpeaking(user, speaking) {

@@ -33,7 +33,7 @@ var commands = {
     thePlayCommand(message, params, globals, 4);
     //updateEmitter.emit('update', message.guild);
   },
-  ";;madness" : function(message, params, globals, updateEmitter) {
+  ";;madness" : function(message, params, globals) {
     var time = parseInt(params.shift());
     if (!time || time < 0) {
       message.channel.send("Invalid time.");
@@ -43,11 +43,11 @@ var commands = {
       }
     } else {
       thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
-      updateEmitter.emit('update', message.guild);
     }
   },
   ";;skip" : function(message, params, globals) {
-    endSong(message, globals); // This will cause the next song to play because the stream ended
+    playNextSong(globals, message.guild);
+    //endSong(message, globals); // This will cause the next song to play because the stream ended
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
