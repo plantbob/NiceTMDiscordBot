@@ -11,11 +11,15 @@ var commands = {
   },
   "deja" : function(message, params, globals) {
     if (params[0].toLowerCase() == "vu?" && !params[1]) {
-      message.react("🇩");
-      message.react("🇷");
-      message.react("🇮");
-      message.react("🇫");
-      message.react("🇹");
+      message.react("🇩").then(function() {
+        message.react("🇷").then(function() {
+          message.react("🇮").then(function() {
+            message.react("🇫").then(function() {
+              message.react("🇹");
+            });
+          });
+        });
+      });
     }
   }
 }
