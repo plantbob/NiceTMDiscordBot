@@ -132,7 +132,7 @@ var commands = {
             '-ac 2'
           ])
           .inputFormat('s32le')
-          .withAudioCodec('pcm_s16le')
+          .toFormat('wav')
           .pipe(outFileStream);
         }
       }
