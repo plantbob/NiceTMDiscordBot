@@ -131,11 +131,10 @@ var commands = {
           ffmpeg(rawPCMStream) // Read from the raw pcm file
           .inputOptions([
             '-ar 48k',
-            '-ac 2',
-            '-f s16le'
+            '-ac 2'
           ])
+          .withAudioCodec('pcm_s16le')
           .pipe(outFileStream);
-
         }
       }
 
