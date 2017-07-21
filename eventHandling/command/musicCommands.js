@@ -123,13 +123,14 @@ var commands = {
           const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".pcm");
 
           rawPCMStream.on("end", function() {
-            connection.removeListener('speaking', onSpeaking);
             message.channel.send("Stopped listening to " + user.username);
 
             var convertedStream = ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
             .format("wav")
             .withAudioCodec("pcm_s16le") // Wav file format
             .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
+
+            connection.removeListener('speaking', onSpeaking);
           });
 
           rawPCMStream.pipe(outputFileStream);
