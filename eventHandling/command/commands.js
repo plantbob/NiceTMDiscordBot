@@ -60,11 +60,6 @@ var commands = {
   ";;ping" : function(message, params, globals) {
     message.channel.send("Pong!");
   },
-  "nice" : function(message, params, globals) {
-    if (params[0] == null) {
-      message.react('™');
-    }
-  },
   ";;oldman" : function(message, params, globals) { // To test parameters
     if (!params[0]) {
       message.channel.send("What did you say? Say something afterwards for a change!");

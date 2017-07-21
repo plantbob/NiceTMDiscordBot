@@ -109,6 +109,8 @@ module.exports.init = function(client) {
 }
 
 function loadCommandInterpreters() {
+  commandInterpreters = []; // Clear command interpreters
+
   var commandPath = require("path").join(__dirname, "command"); // Get command folder
 
   fs.readdirSync(commandPath).forEach(function(file) { // Add each commandSearch function to an array
