@@ -128,7 +128,7 @@ var commands = {
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
           .inputOptions([
-            '-ar 48k',
+            //'-ar 48k',
             '-ac 2'
           ])
           .inputFormat('s32le')
