@@ -46,7 +46,15 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    endSong(message, globals); // This will cause the next song to play because the stream ended
+    var musicQueue = globals.get("musicQueue");
+
+    if (musicQueue.length != 0) {
+      musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
+    }
+
+    globals.set("musicQueue", musicQueue);
+
+    endSong(message, globals); // This skips two songs idk why
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
