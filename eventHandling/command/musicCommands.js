@@ -140,7 +140,7 @@ var commands = {
                   return;
                 }
 
-                message.channel.send(user.username + " said " + stdout);
+                message.channel.send("`" + user.username + "` said `" + stdout + "`");
               });
 
           });
