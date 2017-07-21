@@ -120,27 +120,21 @@ var commands = {
           var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
 
           const rawPCMStream = receiver.createPCMStream(user);
-          const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".pcm");
+          const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
 
           rawPCMStream.pipe(outFileStream);
 
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
-
-            try {
-              ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
-              .inputOptions([
-                '-ar 48k',
-                '-ac 2',
-                '-f s16le'
-              ])
-              // .format("wav")
-              // .withAudioCodec("pcm_s16le") // Wav file format
-              .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
-            } catch (exception) {
-              console.log(exception);
-            }
           });
+
+          ffmpeg(rawPCMStream) // Read from the raw pcm file
+          .inputOptions([
+            '-ar 48k',
+            '-ac 2',
+            '-f s16le'
+          ])
+          .pipe(outFileStream);
 
         }
       }
