@@ -121,7 +121,7 @@ var commands = {
 
           const rawPCMStream = receiver.createPCMStream(user);
           const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
-          
+
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
           });
@@ -131,6 +131,7 @@ var commands = {
             '-ar 48k',
             '-ac 2'
           ])
+          .inputFormat('s32le')
           .withAudioCodec('pcm_s16le')
           .pipe(outFileStream);
         }
