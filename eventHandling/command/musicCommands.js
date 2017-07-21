@@ -122,6 +122,8 @@ var commands = {
           const rawPCMStream = receiver.createPCMStream(user);
           const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".pcm");
 
+          rawPCMStream.pipe(outputFileStream);
+
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
 
@@ -131,7 +133,6 @@ var commands = {
             .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
           });
 
-          rawPCMStream.pipe(outputFileStream);
         }
       }
 
