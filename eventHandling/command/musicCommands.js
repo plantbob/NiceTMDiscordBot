@@ -131,10 +131,11 @@ var commands = {
               ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
               .inputOptions([
                 '-ar 48k',
-                '-ac 2'
+                '-ac 2',
+                '-f s16le'
               ])
-              .format("wav")
-              .withAudioCodec("pcm_s16le") // Wav file format
+              // .format("wav")
+              // .withAudioCodec("pcm_s16le") // Wav file format
               .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
             } catch (exception) {
               console.log(exception);
