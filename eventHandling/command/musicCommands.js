@@ -127,10 +127,18 @@ var commands = {
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
 
-            ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
-            .format("wav")
-            .withAudioCodec("pcm_s16le") // Wav file format
-            .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
+            try {
+              ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
+              .inputOptions([
+                '-ar 48k',
+                '-ac 2'
+              ])
+              .format("wav")
+              .withAudioCodec("pcm_s16le") // Wav file format
+              .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
+            } catch (exception) {
+              console.log(exception);
+            }
           });
 
         }
