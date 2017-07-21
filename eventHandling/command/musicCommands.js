@@ -127,11 +127,11 @@ var commands = {
           });
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
-          // .inputOptions([
-          //   '-ar 48000',
-          //   '-ac 2',
-          //   '-f s32le'
-          // ])
+          .inputOptions([
+            '-ar 48000',
+            '-ac 2',
+            '-f s32le'
+          ])
           .audioFilters('asetrate=r=16000')
           .inputFormat('s32le')
           .toFormat('wav')
