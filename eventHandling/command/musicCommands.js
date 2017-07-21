@@ -146,7 +146,7 @@ var commands = {
           });
 
           ffmpeg(rawPCMStream) // Read from the raw pcm file
-          .audioFilters('asetrate=r=48000')
+          .audioFilters('aresample=16000')
           .inputFormat('s32le')
           .toFormat('wav')
           .pipe(outFileStream);
