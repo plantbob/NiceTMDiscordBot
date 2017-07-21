@@ -121,9 +121,7 @@ var commands = {
 
           const rawPCMStream = receiver.createPCMStream(user);
           const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".wav");
-
-          rawPCMStream.pipe(outFileStream);
-
+          
           rawPCMStream.on("end", function() {
             message.channel.send("Stopped listening to " + user.username);
           });
