@@ -114,7 +114,7 @@ var commands = {
     channel.join().then(function(connection) {
       var receiver = connection.createReceiver();
 
-      discordUtil.recordAudio(connection, function(fileName, user) {
+      discordUtil.recordAudio(connection, message.guild, function(fileName, user) {
         pocketsphinxUtil.analyze("pcm/" + fileName + ".wav", function(transcript) {
           if (transcript) {
             message.channel.send("`" + user.username + "` said `" + transcript + "`");
