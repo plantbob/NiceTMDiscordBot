@@ -99,8 +99,7 @@ module.exports.init = function(client) {
   process.stdin.setEncoding('utf8');
 
   process.stdin.on('data', function (text) {
-    console.log(text);
-    if (text.trim() === 'reload') {
+    if (text.trim() === 'r') {
       logUtil.log("Reloading command interpreters...", logUtil.STATUS_INFO);
       loadCommandInterpreters();
       logUtil.log("Finished reloading command interpreters.", logUtil.STATUS_NOTIFICATION);
