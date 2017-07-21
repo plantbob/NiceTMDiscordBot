@@ -4,7 +4,8 @@ const Discord = require("discord.js");
 // Params = The parameters of the command
 // Globals = The global variables for the server that the command was initiated in
 var commands = {
-  "nice": '™'
+  "nice" : '™',
+  "deja vu?" : 'drift'
 }
 
 module.exports.searchFunction = function(command) {
@@ -13,7 +14,9 @@ module.exports.searchFunction = function(command) {
   if (commands[lowerCase]) {
     return function(message, params, globals) {
       if (params[0] == null) {
-        message.react(commands[lowerCase]);
+        for (var i = 0; i < command[lowerCase].length; i++) {
+          message.react(commands[lowerCase][i]);
+        }
       }
     };
   }
