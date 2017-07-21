@@ -9,6 +9,8 @@ const ffmpeg = require("fluent-ffmpeg");
 
 var fs = require('fs');
 
+var token = require('../../config/token.js');
+
 module.exports = {};
 
 var songQueue = []; // Stores songs
@@ -115,20 +117,22 @@ var commands = {
         if (speaking) {
           message.channel.send("Listening to " + user.username);
 
+          var fileName = user.username + "_" + message.guild.id + "_" + Date.now();
+
           const rawPCMStream = receiver.createPCMStream(user);
-          const outFileStream = fs.createWriteStream("./pcm/" + user.username + "_" + message.guild.id + "_" + Date.now() + ".pcm");
+          const outFileStream = fs.createWriteStream("./pcm/" + fileName + ".pcm");
 
           rawPCMStream.on("end", function() {
-            message.channel.send("Stopped listening to " + user.username);
             connection.removeListener('speaking', onSpeaking);
+            message.channel.send("Stopped listening to " + user.username);
+
+            var convertedStream = ffmpeg(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName  + ".pcm") // Read from the raw pcm file
+            .format("wav")
+            .withAudioCodec("pcm_s16le") // Wav file format
+            .output(token.homeDirectory + "/NiceTMDiscordBot/pcm/" + fileName + ".wav");
           });
 
-          var convertedStream = ffmpeg(rawPCMStream)
-          .format("wav")
-          .withAudioCodec("pcm_s16le"); // Wav file format
-
-
-          convertedStream.pipe(outFileStream);
+          rawPCMStream.pipe(outputFileStream);
         }
       }
 
