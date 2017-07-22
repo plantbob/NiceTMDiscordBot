@@ -14,26 +14,27 @@ helpMessage += "\n5. ;;humourme - Gets a random picture from r/I_irl";
 helpMessage += "\n6. ;;meow - Gets a random picture from r/cats";
 helpMessage += "\n7. ;;github - Gives a link to the bot's source.";
 helpMessage += "\n8. ;;link - Gives a link so you can add this bot to your server!";
-helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
-helpMessage += "\n10. ;;noice - *POP* Noice!";
+helpMessage += "\n9. ;;patreon - Gives a link so you support me in development of this monstronsity!";
+helpMessage += "\n10. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
+helpMessage += "\n11. ;;noice - *POP* Noice!";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n11. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n12. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n13. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n14. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n15. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n16. ;;queue - Lists the current queue.";
-helpMessage += "\n17. ;;skip - Skips the current song.";
-helpMessage += "\n18. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n12. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n13. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n14. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n15. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n16. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n17. ;;queue - Lists the current queue.";
+helpMessage += "\n18. ;;skip - Skips the current song.";
+helpMessage += "\n19. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n19. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n20. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n20. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n21. ;;resetprefix - Resets the prefix to \";;\".";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n21. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n22. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n22. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n23. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
@@ -144,6 +145,9 @@ var commands = {
   },
   ";;link" : function(message, params, globals) {
     message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?client_id=318558676241874945&scope=bot&permissions=8192 \nAdd me to your server whydontcha?");
+  },
+  ";;patreon" : function(message, params, globals) {
+    message.channel.send("Here's the link: https://www.patreon.com/user?u=7015872 \nSupport me plz");
   }
 }
 
