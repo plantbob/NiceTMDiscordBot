@@ -312,5 +312,6 @@ function formatDurationHHMMSS(duration) {
 }
 
 module.exports.close = function(globals, guild) { // Runs on close
+  globals.set("musicQueue", []); // So the bot won't start playing songs weirdly
   globals.set("playing", false); // So the bot won't wait while playing nothing
 }
