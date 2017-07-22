@@ -14,7 +14,7 @@ module.exports.init = function(client) {
   });
 }
 
-function updateGame(cient) {
+function updateGame(client) {
   client.user.setGame(`on ${client.guilds.size} servers.`);
 }
 
