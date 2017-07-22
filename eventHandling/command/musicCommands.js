@@ -48,7 +48,7 @@ var commands = {
   ";;skip" : function(message, params, globals) {
     var musicQueue = globals.get("musicQueue");
 
-    if (musicQueue.length != 0) {
+    if (musicQueue.length > 1) {
       musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
       globals.set("musicQueue", musicQueue);
     }
