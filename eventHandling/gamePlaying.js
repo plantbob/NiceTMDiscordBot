@@ -2,19 +2,19 @@ module.exports = {};
 
 module.exports.init = function(client) {
   client.on('ready', function() {
-    updateGame();
+    updateGame(client);
   });
 
   client.on('guildCreate', function() {
-    updateGame();
+    updateGame(client);
   });
 
   client.on('guildDelete', function() {
-    updateGame();
+    updateGame(client);
   });
 }
 
-function updateGame() {
+function updateGame(cient) {
   client.user.setGame(`on ${client.guilds.size} servers.`);
 }
 
