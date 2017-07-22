@@ -50,9 +50,9 @@ var commands = {
 
     if (musicQueue.length != 0) {
       musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
+      globals.set("musicQueue", musicQueue);
     }
 
-    globals.set("musicQueue", musicQueue);
 
     endSong(message, globals); // This skips two songs idk why
   },
