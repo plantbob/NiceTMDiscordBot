@@ -28,4 +28,4 @@
    
  ### [Click here to add me to your server!](https://discordapp.com/oauth2/authorize?&client_id=318558676241874945&scope=bot&permissions=0) ###
 
-[Patreon](https://www.patreon.com/user?u=7015872)
+### [Patreon](https://www.patreon.com/user?u=7015872) ###
