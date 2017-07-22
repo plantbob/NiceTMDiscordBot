@@ -119,7 +119,7 @@ var commands = {
     });
   },
   ";;test" : function(message, params, globals) {
-    if (message.author.username != "tjpc3") {
+    if (message.author.id != 150699865997836288) { // My id
       message.reply("Only the Robot Overlord is permitted to run this command.");
     } else {
       if (params[0] == "dc") {

@@ -102,7 +102,7 @@ var commands = {
     }
   },
   ";;listen" : function(message, params, globals) {
-    if (message.author.username != "tjpc3") {
+    if (message.author.id != 150699865997836288) { // My id
       message.reply("No.");
       return;
     }
