@@ -9,7 +9,7 @@ helpMessage += "Miscallaneous Commands: ";
 helpMessage += "\n1. ;;help - U wot m8?";
 helpMessage += "\n2. ;;ping - Pong!";
 helpMessage += "\n3. ;;oldman [whatever] - And old man tells you get off his lawn and take whatever with you.";
-helpMessage += "\n4. ;;m [subredit] - Gets a random picture from the specified subreddit, and it can only be run on nsfw channels.";
+helpMessage += "\n4. ;;m [subredit] - Gets a random picture from the specified subreddit. Can only be run on nsfw channels.";
 helpMessage += "\n5. ;;humourme - Gets a random picture from r/I_irl";
 helpMessage += "\n6. ;;meow - Gets a random picture from r/cats";
 helpMessage += "\n7. ;;github - Gives a link to the bot's source.";
@@ -86,7 +86,7 @@ var commands = {
     });
   },
   ";;m" : function(message, params, globals) {
-    if (message.channel.name.indexOf("nsfw") != -1) { // Check to see if channel name has nsfw
+    if (message.channel.nsfw) { // Check to see if channel name has nsfw
       if (params[0]) {
         reddit.getRandomUrl(params[0], function(url) {
           if (url) {
@@ -99,7 +99,7 @@ var commands = {
         message.channel.send("Give me the subreddit name damnit!");
       }
     } else {
-      message.channel.send("Please add nsfw to the channel name, this is reddit afterall.");
+      message.channel.send("Please run on a nsfw channel, this is reddit afterall.");
     }
   },
   ";;github" : function(message, params, globals) {
