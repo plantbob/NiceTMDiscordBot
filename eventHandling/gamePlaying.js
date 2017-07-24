@@ -5,8 +5,14 @@ module.exports.init = function(client) {
     updateGame(client);
   });
 
-  client.on('guildCreate', function() {
+  client.on('guildCreate', function(guild) {
     updateGame(client);
+
+    try {
+      guild.me.nickname = "Matrix";
+    } catch (exeception) {
+
+    }
   });
 
   client.on('guildDelete', function() {
