@@ -88,6 +88,7 @@ var commands = {
   },
   ";;m" : function(message, params, globals) {
     console.log(message.channel.nsfw);
+    console.log(message.channel..getClass().getName());
     if (message.channel.nsfw == true) { // Check to see if channel is nsfw
       if (params[0]) {
         reddit.getRandomUrl(params[0], function(url) {
