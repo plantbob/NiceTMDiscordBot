@@ -18,8 +18,6 @@ const rl = readline.createInterface({
 
 client.on('ready', function() {
   logUtil.log("Logged into Discord successfully as " + client.user.username + ".", logUtil.STATUS_NOTIFICATION);
-
-  client.user.setUsername("Matrix");
 });
 
 var handlers = [];
