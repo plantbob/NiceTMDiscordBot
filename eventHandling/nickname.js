@@ -9,7 +9,7 @@ module.exports.init = function(client) {
         try {
           guild.me.nickname = "Matrix";
         } catch (exeception) {
-
+          console.log(exeception);
         }
       }
     }
