@@ -70,7 +70,7 @@ var commands = {
   ";;noice" : function(message, params, globals) { // NOICE
     var playing = globals.get("playing");
 
-    if (playing) { // If no song is playing
+    if (playing == false) { // If no song is playing
       var channel;
       if (message.guild.voiceConnection) {
         channel = message.guild.voiceConnection.channel;
