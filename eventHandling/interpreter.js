@@ -36,6 +36,10 @@ module.exports.init = function(client) {
       return; // Don't process DM messages
     }
 
+    if (!globalList[msg.guild.id]) { // If global variables don't exist for this scene
+      globalList[msg.guild.id] = new nodecache(); // Make empty nodecache
+    }
+
     var words = msg.content.split(" "); // Split message into array
 
     var customPrefix = globalList[msg.guild.id].get("prefix");
@@ -53,10 +57,6 @@ module.exports.init = function(client) {
     }
 
     if (command) { // Command exists
-      if (!globalList[msg.guild.id]) { // If global variables exist for this scene
-        globalList[msg.guild.id] = new nodecache();
-      }
-
       logUtil.log("User " + msg.author.username + " running command " + words.join(" "), logUtil.STATUS_INFO);
       try {
         words.shift(); // Remove first item in words array
