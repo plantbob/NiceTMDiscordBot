@@ -87,7 +87,7 @@ var commands = {
     });
   },
   ";;m" : function(message, params, globals) {
-    if (message.channel.nsfw) { // Check to see if channel is nsfw
+    if (discordUtil.isChannelNSFW(message.channel)) { // Check to see if channel is nsfw
       if (params[0]) {
         reddit.getRandomUrl(params[0], function(url) {
           if (url) {

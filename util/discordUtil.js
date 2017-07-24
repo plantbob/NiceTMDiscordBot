@@ -88,3 +88,9 @@ module.exports.recordAudio = function(connection, guild, callback) { // Callback
 
   connection.on('speaking', onSpeaking);
 }
+
+module.exports.isChannelNSFW(channel) {
+  if (channel.nsfw) return true;
+
+  return (/^nsfw(-|$)/.test(channel.name));
+}
