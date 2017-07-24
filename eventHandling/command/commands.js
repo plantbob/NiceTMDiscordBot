@@ -87,9 +87,7 @@ var commands = {
     });
   },
   ";;m" : function(message, params, globals) {
-    console.log(message.channel.nsfw);
-    console.log(typeof message.channel);
-    if (message.channel.nsfw == true) { // Check to see if channel is nsfw
+    if (message.channel.nsfw) { // Check to see if channel is nsfw
       if (params[0]) {
         reddit.getRandomUrl(params[0], function(url) {
           if (url) {
