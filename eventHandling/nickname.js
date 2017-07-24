@@ -2,9 +2,7 @@ module.exports = {};
 
 module.exports.init = function(client) {
   client.on('ready', function() {
-    for (var i = 0; i < client.guilds.size; i++) {
-      var guild = client.guilds.get(i);
-
+    client.guilds.forEach(function(guild) {
       if (guild.me.nickname == "nice-tm-bot") {
         try {
           guild.me.nickname = "Matrix";
@@ -12,7 +10,7 @@ module.exports.init = function(client) {
           console.log(exeception);
         }
       }
-    }
+    });
   });
 }
 
