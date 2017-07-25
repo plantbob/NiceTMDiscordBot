@@ -50,7 +50,7 @@ var commands = {
       var musicQueue = globals.get("musicQueue");
 
       if (message.guild.voiceConnection.dispatcher) {
-
+        console.log(message.guild.voiceConnection.dispatcher);
         if (musicQueue.length > 1) {
           musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
           globals.set("musicQueue", musicQueue);
@@ -312,7 +312,6 @@ function playNextSong(globals, guild) {
         } else {
           result.once('start', function() { // Reset the timer to account for the delay it took for the stream to start
             logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
-            console.log(result);
           });
 
           result.once('end', function() { // Play the next song when this one ends
