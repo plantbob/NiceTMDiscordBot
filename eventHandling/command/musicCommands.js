@@ -46,9 +46,6 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-
-
-
     if (message.guild.voiceConnection) {
       var musicQueue = globals.get("musicQueue");
 
@@ -261,7 +258,9 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function endSong(message, globals) { // Used in the skip and dc commands
+  console.log("test1");
   if (message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
+    console.log("test2");
     message.guild.voiceConnection.dispatcher.end(); // End the current stream
   }
 }
