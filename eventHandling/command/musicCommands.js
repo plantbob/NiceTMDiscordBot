@@ -58,6 +58,7 @@ var commands = {
 
         endSong(message, globals);
       } else if (globals.get('playing')) { // If we're in between songs
+        console.log("test3");
         musicQueue.shift();
         globals.set("musicQueue", musicQueue);
       } else {
