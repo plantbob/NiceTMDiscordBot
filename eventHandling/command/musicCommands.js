@@ -171,7 +171,7 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
 }
 
 function addToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
-  channel.join().then(function(connection) {
+  function onChannelJoin(connection) {
     message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
 
@@ -205,10 +205,16 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
         message.delete(); // So the music channel isn't filled with youtube videos
       }
     });
-  }).catch(function(err) { // Catch error
-    logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
-    console.log(err);
-  });
+  }
+
+  if (channel.connection) {
+    onChannelJoin(channel.connection); // Don't join channel that you're already in
+  } else {
+    channel.join().then(onChannelJoin).catch(function(err) { // Catch error
+      logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
+      console.log(err);
+    });
+  }
 }
 
 function thePlayCommand (message, params, globals, type) { // Is the play command
