@@ -49,8 +49,8 @@ var commands = {
     if (message.guild.voiceConnection) {
       var musicQueue = globals.get("musicQueue");
 
+      console.log(message.guild.voiceConnection.dispatcher);
       if (message.guild.voiceConnection.dispatcher) {
-        console.log(message.guild.voiceConnection.dispatcher);
         if (musicQueue.length > 1) {
           musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
           globals.set("musicQueue", musicQueue);
