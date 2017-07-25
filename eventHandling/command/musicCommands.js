@@ -173,6 +173,10 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
     message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
 
+      if (!musicQueue) {
+        musicQueue = [];
+      }
+
       var newSong = {"id" : data.id,
                      "user" : message.author.username,
                      "title" : data.snippet.title,
