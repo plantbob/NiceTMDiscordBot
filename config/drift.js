@@ -1,6 +1,4 @@
-module.exports = {};
-
-module.exports.drift = [
+module.exports = [
   "https://media.giphy.com/media/xUPGGvrkZktd8eDauI/giphy.gif",
   "https://media.giphy.com/media/xUPGGij7t1aullZdv2/giphy.gif",
   "https://media.giphy.com/media/xUPGGwr7Ky9Ob5jcqI/giphy.gif",
