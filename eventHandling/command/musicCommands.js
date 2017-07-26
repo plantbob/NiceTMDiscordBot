@@ -12,7 +12,7 @@ var fs = require('fs');
 
 var token = require('../../config/token.js');
 
-var initialD = require("../../config/drift/js"); // YEAH YEAH YEAH!
+var initialD = require("../../config/drift.js"); // YEAH YEAH YEAH!
 
 module.exports = {};
 
