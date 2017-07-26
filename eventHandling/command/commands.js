@@ -24,17 +24,18 @@ helpMessage += "\n13. ;;earrape [url/id/search term] - Adds a youtube video to t
 helpMessage += "\n14. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
 helpMessage += "\n15. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
 helpMessage += "\n16. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n17. ;;queue - Lists the current queue.";
-helpMessage += "\n18. ;;skip - Skips the current song.";
-helpMessage += "\n19. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n17. ;;drift  - GAS GAS GAS!.";
+helpMessage += "\n18. ;;queue - Lists the current queue.";
+helpMessage += "\n19. ;;skip - Skips the current song.";
+helpMessage += "\n20. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n20. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n21. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n21. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n22. ;;resetprefix - Resets the prefix to \";;\".";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n22. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n23. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n23. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n24. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 

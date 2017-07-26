@@ -12,6 +12,8 @@ var fs = require('fs');
 
 var token = require('../../config/token.js');
 
+var initialD = require("") // YEAH YEAH YEAH!
+
 module.exports = {};
 
 var songQueue = []; // Stores songs
@@ -44,6 +46,13 @@ var commands = {
     } else {
       thePlayCommand(message, params, globals, "T" + time); // Play song with encoded time in the type
     }
+  },
+  ";;drift" : function(message, params, globals) {
+    thePlayCommand(message, ['https://www.youtube.com/watch?v=dv13gl0a-FA'], globals, 1); // Deja Vu
+    thePlayCommand(message, ['https://www.youtube.com/watch?v=atuFSv2bLa8'], globals, 1); // GAS GAS GAS!
+    thePlayCommand(message, ['https://www.youtube.com/watch?v=BJ0xBCwkg3E'], globals, 1); // Running in the 90s!
+    thePlayCommand(message, ['https://www.youtube.com/watch?v=tNveMjoSxp0'], globals, 1); // Night On Fire!
+    message.channel.send(initialD[Math.floor(Math.random() * initialD.length)]); // Drift Gif
   },
   ";;skip" : function(message, params, globals) {
     if (message.guild.voiceConnection) {
@@ -306,6 +315,7 @@ function playNextSong(globals, guild) {
             break;
           case 4:
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
+            break;
           default:
             console.log("Song type: " + songToPlay.type);
             var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
