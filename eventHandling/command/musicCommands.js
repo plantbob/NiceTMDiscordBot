@@ -46,15 +46,29 @@ var commands = {
     }
   },
   ";;skip" : function(message, params, globals) {
-    var musicQueue = globals.get("musicQueue");
 
-    if (musicQueue.length > 1) {
-      musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
-      globals.set("musicQueue", musicQueue);
+
+
+    if (message.guild.voiceConnection) {
+      var musicQueue = globals.get("musicQueue");
+
+      if (message.guild.voiceConnection.dispatcher) {
+
+        if (musicQueue.length > 1) {
+          musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
+          globals.set("musicQueue", musicQueue);
+        }
+
+        endSong(message, globals);
+      } else if (globals.get('playing')) { // If we're in between songs
+        musicQueue.shift();
+        globals.set("musicQueue", musicQueue);
+      } else {
+        message.channel.send("I'm not playing anything.");
+      }
+    } else {
+      message.channel.send("I'm not in a voice channel.");
     }
-
-
-    endSong(message, globals); // This skips two songs idk why
   },
   ";;queue" : function(message, params, globals) {
     discordUtil.getDMChannel(message.author, function(dmChannel) {
