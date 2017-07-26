@@ -48,11 +48,10 @@ var commands = {
     }
   },
   ";;drift" : function(message, params, globals) {
-    thePlayCommand(message, ['https://www.youtube.com/watch?v=dv13gl0a-FA'], globals, 1); // Deja Vu
-    thePlayCommand(message, ['https://www.youtube.com/watch?v=atuFSv2bLa8'], globals, 1); // GAS GAS GAS!
-    thePlayCommand(message, ['https://www.youtube.com/watch?v=BJ0xBCwkg3E'], globals, 1); // Running in the 90s!
-    thePlayCommand(message, ['https://www.youtube.com/watch?v=tNveMjoSxp0'], globals, 1); // Night On Fire!
-    message.channel.send(initialD[Math.floor(Math.random() * initialD.length)]); // Drift Gif
+
+    thePlayCommand(message, [ initialD.driftmusic[Math.floor(Math.random() * initialD.driftmusic.length)] ], globals, 1); // Drift music
+
+    message.channel.send(initialD.driftgif[Math.floor(Math.random() * initialD.driftgif.length)]); // Drift Gif
   },
   ";;skip" : function(message, params, globals) {
     if (message.guild.voiceConnection) {

@@ -1,4 +1,6 @@
-module.exports = [
+module.exports = {};
+
+module.exports.driftgif = [
   "https://media.giphy.com/media/xUPGGvrkZktd8eDauI/giphy.gif",
   "https://media.giphy.com/media/xUPGGij7t1aullZdv2/giphy.gif",
   "https://media.giphy.com/media/xUPGGwr7Ky9Ob5jcqI/giphy.gif",
@@ -30,4 +32,11 @@ module.exports = [
   "https://media.giphy.com/media/xUPGGrNI3vDsxHrKp2/giphy.gif",
   "https://media.giphy.com/media/xUPGGuvv9eiVHGSs36/giphy.gif",
   "https://media.giphy.com/media/3ohzgDmuJetdipwerK/giphy.gif"
+];
+
+module.exports.driftmusic = [
+  'https://www.youtube.com/watch?v=dv13gl0a-FA', // Deja Vu
+  'https://www.youtube.com/watch?v=atuFSv2bLa8', // GAS GAS GAS!
+  'https://www.youtube.com/watch?v=BJ0xBCwkg3E', // Running in the 90s!
+  'https://www.youtube.com/watch?v=tNveMjoSxp0' // Night On Fire!
 ];
