@@ -332,6 +332,12 @@ function playNextSong(globals, guild) {
             logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
             playNextSong(globals, guild);
           });
+
+          setTimeout(functon() {
+            if (result) {
+              result.end();
+            }
+          }, (songToPlay.duration - 1) * 1000); // Convert seconds to milliseconds and subtract one second
         }
       }
     } else {
