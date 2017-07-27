@@ -333,7 +333,7 @@ function playNextSong(globals, guild) {
             playNextSong(globals, guild);
           });
 
-          setTimeout(functon() {
+          setTimeout(function() {
             if (result) {
               result.end();
             }
