@@ -42,6 +42,11 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
       audioStream = ytdl(video, { filter : 'audioonly' });
     }
 
+    audioStream.on('error', function(error) {
+      logUtil.log("Error in stream.");
+      console.log(error);
+    });
+
     var dispatcher = connection.playStream(audioStream, streamOptions);
 
     return dispatcher;
