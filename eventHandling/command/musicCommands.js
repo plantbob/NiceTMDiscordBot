@@ -333,6 +333,11 @@ function playNextSong(globals, guild) {
             playNextSong(globals, guild);
           });
 
+          result.on('error', function(error) {
+            logUtil.log("Error from dispatcher on guild " + guild.name + ": ");
+            console.log(error);
+          });
+
           // setTimeout(function() {
           //   if (result) {
           //     result.end();
