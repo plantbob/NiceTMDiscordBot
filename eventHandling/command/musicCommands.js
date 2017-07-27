@@ -333,11 +333,11 @@ function playNextSong(globals, guild) {
             playNextSong(globals, guild);
           });
 
-          setTimeout(function() {
-            if (result) {
-              result.end();
-            }
-          }, (songToPlay.duration - 1) * 1000); // Convert seconds to milliseconds and subtract one second
+          // setTimeout(function() {
+          //   if (result) {
+          //     result.end();
+          //   }
+          // }, (songToPlay.duration - 1) * 1000); // Convert seconds to milliseconds and subtract one second
         }
       }
     } else {
