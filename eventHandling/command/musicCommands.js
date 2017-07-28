@@ -19,22 +19,69 @@ module.exports = {};
 var songQueue = []; // Stores songs
 
 var commands = {
-  ";;play" : function(message, params, globals, updateEmitter) {
+  ";;play" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 1);
     //updateEmitter.emit('update', message.guild); // Play the song
   },
-  ";;earrape" : function(message, params, globals, updateEmitter) {
+  ";;earrape" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 2);
     //updateEmitter.emit('update', message.guild);
   },
-  ";;nightcore" : function(message, params, globals, updateEmitter) {
+  ";;nightcore" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 3);
     //updateEmitter.emit('update', message.guild);
   },
-  ";;hospital" : function(message, params, globals, updateEmitter) {
+  ";;hospital" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 4);
     //updateEmitter.emit('update', message.guild);
   },
+  ";;playlist" : function(message, params, globals) {
+    if (params[0] != undefined) {
+      var channel;
+      if (message.guild.voiceConnection) {
+        channel = message.guild.voiceConnection.channel;
+      } else {
+        //channel = discordUtil.findVoiceChannel(message.author, message.guild);
+        channel = message.member.voiceChannel;
+        if (channel == null) {
+          message.channel.send("Please join a voice channel.");
+          return;
+        }
+      }
+
+      var list = youtubeUtil.getInfoFromUrl(params[0]).list; // Get Id
+
+      if (list == undefined) {
+        youtubeUtil.getDataFromSearchQuery(params.join(" "), "playlist", function(data) { // Iterperet the parameters as a search term
+          if (!data) {
+            message.channel.send("Invalid search query.");
+          } else {
+            youtubeUtil.getVideoIdsFromPlaylist(data.id.playlistId, callback function(idList) {
+              if (!idList) {
+                message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
+              } else {
+                youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
+                  addListToMusicQueue(idList, message, globals, channel, 1); // Play normally for now
+                });
+              }
+            });
+          }
+        });
+      } else {
+        youtubeUtil.getVideoIdsFromPlaylist(list, callback function(idList) {
+          if (!idList) {
+            message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
+          } else {
+            youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
+              addListToMusicQueue(idList, message, globals, channel, 1); // Play normally for now
+            });
+          }
+        });
+      }
+    } else {
+      message.channel.send("Please provide the youtube playlist url or a search term.");
+    }
+  }
   ";;madness" : function(message, params, globals) {
     var time = parseInt(params.shift());
     if (!time || time < 0) {
@@ -227,6 +274,59 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
   }
 }
 
+function addListToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
+  function onChannelJoin(connection) {
+    message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
+      var musicQueue = globals.get("musicQueue"); // Get queue
+
+      if (!musicQueue) {
+        musicQueue = [];
+      }
+
+      for (var i = 0; i < data.length; i++) {
+        var newSong = {"id" : data[i].id,
+                       "user" : message.author.username,
+                       "title" : data[i].snippet.title,
+                       "type" : type,
+                       "duration" :  moment.duration(data[i].contentDetails.duration).asMilliseconds()}
+
+        if (newSong.type == 3 || newSong.type == 4) {
+          newSong.duration = Math.floor(newSong.duration / 1.4);
+        }
+
+        if (member.nickname != null) {
+          newSong.user = member.nickname;
+        }
+
+        musicQueue.push(newSong);
+
+        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
+      }
+
+      globals.set("musicQueue", musicQueue); // Set queue
+
+      var playing = globals.get("playing");
+      if (!playing) {
+        playNextSong(globals, message.guild);
+        globals.set("playing", true);
+      }
+
+      if (message.deletable) {
+        message.delete(); // So the music channel isn't filled with youtube videos
+      }
+    });
+  }
+
+  if (channel.connection) {
+    onChannelJoin(channel.connection); // Don't join channel that you're already in
+  } else {
+    channel.join().then(onChannelJoin).catch(function(err) { // Catch error
+      logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
+      console.log(err);
+    });
+  }
+}
+
 function thePlayCommand (message, params, globals, type) { // Is the play command
   if (params[0] != undefined) {
     var channel;
@@ -241,9 +341,10 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
       }
     }
 
-    var id = youtubeUtil.getIdFromUrl(params[0]); // Get Id
-    if (id == null) {
-      youtubeUtil.getVideoDataFromSearchQuery(params.join(" "), "snippet", function(data) { // Iterperet the parameters as a search term
+    var id = youtubeUtil.getInfoFromUrl(params[0]).id; // Get Id
+
+    if (id == undefined) {
+      youtubeUtil.getDataFromSearchQuery(params.join(" "), "snippet", "video", function(data) { // Iterperet the parameters as a search term
         if (!data) {
           message.channel.send("Invalid search query.");
         } else {
@@ -337,12 +438,6 @@ function playNextSong(globals, guild) {
             logUtil.log("Error from dispatcher on guild " + guild.name + ": ");
             console.log(error);
           });
-
-          // setTimeout(function() {
-          //   if (result) {
-          //     result.end();
-          //   }
-          // }, (songToPlay.duration - 1) * 1000); // Convert seconds to milliseconds and subtract one second
         }
       }
     } else {
