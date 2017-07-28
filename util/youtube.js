@@ -56,8 +56,8 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
         }
     }
 
-    if (!listRegex.test(result.list)) { // If list id is invalid
-      result.list = undefined;
+    if (!idRegex.test(result.id)) { // If id is invalid
+      result.id = undefined;
     }
 
     return result;
