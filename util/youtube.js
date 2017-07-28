@@ -50,15 +50,17 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
     } else if (parsed.hostname == 'youtube.com' ||
         parsed.hostname == 'www.youtube.com') { // If its a regular youtube link
         if (parsed.path == "/watch") { // If its a video link
-            result.id = parsed.query.v;
-            result.list = parsed.query.list;
+          result.id = parsed.query.v;
+          result.list = parsed.query.list;
         } else if (parsed.path == "/playlist") {
-            result.list = parsed.query.list; // Return playlist id
+          console.log("playlist1");
+          result.list = parsed.query.list; // Return playlist id
         }
     }
 
     if (!idRegex.test(result.id)) { // If id is invalid
-        result.id = undefined;
+      console.log("playlist2");
+      result.id = undefined;
     }
 
     if (!listRegex.test(result.list)) { // If list id is invalid
