@@ -224,7 +224,12 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
   messageToSend += "\nTotal queue length: (" + formatDurationHHMMSS(moment.duration(totalDuration)) + ")";
   messageToSend += "```";
 
-  dmChannel.send(messageToSend);
+  dmChannel.send(messageToSend, {
+    "split" : {
+      "prepend" : "`",
+      "append" : "`"
+    }
+  });
 }
 
 function addToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
