@@ -49,6 +49,7 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
 
     } else if (parsed.hostname == 'youtube.com' ||
         parsed.hostname == 'www.youtube.com') { // If its a regular youtube link
+        console.log("Path: " + parsed.path);
         if (parsed.path == "/watch") { // If its a video link
           result.id = parsed.query.v;
           result.list = parsed.query.list;
@@ -59,11 +60,11 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
     }
 
     if (!idRegex.test(result.id)) { // If id is invalid
-      console.log("playlist2");
       result.id = undefined;
     }
 
     if (!listRegex.test(result.list)) { // If list id is invalid
+      console.log("playlist2");
         result.list = undefined;
     }
 
