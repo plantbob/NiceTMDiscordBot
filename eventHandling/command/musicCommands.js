@@ -56,7 +56,7 @@ var commands = {
           if (!data) {
             message.channel.send("Invalid search query.");
           } else {
-            youtubeUtil.getVideoIdsFromPlaylist(data.id.playlistId, callback function(idList) {
+            youtubeUtil.getVideoIdsFromPlaylist(data.id.playlistId, function(idList) {
               if (!idList) {
                 message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
               } else {
@@ -68,7 +68,7 @@ var commands = {
           }
         });
       } else {
-        youtubeUtil.getVideoIdsFromPlaylist(list, callback function(idList) {
+        youtubeUtil.getVideoIdsFromPlaylist(list, function(idList) {
           if (!idList) {
             message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
           } else {
