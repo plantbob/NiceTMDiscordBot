@@ -130,7 +130,7 @@ module.exports.getVideoIdsFromPlaylist = function(id, callback) {
           "pageToken" : response.nextPageToken
         }
 
-        youtube.playlistitems.list(params, onReturn);
+        youtube.playlistItems.list(params, onReturn);
       } else {
         callback(videoIdList);
       }
