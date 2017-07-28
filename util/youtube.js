@@ -45,15 +45,15 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
     var parsed = urlParser.parse(url, true); // Enable query parsing
 
     if (parsed.hostname == 'youtu.be') { // Different hostnames store the video id in different places
-        result.id = parsed.path.substr(1); // Use substr to remove the / at the beginning
+        result.id = parsed.pathname.substr(1); // Use substr to remove the / at the beginning
 
     } else if (parsed.hostname == 'youtube.com' ||
         parsed.hostname == 'www.youtube.com') { // If its a regular youtube link
-        console.log("Path: " + parsed.path);
-        if (parsed.path == "/watch") { // If its a video link
+        console.log("Path: " + parsed.pathname);
+        if (parsed.pathname == "/watch") { // If its a video link
           result.id = parsed.query.v;
           result.list = parsed.query.list;
-        } else if (parsed.path == "/playlist") {
+        } else if (parsed.pathname == "/playlist") {
           console.log("playlist1");
           result.list = parsed.query.list; // Return playlist id
         }
