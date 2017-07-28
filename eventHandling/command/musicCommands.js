@@ -52,7 +52,7 @@ var commands = {
       var list = youtubeUtil.getInfoFromUrl(params[0]).list; // Get Id
 
       if (list == undefined) {
-        youtubeUtil.getDataFromSearchQuery(params.join(" "), "playlist", function(data) { // Iterperet the parameters as a search term
+        youtubeUtil.getDataFromSearchQuery(params.join(" "), "snippet", "playlist", function(data) { // Iterperet the parameters as a search term
           if (!data) {
             message.channel.send("Invalid search query.");
           } else {
