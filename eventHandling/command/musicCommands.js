@@ -51,6 +51,8 @@ var commands = {
 
       var list = youtubeUtil.getInfoFromUrl(params[0]).list; // Get Id
 
+      console.log("List id: " + list);
+
       if (list == undefined) {
         youtubeUtil.getDataFromSearchQuery(params.join(" "), "snippet", "playlist", function(data) { // Iterperet the parameters as a search term
           if (!data) {
@@ -72,7 +74,9 @@ var commands = {
           if (!idList) {
             message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
           } else {
+            console.log("Ids: " + idList);
             youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
+              console.log("Data: " + idList);
               addListToMusicQueue(idList, message, globals, channel, 1); // Play normally for now
             });
           }
