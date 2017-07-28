@@ -81,7 +81,7 @@ var commands = {
     } else {
       message.channel.send("Please provide the youtube playlist url or a search term.");
     }
-  }
+  },
   ";;madness" : function(message, params, globals) {
     var time = parseInt(params.shift());
     if (!time || time < 0) {
