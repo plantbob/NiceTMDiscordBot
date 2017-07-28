@@ -78,7 +78,8 @@ module.exports.getDataFromSearchQuery = function(query, part, type, callback) { 
 
     youtube.search.list(params, function(err, response) {
         if (err) {
-            callback(null);
+          console.log(err);
+          callback(null);
         } else {
             if (type == "video") {
                 if (response.items && response.items[0]) {
