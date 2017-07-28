@@ -63,7 +63,7 @@ var commands = {
                 message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
               } else {
                 youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
-                  addListToMusicQueue(idList, message, globals, channel, 1); // Play normally for now
+                  addListToMusicQueue(dataList, message, globals, channel, 1); // Play normally for now
                 });
               }
             });
@@ -76,8 +76,8 @@ var commands = {
           } else {
             console.log("Ids: " + idList);
             youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
-              console.log("Data: " + idList);
-              addListToMusicQueue(idList, message, globals, channel, 1); // Play normally for now
+              console.log("Data: " + dataList);
+              addListToMusicQueue(dataList, message, globals, channel, 1); // Play normally for now
             });
           }
         });
