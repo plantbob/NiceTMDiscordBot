@@ -126,7 +126,7 @@ module.exports.getVideoIdsFromPlaylist = function(id, callback) {
         var params = {
           "part" : "contentDetails",
           "maxResults" : 50,
-          "playlistId" : id
+          "playlistId" : id,
           "pageToken" : response.nextPageToken
         }
 
