@@ -20,6 +20,7 @@ helpMessage += "\n11. ;;noice - *POP* Noice!";
 
 helpMessage += "\n\nMusic Commands: ";
 helpMessage += "\n12. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n12. ;;playlist [url/id/search term] - Queue a playlist.";
 helpMessage += "\n13. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
 helpMessage += "\n14. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
 helpMessage += "\n15. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";

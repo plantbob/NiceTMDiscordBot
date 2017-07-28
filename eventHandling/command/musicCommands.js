@@ -51,13 +51,13 @@ var commands = {
 
       var list = youtubeUtil.getInfoFromUrl(params[0]).list; // Get Id
 
-      console.log("List id: " + list);
-
       if (list == undefined) {
         youtubeUtil.getDataFromSearchQuery(params.join(" "), "snippet", "playlist", function(data) { // Iterperet the parameters as a search term
           if (!data) {
             message.channel.send("Invalid search query.");
           } else {
+            message.channel.send("This might take a while.");
+
             youtubeUtil.getVideoIdsFromPlaylist(data.id.playlistId, function(idList) {
               if (!idList) {
                 message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
@@ -70,13 +70,13 @@ var commands = {
           }
         });
       } else {
+        message.channel.send("This might take a while.");
+
         youtubeUtil.getVideoIdsFromPlaylist(list, function(idList) {
           if (!idList) {
             message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
           } else {
-            console.log("Ids: " + idList);
             youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
-              console.log("Data: " + dataList);
               addListToMusicQueue(dataList, message, globals, channel, 1); // Play normally for now
             });
           }

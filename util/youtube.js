@@ -145,8 +145,6 @@ module.exports.getVideoDataFromIdList = function(list, part, callback) {
   module.exports.getVideoDataFromId(list[i], part, onData);
 
   function onData(data) {
-    console.log(i);
-
     if (!data) {
 
     } else {
