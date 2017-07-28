@@ -112,7 +112,7 @@ module.exports.getVideoIdsFromPlaylist = function(id, callback) {
     "playlistId" : id
   }
 
-  youtube.playlistitems.list(params, onReturn);
+  youtube.playlistItems.list(params, onReturn);
 
   function onReturn(err, response) {
     if (err) {
