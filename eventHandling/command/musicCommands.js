@@ -74,7 +74,7 @@ var commands = {
 
         youtubeUtil.getVideoIdsFromPlaylist(list, function(idList) {
           if (!idList) {
-            message.channel.send("Error: In order for you to be seeing this message shit really had to have hit the fan.");
+            message.channel.send("Invalid link.");
           } else {
             youtubeUtil.getVideoDataFromIdList(idList, "snippet, contentDetails", function(dataList) {
               addListToMusicQueue(dataList, message, globals, channel, 1); // Play normally for now

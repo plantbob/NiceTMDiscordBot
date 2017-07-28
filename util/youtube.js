@@ -33,7 +33,6 @@ module.exports.getVideoDataFromId = function(id, part, callback) { // Returns pi
 };
 
 const idRegex = /^[a-zA-Z0-9-_]{11}$/;
-const listRegex = /^[a-zA-Z0-9-_]{34}$/;
 module.exports.getInfoFromUrl = function(url) { // Returns object containing the video id and playlist id from a youtube url
     var result = {};
 
@@ -55,10 +54,6 @@ module.exports.getInfoFromUrl = function(url) { // Returns object containing the
         } else if (parsed.pathname == "/playlist") {
           result.list = parsed.query.list; // Return playlist id
         }
-    }
-
-    if (!idRegex.test(result.id)) { // If id is invalid
-      result.id = undefined;
     }
 
     if (!listRegex.test(result.list)) { // If list id is invalid
