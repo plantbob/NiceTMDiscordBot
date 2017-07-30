@@ -226,8 +226,8 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
 
   dmChannel.send(messageToSend, {
     "split" : {
-      "prepend" : "`",
-      "append" : "`"
+      "prepend" : "```",
+      "append" : "```"
     }
   });
 }
