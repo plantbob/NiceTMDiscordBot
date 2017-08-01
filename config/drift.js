@@ -38,5 +38,6 @@ module.exports.driftmusic = [
   'https://www.youtube.com/watch?v=dv13gl0a-FA', // Deja Vu
   'https://www.youtube.com/watch?v=atuFSv2bLa8', // GAS GAS GAS!
   'https://www.youtube.com/watch?v=BJ0xBCwkg3E', // Running in the 90s!
-  'https://www.youtube.com/watch?v=tNveMjoSxp0' // Night On Fire!
+  'https://www.youtube.com/watch?v=tNveMjoSxp0', // Night On Fire!
+  'https://www.youtube.com/watch?v=iuJDhFRDx9M' // Teriyaki Boyz
 ];
