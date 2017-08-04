@@ -1,6 +1,8 @@
 module.exports = {};
 
 const request = require('request');
+const nodecache = require('node-cache');
+const cache = new nodecache();
 
 module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add limit to how many listings can be cached
   if (subreddit.indexOf('?') != -1) {
