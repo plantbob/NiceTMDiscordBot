@@ -89,20 +89,16 @@ var commands = {
     });
   },
   ";;m" : function(message, params, globals) {
-    if (discordUtil.isChannelNSFW(message.channel)) { // Check to see if channel is nsfw
-      if (params[0]) {
-        reddit.getRandomUrl(params[0], function(url) {
-          if (url) {
-            message.channel.send(url);
-          } else {
-            message.channel.send("There was an error reaching /r/" + params[0] + ". Blame Finland.");
-          }
-        });
-      } else {
-        message.channel.send("Give me the subreddit name damnit!");
-      }
+    if (params[0]) {
+      reddit.getRandomUrl(params[0], discordUtil.isChannelNSFW(message.channel), function(url) {
+        if (url) {
+          message.channel.send(url);
+        } else {
+          message.channel.send("There was an error reaching /r/" + params[0] + " or the subreddit was nsfw and this isn't an nsfw channel you perv.");
+        }
+      });
     } else {
-      message.channel.send("Please run on a nsfw channel, this is reddit afterall.");
+      message.channel.send("Give me the subreddit name damnit!");
     }
   },
   ";;github" : function(message, params, globals) {
