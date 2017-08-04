@@ -11,14 +11,19 @@ module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add
   }
 
   if (!nsfw) { // If the request is for sfw subreddits
+    console.log("test1");
     module.exports.getAboutData(subreddit, function(data) {
-        if (data.over18) { // If its a nsfw subreddit
+        console.log("Memery:" + data.over18);
+        if (!data.over18) { // If its a nsfw subreddit
+          console.log("test4");
           callback(null); // Subreddit is nsfw and the user requested sfw so return null
         } else {
+          console.log("test3");
           getSubredditListingHelper(subreddit, nsfw, callback);
         }
     });
   } else { // If the request ignores nsfw
+    console.log("test2");
     getSubredditListingHelper(subreddit, nsfw, callback);
   };
 };
