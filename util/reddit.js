@@ -13,7 +13,7 @@ module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add
   if (!nsfw) { // If the request is for sfw subreddits
     console.log("test1");
     module.exports.getAboutData(subreddit, function(data) {
-        console.log("Memery:" + data.over18);
+        console.log("Memery: " + data.over18);
         if (data.over18) { // If its a nsfw subreddit
           console.log("test4");
           callback(null); // Subreddit is nsfw and the user requested sfw so return null
@@ -109,7 +109,7 @@ module.exports.getAboutData = function(subreddit, callback) {
     }
 
     if (about.data != null) {
-      callback(about);
+      callback(about.data);
       return;
     }
 
