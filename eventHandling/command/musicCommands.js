@@ -13,6 +13,7 @@ var fs = require('fs');
 var token = require('../../config/token.js');
 
 var initialD = require("../../config/drift.js"); // YEAH YEAH YEAH!
+var woah = require("../../config/woah.js"); // Crash Bandicoot
 
 module.exports = {};
 
@@ -103,6 +104,12 @@ var commands = {
     thePlayCommand(message, [ initialD.driftmusic[Math.floor(Math.random() * initialD.driftmusic.length)] ], globals, 1); // Drift music
 
     message.channel.send(initialD.driftgif[Math.floor(Math.random() * initialD.driftgif.length)]); // Drift Gif
+  },
+  ";;woah" : function(message, params, globals) {
+
+    thePlayCommand(message, [ woah.WOAH[Math.floor(Math.random() * iwoah.WOAH.length)] ], globals, 1); // WOAH music
+
+    message.channel.send(woah.WOAHGIF); // WOAH Gif
   },
   ";;skip" : function(message, params, globals) {
     if (message.guild.voiceConnection) {
