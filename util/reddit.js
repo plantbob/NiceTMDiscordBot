@@ -12,7 +12,7 @@ module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add
 
   if (!nsfw) { // If the request is for sfw subreddits
     module.exports.getAboutData(subreddit, function(data) {
-        if (data.over18) { // If its a nsfw subreddit
+        if (data && data.over18) { // If its a nsfw subreddit
           callback(null); // Subreddit is nsfw and the user requested sfw so return null
         } else {
           getSubredditListingHelper(subreddit, nsfw, callback);
@@ -38,6 +38,12 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
   }
 
   request("https://www.reddit.com/r/" + subreddit + "/hot/.json?limit=250", function(error, response, body) {
+    if (error) {
+        console.log(error);
+        callback(null);
+        return;
+    }
+
     try {
       var listing = JSON.parse(body);
     } catch (exception) {
@@ -93,6 +99,12 @@ module.exports.getAboutData = function(subreddit, callback) {
   }
 
   request(`https://www.reddit.com/r/${subreddit}/about.json`, function(error, response, body) {
+    if (error) {
+        console.log(error);
+        callback(null);
+        return;
+    }
+
     try {
       var about = JSON.parse(body);
     } catch (exception) {
