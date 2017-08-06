@@ -72,7 +72,7 @@ var commands = {
     }
   },
   ";;humourme" : function(message, params, globals) {
-    reddit.getRandomUrl("i_irl", function(url) {
+    reddit.getRandomUrl("i_irl", discordUtil.isChannelNSFW(message.channel), function(url) {
       if (url) {
         message.channel.send(url);
       } else {
@@ -81,7 +81,7 @@ var commands = {
     });
   },
   ";;meow" : function(message, params, globals) {
-    reddit.getRandomUrl("cats", function(url) {
+    reddit.getRandomUrl("cats", discordUtil.isChannelNSFW(message.channel), function(url) {
       if (url) {
         message.channel.send(url);
       } else {
