@@ -6,7 +6,7 @@ const token = require("../config/token.js");
 module.exports.postGuildCount = function(count, callback) {
     request({
         method: "POST",
-        json: true
+        json: true,
         headers: {
           'content-type' : 'application/json',
           Authorization: token.discordBotsToken
