@@ -3,7 +3,7 @@ module.exports = {};
 const request = require('request');
 const token = require("../config/token.js");
 
-module.exports.postGuildCount(count, callback) {
+module.exports.postGuildCount = function(count, callback) {
     request({
         method: "POST",
         json: true
