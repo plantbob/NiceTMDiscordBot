@@ -27,8 +27,15 @@ function updateGame(client) {
 
   discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
       if (error) {
+        console.log("Error: ");
         console.log(error);
       }
+
+      console.log("Response: ");
+      console.log(response);
+
+      console.log("Body: ");
+      console.log(body);
   });
 }
 
