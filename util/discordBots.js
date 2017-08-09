@@ -8,10 +8,9 @@ module.exports.postGuildCount = function(count, callback) {
         method: "POST",
         json: true,
         headers: {
-          'content-type' : 'application/json',
           Authorization: token.discordBotsToken
         },
         url: 'https://bots.discord.pw/api/bots/318558676241874945/stats',
-        body: JSON.stringify({"server_count": count})
+        body: {"server_count": count}
       }, callback);
 }
