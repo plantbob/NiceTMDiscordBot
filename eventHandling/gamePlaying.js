@@ -30,12 +30,6 @@ function updateGame(client) {
         console.log("Error: ");
         console.log(error);
       }
-
-      console.log("Response: ");
-      console.log(response);
-
-      console.log("Body: ");
-      console.log(body);
   });
 }
 
