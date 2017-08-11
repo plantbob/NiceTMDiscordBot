@@ -14,7 +14,7 @@ joinMessage += ";;nightcore [url/search term] - This turns anything into nightco
 joinMessage += ";;hospital [url/search term] - This does both earrape and nightcore at the same time, run it only if you dare\n";
 joinMessage += ";;m [subreddit] - Gets a random link from the specified subreddit\n\n";
 
-joinMessage += "Thanks for adding me to your server, if you have suggestions then go to my github: ```";
+joinMessage += "Thanks for adding me to your server, if you have ideas or feedback then go to my github: ```";
 joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
 module.exports.init = function(client) {
