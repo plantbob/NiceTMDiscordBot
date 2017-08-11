@@ -14,19 +14,18 @@ helpMessage += "\n5. ;;humourme - Gets a random picture from r/I_irl";
 helpMessage += "\n6. ;;meow - Gets a random picture from r/cats";
 helpMessage += "\n7. ;;github - Gives a link to the bot's source.";
 helpMessage += "\n8. ;;link - Gives a link so you can add this bot to your server!";
-helpMessage += "\n9. ;;patreon - Gives a link so you support me in development of this monstronsity!";
-helpMessage += "\n10. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
-helpMessage += "\n11. ;;noice - *POP* Noice!";
+helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
+helpMessage += "\n10. ;;noice - *POP* Noice!";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n12. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n11. ;;play [url/id/search term] - Adds a youtube video to the queue.";
 helpMessage += "\n12. ;;playlist [url/id/search term] - Queue a playlist.";
 helpMessage += "\n13. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
 helpMessage += "\n14. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
 helpMessage += "\n15. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
 helpMessage += "\n16. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
 helpMessage += "\n17. ;;drift - GAS GAS GAS!";
-helpMessage += "\n18. ;;drift - WOAH!";
+helpMessage += "\n18. ;;woah - WOAH!";
 helpMessage += "\n19. ;;queue - Lists the current queue.";
 helpMessage += "\n20. ;;skip - Skips the current song.";
 helpMessage += "\n21. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
@@ -144,9 +143,6 @@ var commands = {
   },
   ";;link" : function(message, params, globals) {
     message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?client_id=318558676241874945&scope=bot&permissions=8192 \nAdd me to your server whydontcha?");
-  },
-  ";;patreon" : function(message, params, globals) {
-    message.channel.send("Here's the link: https://www.patreon.com/user?u=7015872 \nSupport me plz");
   }
 }
 
