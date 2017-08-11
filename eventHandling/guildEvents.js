@@ -26,7 +26,11 @@ module.exports.init = function(client) {
     updateGame(client);
 
     if (guild.defaultChannel) {
-      guild.defaultChannel.send(joinMessage);
+      try {
+        guild.defaultChannel.send(joinMessage);
+      } catch (exeception) {
+
+      }
     }
   });
 
