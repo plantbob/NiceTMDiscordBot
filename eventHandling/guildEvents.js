@@ -2,7 +2,7 @@ module.exports = {};
 
 const discordBotsUtil = require("../util/discordBots.js");
 
-var joinMessage = "***";
+var joinMessage = "```";
 
 joinMessage += "Hello! If you need help then use ;;help\n";
 joinMessage += "If you're too lazy to read the help message then here are the commands you really want: \n";
@@ -17,7 +17,7 @@ joinMessage += ";;m [subreddit] - Gets a random link from the specified subreddi
 joinMessage += "Thanks for adding me to your server, if you have suggestions then go to my github: \n";
 joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
-joinMessage += "***";
+joinMessage += "```";
 
 module.exports.init = function(client) {
   client.on('ready', function() {
