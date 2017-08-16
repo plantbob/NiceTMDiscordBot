@@ -23,7 +23,7 @@ module.exports.init = function(client) {
   });
 
   client.on('guildCreate', function(guild) {
-    updateGame(client);
+    updateGame(client, true);
 
     if (guild.defaultChannel) {
       try {
@@ -35,19 +35,38 @@ module.exports.init = function(client) {
   });
 
   client.on('guildDelete', function() {
-    updateGame(client);
+    updateGame(client, true);
   });
+
+  setInterval(function() {
+    updateGame(client, false);
+  }, 5000);
 }
 
-function updateGame(client) {
-  client.user.setGame(`on ${client.guilds.size} servers.`);
+function updateGame(client, updateDiscordBots) {
+  if (((new Date).getTime() % 10000) < 5000) { // Toggle every 5 seconds
+    client.user.setGame(`;;help - ${client.guilds.size} servers.`);
+  } else {
+    var userCount = 0;
 
-  discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
+    var guilds = Array.from(client.guilds.values());
+    for (var k in guilds) {
+      if (guilds[k] && guilds[k].members) {
+        usercount += guilds[k].members.size;
+      }
+    }
+
+    client.user.setGame(`;;help - ${userCount} users.`);
+  }
+
+  if (updateDiscordBots) {
+    discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
       if (error) {
         console.log("Error: ");
         console.log(error);
       }
-  });
+    });
+  }
 }
 
 module.exports.close = function(client) {
