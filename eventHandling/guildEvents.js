@@ -52,7 +52,7 @@ function updateGame(client, updateDiscordBots) {
     var guilds = Array.from(client.guilds.values());
     for (var k in guilds) {
       if (guilds[k] && guilds[k].members) {
-        usercount += guilds[k].members.size;
+        userCount += guilds[k].members.size;
       }
     }
 
