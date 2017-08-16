@@ -19,7 +19,7 @@ joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
 module.exports.init = function(client) {
   client.on('ready', function() {
-    updateGame(client);
+    updateGame(client, false);
   });
 
   client.on('guildCreate', function(guild) {
@@ -45,7 +45,7 @@ module.exports.init = function(client) {
 
 function updateGame(client, updateDiscordBots) {
   if (((new Date).getTime() % 10000) < 5000) { // Toggle every 5 seconds
-    client.user.setGame(`;;help - ${client.guilds.size} servers.`);
+    setClientGame(client, `;;help - ${client.guilds.size} servers.`);
   } else {
     var userCount = 0;
 
@@ -56,7 +56,7 @@ function updateGame(client, updateDiscordBots) {
       }
     }
 
-    client.user.setGame(`;;help - ${userCount} users.`);
+    setClientGame(client, `;;help - ${userCount} users.`);
   }
 
   if (updateDiscordBots) {
@@ -67,6 +67,10 @@ function updateGame(client, updateDiscordBots) {
       }
     });
   }
+}
+
+function setClientGame(client, gameName) {
+  client.user.setPresence({ game: { name: gameName, type: 0 } });
 }
 
 module.exports.close = function(client) {
