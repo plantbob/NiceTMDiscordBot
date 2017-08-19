@@ -26,6 +26,8 @@ function reactWithTM(message, params, globals) {
 }
 
 module.exports.searchFunction = function(command) {
+  command = command.toLowerCase();
+
   if (command[0] == 'n' && command.length >= 4) {
     var isNice = false;
     var lastChar = 'n';
@@ -50,7 +52,7 @@ module.exports.searchFunction = function(command) {
     }
   }
 
-  return commands[command.toLowerCase()];
+  return commands[command];
 }
 
 module.exports.close = function(globals, guild) {
