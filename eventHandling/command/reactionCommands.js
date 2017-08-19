@@ -25,31 +25,13 @@ function reactWithTM(message, params, globals) {
   }
 }
 
+var isNice = /[n]n*[i]i*[c]c*[e]e*/;
+
 module.exports.searchFunction = function(command) {
   command = command.toLowerCase();
 
-  if (command[0] == 'n' && command.length >= 4) {
-    var isNice = false;
-    var lastChar = 'n';
-    for (var i = 1; i < command.length; i++) {
-      var currentChar = command[i];
-
-      if (lastChar == currentChar) {
-      } else if (lastChar == 'n' && currentChar == 'i') {
-      } else if (lastChar == "i" && currentChar == "c") {
-      } else if (lastChar == "c" && currentChar == "e") {
-        isNice = true;
-      } else {
-        isNice = false;
-        break;
-      }
-
-      lastChar = currentChar;
-    }
-
-    if (isNice) {
-      return reactWithTM;
-    }
+  if (isNice.test(command)) {
+    return reactWithTM;
   }
 
   return commands[command];
