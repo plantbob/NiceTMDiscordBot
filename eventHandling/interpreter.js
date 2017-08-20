@@ -75,7 +75,7 @@ module.exports.init = function(client) {
 
   client.on("guildMemberAdd", function(member) { // For displaying guild join messages
     var tempGlobals = globalList[member.guild.id];
-    if (!tempGlobals && typeof tempGlobals.get != "function") {
+    if (tempGlobals == undefined) {
       tempGlobals = new nodecache(); // Default globals if there are none
     }
 
