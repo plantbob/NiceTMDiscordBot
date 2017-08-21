@@ -101,6 +101,8 @@ module.exports.init = function(client) {
     }
   });
   // End dealing with command line input
+
+  setInterval(saveData, 36000000); // Save database every hour
 }
 
 function loadCommandInterpreters() {
@@ -139,6 +141,10 @@ module.exports.close = function(client) { // This function will run on server cl
     globalList[guildsArray[i].id] = tempGlobals; // Set the new globals
   }
 
+  saveData(); // Save data
+}
+
+function saveData() {
   logUtil.log("Saving globals to database.json file...", logUtil.STATUS_INFO);
 
   var dataToSave = {};
