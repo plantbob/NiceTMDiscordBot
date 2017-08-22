@@ -102,7 +102,7 @@ module.exports.init = function(client) {
   });
   // End dealing with command line input
 
-  setInterval(saveData, 36000000); // Save database every hour
+  setInterval(saveData, 3600000); // Save database every hour
 }
 
 function loadCommandInterpreters() {
