@@ -145,7 +145,7 @@ module.exports.close = function(client) { // This function will run on server cl
 }
 
 function saveData() {
-  logUtil.log("Saving globals to database.json file...", logUtil.STATUS_INFO);
+  logUtil.log("Saving globals to database.json file...", logUtil.STATUS_NOTIFICATION);
 
   var dataToSave = {};
 
