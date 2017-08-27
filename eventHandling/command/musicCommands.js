@@ -115,16 +115,15 @@ var commands = {
     if (message.guild.voiceConnection) {
       var musicQueue = globals.get("musicQueue");
 
-      console.log(message.guild.voiceConnection.dispatcher);
       if (message.guild.voiceConnection.dispatcher) {
-        if (musicQueue.length > 1) {
-          musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
-          globals.set("musicQueue", musicQueue);
-        }
+        // if (musicQueue.length > 1) {
+        //   musicQueue.unshift(musicQueue[0]); // Duplicate the song in the front to counteract the double-skip
+        //   globals.set("musicQueue", musicQueue);
+        // }
 
-        endSong(message, globals);
+        endSong(message.guild, globals);
+        playNextSong(globals, message.guild);
       } else if (globals.get('playing')) { // If we're in between songs
-        console.log("test3");
         musicQueue.shift();
         globals.set("musicQueue", musicQueue);
       } else {
@@ -172,7 +171,7 @@ var commands = {
     if (message.guild.voiceConnection && message.member.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
       globals.set("musicQueue", []);
 
-      endSong(message, globals);
+      endSong(message.guild, globals);
       message.guild.voiceConnection.disconnect();
       globals.set("playing", false);
     } else {
@@ -241,7 +240,7 @@ function listQueue(dmChannel, musicQueue) { // Used in the "!queue" command
 
 function addToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
   function onChannelJoin(connection) {
-    message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
+    message.guild.members.fetch(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
 
       if (!musicQueue) {
@@ -252,7 +251,8 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
                      "user" : message.author.username,
                      "title" : data.snippet.title,
                      "type" : type,
-                     "duration" :  moment.duration(data.contentDetails.duration).asMilliseconds()}
+                     "duration" :  moment.duration(data.contentDetails.duration).asMilliseconds(),
+                     "queueID" : guid()} // Used later
 
       if (newSong.type == 3 || newSong.type == 4) {
         newSong.duration = Math.floor(newSong.duration / 1.4);
@@ -292,7 +292,7 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
 
 function addListToMusicQueue(data, message, globals, channel, type) { // Used in the "!play" command
   function onChannelJoin(connection) {
-    message.channel.guild.fetchMember(message.author).then(function(member) { // So we can get the nickname instead of the username
+    message.channel.guild.members.fetch(message.author).then(function(member) { // So we can get the nickname instead of the username
       var musicQueue = globals.get("musicQueue"); // Get queue
 
       if (!musicQueue) {
@@ -346,6 +346,7 @@ function addListToMusicQueue(data, message, globals, channel, type) { // Used in
 function thePlayCommand (message, params, globals, type) { // Is the play command
   if (params[0] != undefined) {
     var channel;
+
     if (message.guild.voiceConnection) {
       channel = message.guild.voiceConnection.channel;
     } else {
@@ -387,11 +388,9 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
   }
 }
 
-function endSong(message, globals) { // Used in the skip and dc commands
-  console.log("test1");
-  if (message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
-    console.log("test2");
-    message.guild.voiceConnection.dispatcher.end(); // End the current stream
+function endSong(guild, globals) { // Used in the skip and dc commands
+  if (guild.voiceConnection && guild.voiceConnection.dispatcher) {
+    guild.voiceConnection.dispatcher.end(); // End the current stream
   }
 }
 
@@ -400,71 +399,97 @@ module.exports.searchFunction = function(command) {
 }
 
 function playNextSong(globals, guild) {
-    var musicQueue = globals.get("musicQueue");
+  var musicQueue = globals.get("musicQueue");
 
-    if (!musicQueue) {
-      musicQueue = [];
+  if (!musicQueue) {
+    musicQueue = [];
+  }
+
+  if (musicQueue.length != 0) { // If there are songs queued
+    globals.set("playing", true);
+
+    var songToPlay = musicQueue.shift(); // Get the song
+
+    var nextSongID = 0; // Used to see if song has been skipped
+    if (musicQueue.length != 0) {
+      nextSongID = musicQueue[0].queueID;
     }
 
-    if (musicQueue.length != 0) { // If there are songs queued
-      globals.set("playing", true);
+    globals.set("musicQueue", musicQueue); // Set musicQueue
 
-      var songToPlay = musicQueue.shift(); // Get the song
-      globals.set("musicQueue", musicQueue); // Set musicQueue
+    logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
 
-      logUtil.log("Song " + songToPlay.title + " removed from queue on server " + guild.name + ".");
-
-      if (!guild.voiceConnection) {
-        musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
-      } else {
-        logUtil.log("Song " + songToPlay.title + " about to run play function on " + guild.name + ".");
-
-        switch (songToPlay.type) {
-          case 1:
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
-            break;
-          case 2:
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50']); // Play the video better
-            break;
-          case 3:
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
-            break;
-          case 4:
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
-            break;
-          default:
-            console.log("Song type: " + songToPlay.type);
-            var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
-        }
-
-        if (result instanceof Error) { // Check to see if an error was returned
-          logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
-          console.log(result);
-        } else {
-          result.once('start', function() { // Reset the timer to account for the delay it took for the stream to start
-            logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
-          });
-
-          result.once('end', function() { // Play the next song when this one ends
-            logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
-            playNextSong(globals, guild);
-          });
-
-          result.on('error', function(error) {
-            logUtil.log("Error from dispatcher on guild " + guild.name + ": ");
-            console.log(error);
-          });
-        }
-      }
+    if (!guild.voiceConnection) {
+      musicQueue = []; // Bot isn't connected to a voiceChannel so clear the queue
     } else {
-      globals.set("playing", false);
-    }
+      logUtil.log("Song " + songToPlay.title + " about to run play function on " + guild.name + ".");
 
-    globals.set("musicQueue", musicQueue);
+      switch (songToPlay.type) {
+        case 1:
+          var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id); // Play the video normally
+          break;
+        case 2:
+          var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50']); // Play the video better
+          break;
+        case 3:
+          var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['atempo=0.7', 'asetrate=r=88200']); // Play the video even better
+          break;
+        case 4:
+          var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, ['volume=50', 'atempo=0.7', 'asetrate=r=88200']); // Play the video both better and even better
+          break;
+        default:
+          var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
+      }
+
+      if (result instanceof Error) { // Check to see if an error was returned
+        logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
+        console.log(result);
+      } else {
+        result.once('start', function() { // Reset the timer to account for the delay it took for the stream to start
+          logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
+        });
+
+        result.once('end', function() { // Play the next song when this one ends
+          logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
+          //playNextSong(globals, guild);
+        });
+
+        var timeoutID = setTimeoutReturnsId(function() {
+          var newMusicQueue = globals.get("musicQueue");
+
+          if (newMusicQueue.length != 0 && (nextSongID == newMusicQueue[0].queueID)) { // If the song wasn't skipped
+            endSong(guild, globals);
+            playNextSong(globals, guild);
+          }
+        }, songToPlay.duration + 1000);
+
+        globals.set("timeoutID", timeoutID);
+
+        result.on('error', function(error) {
+          logUtil.log("Error from dispatcher on guild " + guild.name + ": ");
+          console.log(error);
+        });
+      }
+    }
+  } else {
+    globals.set("playing", false);
+  }
+
+  globals.set("musicQueue", musicQueue);
 }
 
 function formatDurationHHMMSS(duration) {
   return Math.floor(duration.asHours()) + moment.utc(duration.asMilliseconds()).format(":mm:ss");
+}
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
 }
 
 module.exports.close = function(globals, guild) { // Runs on close
