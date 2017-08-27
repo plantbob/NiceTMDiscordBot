@@ -455,12 +455,8 @@ function playNextSong(globals, guild) {
         });
 
         var timeoutID = setTimeoutReturnsId(function() {
-          var newMusicQueue = globals.get("musicQueue");
-
-          if (newMusicQueue.length != 0 && (nextSongID == newMusicQueue[0].queueID)) { // If the song wasn't skipped
-            endSong(guild, globals);
-            playNextSong(globals, guild);
-          }
+          endSong(guild, globals);
+          playNextSong(globals, guild);
         }, songToPlay.duration + 1000);
 
         globals.set("timeoutID", timeoutID);
