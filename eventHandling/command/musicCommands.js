@@ -252,7 +252,7 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
                      "title" : data.snippet.title,
                      "type" : type,
                      "duration" :  moment.duration(data.contentDetails.duration).asMilliseconds(),
-                     "queueID" : guid()} // Used later
+                     "queueID" : guid()}
 
       if (newSong.type == 3 || newSong.type == 4) {
         newSong.duration = Math.floor(newSong.duration / 1.4);
@@ -304,7 +304,8 @@ function addListToMusicQueue(data, message, globals, channel, type) { // Used in
                        "user" : message.author.username,
                        "title" : data[i].snippet.title,
                        "type" : type,
-                       "duration" :  moment.duration(data[i].contentDetails.duration).asMilliseconds()}
+                       "duration" :  moment.duration(data[i].contentDetails.duration).asMilliseconds(),
+                       "queueID" : guid()}
 
         if (newSong.type == 3 || newSong.type == 4) {
           newSong.duration = Math.floor(newSong.duration / 1.4);
@@ -389,6 +390,11 @@ function thePlayCommand (message, params, globals, type) { // Is the play comman
 }
 
 function endSong(guild, globals) { // Used in the skip and dc commands
+  var currentSong = globals.get("nowPlaying");
+  if (currentSong) {
+    skippedTimeouts[currentSong.queueID] = true; // This will prevent the setTimeout from executing
+  }
+
   if (guild.voiceConnection && guild.voiceConnection.dispatcher) {
     guild.voiceConnection.dispatcher.end(); // End the current stream
   }
@@ -409,11 +415,6 @@ function playNextSong(globals, guild) {
     globals.set("playing", true);
 
     var songToPlay = musicQueue.shift(); // Get the song
-
-    var nextSongID = 0; // Used to see if song has been skipped
-    if (musicQueue.length != 0) {
-      nextSongID = musicQueue[0].queueID;
-    }
 
     globals.set("musicQueue", musicQueue); // Set musicQueue
 
@@ -447,19 +448,22 @@ function playNextSong(globals, guild) {
       } else {
         result.once('start', function() { // Reset the timer to account for the delay it took for the stream to start
           logUtil.log("Began playing song " + songToPlay.title + " on server " + guild.name + ".");
+          globals.set("nowPlaying", songToPlay);
         });
 
         result.once('end', function() { // Play the next song when this one ends
           logUtil.log("Stopped playing song " + songToPlay.title + " on server " + guild.name + ".");
-          //playNextSong(globals, guild);
         });
 
-        var timeoutID = setTimeoutReturnsId(function() {
+        setTimeout(function() {
+          if (skippedTimeouts[songToPlay.queueID]) { // Don't play a new song because this was skipped
+            return;
+          }
+
           endSong(guild, globals);
+          globals.set("nowPlaying", undefined);
           playNextSong(globals, guild);
         }, songToPlay.duration + 1000);
-
-        globals.set("timeoutID", timeoutID);
 
         result.on('error', function(error) {
           logUtil.log("Error from dispatcher on guild " + guild.name + ": ");
@@ -473,6 +477,8 @@ function playNextSong(globals, guild) {
 
   globals.set("musicQueue", musicQueue);
 }
+
+var skippedTimeouts = {};
 
 function formatDurationHHMMSS(duration) {
   return Math.floor(duration.asHours()) + moment.utc(duration.asMilliseconds()).format(":mm:ss");
@@ -491,4 +497,5 @@ function guid() {
 module.exports.close = function(globals, guild) { // Runs on close
   globals.set("musicQueue", []); // So the bot won't start playing songs weirdly
   globals.set("playing", false); // So the bot won't wait while playing nothing
+  globals.set("nowPlaying", undefined);
 }
