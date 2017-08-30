@@ -208,7 +208,21 @@ var commands = {
     });
   },
   ";;np" : function(message, params, globals) {
+    var playing = globals.get("playing");
+    if (playing) {
+      var currSong = globas.get("nowPlaying");
 
+      if (currSong) {
+        var nowPlayingMessage = `
+
+
+        `
+      } else {
+        message.channel.send("No song playing.");
+      }
+    } else {
+      message.channel.send("No song playing.");
+    }
   }
 }
 
