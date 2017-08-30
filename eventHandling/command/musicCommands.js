@@ -206,6 +206,9 @@ var commands = {
         });
       });
     });
+  },
+  ";;np" : function(message, params, globals) {
+
   }
 }
 
@@ -495,7 +498,7 @@ function guid() {
 }
 
 module.exports.close = function(globals, guild) { // Runs on close
-  globals.set("musicQueue", []); // So the bot won't start playing songs weirdly
-  globals.set("playing", false); // So the bot won't wait while playing nothing
-  globals.set("nowPlaying", undefined);
+  globals.del("musicQueue"); // So the bot won't start playing songs weirdly
+  globals.del("playing"); // So the bot won't wait while playing nothing
+  globals.del("nowPlaying");
 }
