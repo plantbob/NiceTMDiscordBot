@@ -209,14 +209,17 @@ var commands = {
   },
   ";;np" : function(message, params, globals) {
     var playing = globals.get("playing");
-    if (playing) {
-      var currSong = globas.get("nowPlaying");
-
+    if (playing && message.guild.voiceConnection && message.guild.voiceConnection.dispatcher) {
+      var currSong = globals.get("nowPlaying");
       if (currSong) {
+        var progressBar = "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬".splice(Math.floor(31 * (message.guild.voiceConnection.dispatcher.totalStreamTime / currSong.duration)), 0, '🔘');
+
         var nowPlayingMessage = `
+        Now playing \`${currSong.title}\`
+\`( ${formatDurationHHMMSS(moment.duration(message.guild.voiceConnection.dispatcher.totalStreamTime))} / ${formatDurationHHMMSS(moment.duration(currSong.duration))} )\`
+${progressBar}`;
 
-
-        `
+        message.channel.send(nowPlayingMessage);
       } else {
         message.channel.send("No song playing.");
       }
@@ -510,6 +513,10 @@ function guid() {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
+
+String.prototype.splice = function(start, delCount, newSubStr) {
+  return this.slice(0, start) + newSubStr + this.slice(start + Math.abs(delCount));
+};
 
 module.exports.close = function(globals, guild) { // Runs on close
   globals.del("musicQueue"); // So the bot won't start playing songs weirdly
