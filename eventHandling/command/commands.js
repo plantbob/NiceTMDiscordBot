@@ -27,16 +27,17 @@ helpMessage += "\n16. ;;hospital [url/id/search term] - Adds a youtube video to 
 helpMessage += "\n17. ;;drift - GAS GAS GAS!";
 helpMessage += "\n18. ;;woah - WOAH!";
 helpMessage += "\n19. ;;queue - Lists the current queue.";
-helpMessage += "\n20. ;;skip - Skips the current song.";
-helpMessage += "\n21. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n20. ;;np - Shows info on the current song.";
+helpMessage += "\n21. ;;skip - Skips the current song.";
+helpMessage += "\n22. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n22. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n23. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n23. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n24. ;;resetprefix - Resets the prefix to \";;\".";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n24. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n25. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n25. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n26. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
