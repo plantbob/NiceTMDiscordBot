@@ -304,6 +304,7 @@ function addToMusicQueue(data, message, globals, channel, type) { // Used in the
     onChannelJoin(channel.connection); // Don't join channel that you're already in
   } else {
     channel.join().then(onChannelJoin).catch(function(err) { // Catch error
+      message.channel.send("Shit hit the fan. Can't join the voice channel. Sorry.");
       logUtil.log("Error trying to join voiceChannel.", logUtil.STATUS_ERROR);
       console.log(err);
     });
