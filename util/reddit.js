@@ -13,12 +13,15 @@ module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add
   if (!nsfw) { // If the request is for sfw subreddits
     module.exports.getAboutData(subreddit, function(data) {
         if (data && data.over18) { // If its a nsfw subreddit
+          console.log("test subreddit over18");
           callback(null); // Subreddit is nsfw and the user requested sfw so return null
         } else {
+          console.log("test subreddit over18 2");
           getSubredditListingHelper(subreddit, nsfw, callback);
         }
     });
   } else { // If the request ignores nsfw
+    console.log("test subreddit over18 3");
     getSubredditListingHelper(subreddit, nsfw, callback);
   };
 };
@@ -28,7 +31,7 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
   if (listing != undefined) {
     if (listing.data != null) {
       var children = listing.data.children; // Get list
-      var post = children[getRandomInt(1, children.length)];
+      var post = children[getRandomInt(0, children.length)];
       if (post && post.kind && post.kind == "t3") { // Make sure post is a link
         var postdata = post.data;
         callback(postdata.url);
@@ -58,7 +61,10 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
 
       if (!nsfw) { // Remove all nsfw posts if requested
         for (var i = 0; i < children.length; i++) {
-          if (children[i].over_18) {
+          console.log("child:");
+          console.log(children[i]);
+          console.log(children[i].over_18);
+          if (children[i].data && children[i].data.over_18) { // If it's nsfw on a sfw channel
             children.splice(i, 1); // Remove element
           }
         }
@@ -66,7 +72,7 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
 
       cache.set(subreddit + nsfwStringHelper(nsfw), listing, 3600); // Listing expires after one hour
 
-      var post = children[getRandomInt(1, children.length)];
+      var post = children[getRandomInt(0, children.length)];
       if (post && post.kind && post.kind == "t3") { // Make sure post is a link
         var postdata = post.data;
         callback(postdata.url);
