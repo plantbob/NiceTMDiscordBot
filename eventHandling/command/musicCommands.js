@@ -17,8 +17,6 @@ var woah = require("../../config/woah.js"); // Crash Bandicoot
 
 module.exports = {};
 
-var songQueue = []; // Stores songs
-
 var commands = {
   ";;play" : function(message, params, globals) {
     thePlayCommand(message, params, globals, 1);

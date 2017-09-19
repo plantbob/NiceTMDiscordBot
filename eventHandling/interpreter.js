@@ -5,7 +5,9 @@ const fs = require("fs");
 
 var globalList;
 var commandInterpreters = [];
-//
+
+var dontSave = ["musicQueue", "playing", "nowPlaying"]; // These are global pieces of data that don't get saved
+
 module.exports = {};
 
 module.exports.init = function(client) {
@@ -154,6 +156,12 @@ function saveData() {
     var keyList = globalList[i].keys();
 
     for (var j in keyList) {
+      for (var k in dontSave) {
+        if (keyList[j] == dontSave[k]) {
+          continue;
+        }
+      }
+
       cacheRaw[keyList[j]] = globalList[i].get(keyList[j]);
     }
 
