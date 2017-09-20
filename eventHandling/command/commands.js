@@ -33,7 +33,7 @@ helpMessage += "\n22. ;;dc - Disconnects the bot from the voice channel. Can onl
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
 helpMessage += "\n23. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n24. ;;resetprefix - Resets the prefix to \";;\".";
+helpMessage += "\n24. ;;resetprefix - Resets the prefix to two semicolons.";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
 helpMessage += "\n25. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
