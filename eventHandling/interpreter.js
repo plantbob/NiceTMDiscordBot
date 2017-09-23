@@ -100,6 +100,10 @@ module.exports.init = function(client) {
       logUtil.log("Reloading command interpreters...", logUtil.STATUS_INFO);
       loadCommandInterpreters();
       logUtil.log("Finished reloading command interpreters.", logUtil.STATUS_NOTIFICATION);
+    } else if (text.trim() === 's') {
+      logUtil.log("Saving data...", logUtil.STATUS_INFO);
+      saveData();
+      logUtil.log("Finished saving data.", logUtil.STATUS_NOTIFICATION);
     }
   });
   // End dealing with command line input
@@ -155,10 +159,12 @@ function saveData() {
     var cacheRaw = {};
     var keyList = globalList[i].keys();
 
+    keyListIterator:
     for (var j in keyList) {
       for (var k in dontSave) {
         if (keyList[j] == dontSave[k]) {
-          continue;
+          console.log("test " + keyList[j]);
+          continue keyListIterator;
         }
       }
 
