@@ -2,6 +2,8 @@ const reddit = require("../../util/reddit.js");
 const logUtil = require("../../util/logging.js");
 const discordUtil = require("../../util/discordUtil.js");
 
+const Discord = require("discord.js");
+
 var exec = require('child_process').exec;
 
 var helpMessage = "```"; // The message displayed on the help message
@@ -72,18 +74,18 @@ var commands = {
     }
   },
   ";;humourme" : function(message, params, globals) {
-    reddit.getRandomUrl("i_irl", discordUtil.isChannelNSFW(message.channel), function(url) {
-      if (url) {
-        message.channel.send(url);
+    reddit.getRandomData("i_irl", discordUtil.isChannelNSFW(message.channel), function(data) {
+      if (data) {
+        message.channel.send(data.url);
       } else {
         message.channel.send("There was an error reaching /r/I_Irl. Blame Finland.");
       }
     });
   },
   ";;meow" : function(message, params, globals) {
-    reddit.getRandomUrl("cats", discordUtil.isChannelNSFW(message.channel), function(url) {
-      if (url) {
-        message.channel.send(url);
+    reddit.getRandomData("cats", discordUtil.isChannelNSFW(message.channel), function(data) {
+      if (data) {
+        message.channel.send(data.url);
       } else {
         message.channel.send("There was an error reaching /r/cats. Blame Finland.");
       }
@@ -91,9 +93,17 @@ var commands = {
   },
   ";;m" : function(message, params, globals) {
     if (params[0]) {
-      reddit.getRandomUrl(params[0], discordUtil.isChannelNSFW(message.channel), function(url) {
-        if (url) {
-          message.channel.send(url);
+      reddit.getRandomData(params[0], discordUtil.isChannelNSFW(message.channel), function(data) {
+        if (data) {
+          var embedData = new Discord.MessageEmbed({
+            title: data.title,
+            author: data.author,
+            //url: data.url,
+            image: data.url
+          });
+
+          message.channel.send(`\`${data.title}\`
+${data.url}`);
         } else {
           message.channel.send("There was an error reaching /r/" + params[0] + " or the subreddit was nsfw and this isn't an nsfw channel you perv.");
         }

@@ -4,7 +4,7 @@ const request = require('request');
 const nodecache = require('node-cache');
 const cache = new nodecache();
 
-module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add limit to how many listings can be cached
+module.exports.getRandomData = function(subreddit, nsfw, callback) { // TODO: Add limit to how many listings can be cached
   if (subreddit.indexOf('?') != -1) {
     callback(null);
     return;
@@ -13,15 +13,12 @@ module.exports.getRandomUrl = function(subreddit, nsfw, callback) { // TODO: Add
   if (!nsfw) { // If the request is for sfw subreddits
     module.exports.getAboutData(subreddit, function(data) {
         if (data && data.over18) { // If its a nsfw subreddit
-          console.log("test subreddit over18");
           callback(null); // Subreddit is nsfw and the user requested sfw so return null
         } else {
-          console.log("test subreddit over18 2");
           getSubredditListingHelper(subreddit, nsfw, callback);
         }
     });
   } else { // If the request ignores nsfw
-    console.log("test subreddit over18 3");
     getSubredditListingHelper(subreddit, nsfw, callback);
   };
 };
@@ -34,7 +31,7 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
       var post = children[getRandomInt(0, children.length)];
       if (post && post.kind && post.kind == "t3") { // Make sure post is a link
         var postdata = post.data;
-        callback(postdata.url);
+        callback(postdata);
         return;
       }
     }
@@ -75,7 +72,7 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
       var post = children[getRandomInt(0, children.length)];
       if (post && post.kind && post.kind == "t3") { // Make sure post is a link
         var postdata = post.data;
-        callback(postdata.url);
+        callback(postdata);
         return;
       }
     }
