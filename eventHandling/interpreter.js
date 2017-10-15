@@ -46,12 +46,8 @@ module.exports.init = function(client) {
             var i = 0;
             
             servers.map(server => {
-              console.log("Server Id: " + server.id + " prefix: " + server.prefix);
+              globalList[server._id] = server.getFilledNodeCache(); // This possibly doesn't set the globalList value correctly
 
-              var cacheNew = new nodecache();
-              cacheNew.set("prefix", server.prefix);
-              cacheNew.set("newMemberMessage", server.newMemberMessage);
-              globalList[server.id] = cacheNew; // This possible doesn't set the globalList value correctly
               i++;
               if (i >= c) {
                 logUtil.log("Server data successfully loaded!", logUtil.STATUS_INFO);
@@ -80,7 +76,7 @@ function postDatabaseLoad(client) {
       var words = msg.content.split(" "); // Split message into array
   
       var customPrefix = globalList[msg.guild.id].get("prefix");
-      console.log("Custom prefix: " + customPrefix);
+
       if (customPrefix && customPrefix != ";;") {
         words[0] = words[0].replace(";;", "") // Invalidate the default prefix
         words[0] = words[0].replace(customPrefix, ";;"); // Replace the custom prefix with the prefix that is recognized
@@ -186,63 +182,10 @@ module.exports.close = function(client) { // This function will run on server cl
   saveData(); // Save data
 }
 
-// function saveData() {
-//   logUtil.log("Saving globals to database.json file...", logUtil.STATUS_NOTIFICATION);
-
-//   var dataToSave = {};
-
-//   for (var i in globalList) { // TODO: Make code that ignores values that have TTL
-//     var cacheRaw = {};
-//     var keyList = globalList[i].keys();
-
-//     keyListIterator:
-//     for (var j in keyList) {
-//       for (var k in dontSave) {
-//         if (keyList[j] == dontSave[k]) {
-//           continue keyListIterator;
-//         }
-//       }
-
-//       cacheRaw[keyList[j]] = globalList[i].get(keyList[j]);
-//     }
-
-//     dataToSave[i] = cacheRaw;
-//   }
-
-//   fs.writeFileSync("database.json", JSON.stringify(dataToSave)); // Save data
-// }
-
 function saveData() { 
   logUtil.log("Saving globals to MongoDB database...", logUtil.STATUS_NOTIFICATION);
 
   for (var i in globalList) {
-    DiscordServer.findOne({id: i}, function(err, server) {
-      if (err) {
-        logUtil.log("Error finding server with id " + i + ":");
-        console.log(err);
-
-        server = new DiscordServer({
-          id: i,
-          prefix: globalList[i].get("prefix"),
-          newMemberMessage: globalList[i].get("newMemberMessage")
-        });
-      } else if (!server) {
-        server = new DiscordServer({
-          id: i,
-          prefix: globalList[i].get("prefix"),
-          newMemberMessage: globalList[i].get("newMemberMessage")
-        });
-      } else {
-        server.prefix = globalList[i].get("prefix");
-        server.newMemberMessage = globalList[i].get("newMemberMessage");
-      }
-  
-      server.save((err) => {
-        if (err) {
-          logUtil.log("Error saving server data to database: ". logUtil.STATUS_ERROR);
-          console.log(err);
-        }
-      });
-    });
+    DiscordServer.updateWithIdFromNodeCache(i, globalList[i]);
   }
 }
