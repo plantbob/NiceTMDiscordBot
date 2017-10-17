@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const fs = require("fs");
 const logUtil = require("../../util/logging.js");
 
@@ -8,7 +7,7 @@ const logUtil = require("../../util/logging.js");
 var commands = {
   ";;archive" : function(message, params, globals) { // Usage: ;;archive [messages] [file]
     if (message.author.id != 150699865997836288) {
-      message.channel.send("Only the overlord robot is permitted to run this command.");
+      message.channel.send("Only the Overlord Robot is permitted to run this command.");
     } else if (!params[1]) {
       message.channel.send("You forgot all of the parameters, idiot.")
     } else if (!isNaN(params[0]) && params[0] != "all") {
@@ -19,6 +18,28 @@ var commands = {
       var inputFile = fs.createWriteStream(params[1]);
 
       writeMessages(message.id, params[0], inputFile, message.channel, 0);
+    }
+
+    return globals;
+  },
+  ";;s" : function(message, params, globals) { // Usage: ;;archive [messages] [file]
+    if (message.author.id != 150699865997836288) {
+      // Do nothing
+    } else if (!params[3]) {
+      message.channel.send("You forgot all of the parameters, idiot.");
+    } else {
+      var guild = message.client.guilds.get(params[0]);
+      if (guild) {
+        var channel = guild.channels.get(params[1]);
+        if (channel) {
+          params.splice(0, 2);
+          channel.send(params.join(" "));
+        } else {
+          message.channel.send("Channel not found.");
+        }
+      } else {
+        message.channel.send("Guild not found.");
+      }
     }
 
     return globals;
