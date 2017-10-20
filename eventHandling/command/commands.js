@@ -1,10 +1,17 @@
 const reddit = require("../../util/reddit.js");
 const logUtil = require("../../util/logging.js");
 const discordUtil = require("../../util/discordUtil.js");
+const wikiUtil = require("../../util/wikiUtil.js");
 
 const Discord = require("discord.js");
 
+const wiki = require('wikijs').default;
+
+const cheerio = require('cheerio');
+
 var exec = require('child_process').exec;
+
+const fs = require("fs");
 
 var helpMessage = "```"; // The message displayed on the help message
 helpMessage += "Miscallaneous Commands: ";
@@ -154,6 +161,37 @@ ${data.url}`);
   },
   ";;link" : function(message, params, globals) {
     message.channel.send("Here's the link: https://discordapp.com/oauth2/authorize?client_id=318558676241874945&scope=bot&permissions=8192 \nAdd me to your server whydontcha?");
+  }, 
+  ";;philosophy" : function(message, params, globals) {
+    if (params[0]) {
+      wiki().search(params.join(" "), 1).then((data) => {
+        if (data && data.results[0]) {
+          console.log(`Start: ${data.results[0]}`);
+          
+          toPhilosophy(data.results[0]);
+
+          function toPhilosophy(nextPage) {
+            wiki().page(nextPage).then(page => {
+              page.html().then(html => {
+                wikiUtil.getFirstLink(html, function(firstLink) {
+                  if (firstLink) {
+                    console.log(`Next Page: ${firstLink}`);
+                    toPhilosophy(firstLink);
+                  } else {
+                    console.log("No link found.");
+                  }
+                });
+              });
+            });
+          } 
+        } else {
+          message.channel.send("No results found.");
+        }
+      });
+
+    } else {
+      message.channel.send("Usage: ;;philsophy [wikipedia search term]");
+    } 
   }
 }
 

@@ -2,7 +2,7 @@
   "name": "nicetmdiscordbot",
   "version": "1.0.0",
   "description": "Reacts to \"nice\" with TM",
-  "main": "server.js",
+  "main": "server.js --harmony_modules",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tjpc3/NiceTMDiscordBot.git"
