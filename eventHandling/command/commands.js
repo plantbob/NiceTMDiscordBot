@@ -165,7 +165,7 @@ ${data.url}`);
   }, 
   ";;philosophy" : function(message, params, globals) {
     if (params[0]) {
-      wiki().search(params.join(" "), 1).then((data) => {
+       wiki().search(params.join(" "), 1).then((data) => {
         if (data && data.results[0]) {
           onWikiData(data.results[0]);
         } else {
@@ -183,6 +183,11 @@ ${data.url}`);
     } 
 
     function onWikiData(startPage) {
+      if (startPage == "Philosophy") {
+        message.channel.send(":thinking:");
+        return;
+      }
+
       message.channel.send(`\`\`\`Starting at Wikipedia Page: ${startPage}\`\`\``);
       
       var pastPages = [];
