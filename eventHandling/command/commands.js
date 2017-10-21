@@ -227,7 +227,14 @@ ${data.url}`);
         });
       } 
     }
-  }
+  },
+  ";;owo" : function(message, params, globals) {
+    if (params[0]) {
+      message.channel.send(params.join(" ").replace(/[rl]/g, 'w').replace(/n[aeiou]/g, "ny"));
+    } else {
+      message.channel.send("owo");
+    }
+  },
 }
 
 module.exports.searchFunction = function(command) {
