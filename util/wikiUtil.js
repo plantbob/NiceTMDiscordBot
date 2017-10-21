@@ -2,20 +2,26 @@ module.exports = {};
 
 const cheerio = require('cheerio');
 
+const fs = require("fs");
+
+const request = require("request");
+
 module.exports.getFirstLink = (html, callback) => {
     const $ = cheerio.load(html); 
 
     //var firstLink = $("div.mw-parser-output").find('a:not(.reference *, .hatnote *, #coordinates *, table *, span *, .thumbinner *)').eq(0); // Excludes references
     
     var continueIteration = true;
+    
+    //fs.appendFile("test.txt", html);
+    
     $("div.mw-parser-output").children("ul, p").each(function (index) {
         $(this).html(strip_brackets($(this).html()));
 
         $(this).find("a:not(span *)").each(function(index2) {
             var hasTitle = false;
             var nextUrl = '';
-            console.log(index);
-            console.log("test : " + this.attribs.href + " : " + this.attribs.title);
+
             if (this.attribs.href) {
                 nextUrl = this.attribs.href;
             }
@@ -36,6 +42,15 @@ module.exports.getFirstLink = (html, callback) => {
 
         return continueIteration;
     });
+}
+
+module.exports.getWikiPageHTML = (page, callback) => {
+ request("https://en.wikipedia.org/wiki/" + page, function (error, response, body) {
+    if (error) {
+        console.log('Error getting wikipedia page:', error); 
+    }
+    callback(body);
+  });
 }
 
 function strip_brackets(element) {
@@ -60,4 +75,6 @@ function strip_brackets(element) {
             out += element[i];
         }
     }
+
+    return out;
 }

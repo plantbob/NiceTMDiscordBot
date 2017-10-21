@@ -25,28 +25,29 @@ helpMessage += "\n7. ;;github - Gives a link to the bot's source.";
 helpMessage += "\n8. ;;link - Gives a link so you can add this bot to your server!";
 helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
 helpMessage += "\n10. ;;noice - *POP* Noice!";
+helpMessage += "\n11. ;;philosophy [wikipedia search term] - This explains it http://bit.ly/2gx7U6e. To get a random page don't put in a search term";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n11. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n12. ;;playlist [url/id/search term] - Queue a playlist.";
-helpMessage += "\n13. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n14. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n15. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n16. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n17. ;;drift - GAS GAS GAS!";
-helpMessage += "\n18. ;;woah - WOAH!";
-helpMessage += "\n19. ;;queue - Lists the current queue.";
-helpMessage += "\n20. ;;np - Shows info on the current song.";
-helpMessage += "\n21. ;;skip - Skips the current song.";
-helpMessage += "\n22. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n12. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n13. ;;playlist [url/id/search term] - Queue a playlist.";
+helpMessage += "\n14. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n15. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n16. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n17. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n18. ;;drift - GAS GAS GAS!";
+helpMessage += "\n19. ;;woah - WOAH!";
+helpMessage += "\n20. ;;queue - Lists the current queue.";
+helpMessage += "\n21. ;;np - Shows info on the current song.";
+helpMessage += "\n22. ;;skip - Skips the current song.";
+helpMessage += "\n23. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n23. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n24. ;;resetprefix - Resets the prefix to two semicolons.";
+helpMessage += "\n24. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n25. ;;resetprefix - Resets the prefix to two semicolons.";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n25. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n26. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n26. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n27. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
@@ -166,32 +167,61 @@ ${data.url}`);
     if (params[0]) {
       wiki().search(params.join(" "), 1).then((data) => {
         if (data && data.results[0]) {
-          console.log(`Start: ${data.results[0]}`);
-          
-          toPhilosophy(data.results[0]);
-
-          function toPhilosophy(nextPage) {
-            wiki().page(nextPage).then(page => {
-              page.html().then(html => {
-                wikiUtil.getFirstLink(html, function(firstLink) {
-                  if (firstLink) {
-                    console.log(`Next Page: ${firstLink}`);
-                    toPhilosophy(firstLink);
-                  } else {
-                    console.log("No link found.");
-                  }
-                });
-              });
-            });
-          } 
+          onWikiData(data.results[0]);
         } else {
-          message.channel.send("No results found.");
+          message.channel.send("No results found on wikipedia.");
         }
       });
-
     } else {
-      message.channel.send("Usage: ;;philsophy [wikipedia search term]");
+      wiki().random(1).then((data) => {
+        if (data) {
+          onWikiData(data[0]);
+        } else {
+          message.channel.send("Error getting wikipedia page.");
+        }
+      });
     } 
+
+    function onWikiData(startPage) {
+      message.channel.send(`\`\`\`Starting at Wikipedia Page: ${startPage}\`\`\``);
+      
+      var pastPages = [];
+      var count = 1;
+      var messageToSend = "```";
+
+      toPhilosophy(startPage);
+
+      function toPhilosophy(nextPage) {
+        pastPages.push(nextPage);
+
+        wikiUtil.getWikiPageHTML(nextPage, (html) => {
+          wikiUtil.getFirstLink(html, function(firstLink) {
+            if (firstLink) {
+              firstLink = firstLink.replace(/ /g,"_"); // Replace spaces with underscores
+
+              messageToSend += `${count}. ${nextPage} -> ${firstLink}\n`;
+
+              if (pastPages.includes(firstLink)) { // We found a loop
+                messageToSend += `Loop detected. Ending iteration after ${count} steps. Philosophy not reached :(\`\`\``;
+                message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
+              } else if (firstLink == "Philosophy") {
+                messageToSend += `We reached philosophy in ${count} steps! :D\`\`\``;
+                message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
+              } else if (count > 100) {
+                messageToSend += `Stopping iteration after 100 steps because that's too big. :D\`\`\``;
+                message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
+              } else {
+                count++;
+                toPhilosophy(firstLink);
+              }
+            } else {
+              messageToSend += `No new links found. Ending iteration after ${count} steps. Philosophy not reached :(\`\`\``;
+              message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
+            }
+          });
+        });
+      } 
+    }
   }
 }
 
