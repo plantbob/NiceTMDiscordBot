@@ -18,7 +18,7 @@ module.exports.getFirstLink = (html, callback) => {
     $("div.mw-parser-output").children("ul, p").each(function (index) {
         $(this).html(strip_brackets($(this).html()));
 
-        $(this).find("a:not(span *)").each(function(index2) {
+        $(this).find("a:not(span *, .extiw, .new)").each(function(index2) {
             var hasTitle = false;
             var nextUrl = '';
 

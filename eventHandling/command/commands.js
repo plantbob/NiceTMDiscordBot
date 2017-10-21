@@ -198,7 +198,7 @@ ${data.url}`);
           wikiUtil.getFirstLink(html, function(firstLink) {
             if (firstLink) {
               firstLink = firstLink.replace(/ /g,"_"); // Replace spaces with underscores
-
+              
               messageToSend += `${count}. ${nextPage} -> ${firstLink}\n`;
 
               if (pastPages.includes(firstLink)) { // We found a loop
