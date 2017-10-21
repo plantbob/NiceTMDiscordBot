@@ -230,7 +230,7 @@ ${data.url}`);
   },
   ";;owo" : function(message, params, globals) {
     if (params[0]) {
-      message.channel.send(params.join(" ").replace(/[rl]/g, 'w').replace(/n[aeiou]/g, "ny"));
+      message.channel.send(params.join(" ").replace(/[rl]/g, 'w').replace(/([n])([aeiouAEIOU])/g, "$1y$2").replace(/([N])([aeiouAEIOU])/g, "$1Y$2"));
     } else {
       message.channel.send("owo");
     }
