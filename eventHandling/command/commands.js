@@ -26,28 +26,28 @@ helpMessage += "\n8. ;;link - Gives a link so you can add this bot to your serve
 helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Generates 1000x1000 island.";
 helpMessage += "\n10. ;;noice - *POP* Noice!";
 helpMessage += "\n11. ;;philosophy [wikipedia search term] - This explains it http://bit.ly/2gx7U6e. To get a random page don't put in a search term";
+helpMessage += "\n12. ;;owo [text] - owo";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n12. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n13. ;;playlist [url/id/search term] - Queue a playlist.";
-helpMessage += "\n14. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n15. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n16. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n17. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n18. ;;drift - GAS GAS GAS!";
-helpMessage += "\n19. ;;woah - WOAH!";
-helpMessage += "\n20. ;;queue - Lists the current queue.";
-helpMessage += "\n21. ;;np - Shows info on the current song.";
-helpMessage += "\n22. ;;skip - Skips the current song.";
-helpMessage += "\n23. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
-
+helpMessage += "\n13. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n14. ;;playlist [url/id/search term] - Queue a playlist.";
+helpMessage += "\n15. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n16. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n17. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n18. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n19. ;;drift - GAS GAS GAS!";
+helpMessage += "\n20. ;;woah - WOAH!";
+helpMessage += "\n21. ;;queue - Lists the current queue.";
+helpMessage += "\n22. ;;np - Shows info on the current song.";
+helpMessage += "\n23. ;;skip - Skips the current song.";
+helpMessage += "\n24. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n24. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n25. ;;resetprefix - Resets the prefix to two semicolons.";
+helpMessage += "\n25. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n26. ;;resetprefix - Resets the prefix to two semicolons.";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n26. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n27. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n27. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n28. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
