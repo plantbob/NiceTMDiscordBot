@@ -47,7 +47,7 @@ module.exports.getFirstLink = (html, callback) => {
             return continueIteration;
         });
 
-        if (!--count) {
+        if (!--count && continueIteration) {
             callback(null);
         }
             
