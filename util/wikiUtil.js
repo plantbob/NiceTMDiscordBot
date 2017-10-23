@@ -15,13 +15,20 @@ module.exports.getFirstLink = (html, callback) => {
     
     //fs.appendFile("test.txt", html);
     
-    $("div.mw-parser-output").children("ul, p").each(function (index) {
+    var elems = $("div.mw-parser-output").children("ul, p"), count = elems.length;
+
+    if (count == 0) {
+        callback(null);
+        return;
+    }
+    
+    elems.each(function (index) {
         $(this).html(strip_brackets($(this).html()));
 
         $(this).find("a:not(span *, .extiw, .new)").each(function(index2) {
             var hasTitle = false;
             var nextUrl = '';
-
+            
             if (this.attribs.href) {
                 nextUrl = this.attribs.href;
             }
@@ -39,6 +46,11 @@ module.exports.getFirstLink = (html, callback) => {
 
             return continueIteration;
         });
+
+        if (!--count) {
+            callback(null);
+        }
+            
 
         return continueIteration;
     });

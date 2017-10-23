@@ -187,15 +187,15 @@ ${data.url}`);
         message.channel.send(":thinking:");
         return;
       }
-
+      
       message.channel.send(`\`\`\`Starting at Wikipedia Page: ${startPage}\`\`\``);
       
       var pastPages = [];
       var count = 1;
       var messageToSend = "```";
-
+      
       toPhilosophy(startPage);
-
+      
       function toPhilosophy(nextPage) {
         pastPages.push(nextPage);
 
@@ -203,14 +203,13 @@ ${data.url}`);
           wikiUtil.getFirstLink(html, function(firstLink) {
             if (firstLink) {
               firstLink = firstLink.replace(/ /g,"_"); // Replace spaces with underscores
-              
               messageToSend += `${count}. ${nextPage} -> ${firstLink}\n`;
 
               if (pastPages.includes(firstLink)) { // We found a loop
-                messageToSend += `Loop detected. Ending iteration after ${count} steps. Philosophy not reached :(\`\`\``;
+                messageToSend += `Loop detected. Ending iteration after ${count} step(s). Philosophy not reached :(\`\`\``;
                 message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
               } else if (firstLink == "Philosophy") {
-                messageToSend += `We reached philosophy in ${count} steps! :D\`\`\``;
+                messageToSend += `We reached philosophy in ${count} step(s)! :D\`\`\``;
                 message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
               } else if (count > 100) {
                 messageToSend += `Stopping iteration after 100 steps because that's too big. :D\`\`\``;
@@ -220,7 +219,7 @@ ${data.url}`);
                 toPhilosophy(firstLink);
               }
             } else {
-              messageToSend += `No new links found. Ending iteration after ${count} steps. Philosophy not reached :(\`\`\``;
+              messageToSend += `No new links found. Ending iteration after ${count} step(s). Philosophy not reached :(\`\`\``;
               message.channel.send(messageToSend, {"split" : {"prepend" : "```", "append" : "```"}});
             }
           });
