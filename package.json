@@ -16,6 +16,7 @@
   "dependencies": {
     "bufferutil": "^3.0.2",
     "cheerio": "^1.0.0-rc.2",
+    "command-node": "^0.1.1",
     "discord.js": "github:hydrabolt/discord.js",
     "ebml": "^2.2.1",
     "erlpack": "github:hammerandchisel/erlpack",

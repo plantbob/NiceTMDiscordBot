@@ -64,9 +64,9 @@ var commands = {
 
         var customPrefix = globals.get("prefix");
         if (customPrefix && customPrefix != ";;") {
-          dmChannel.send(helpMessage.replace(/;;/g, customPrefix)); // Display help message with the custom prefix. /;;/g makes it replace all occurances of ;;
+          dmChannel.send(helpMessage.replace(/;;/g, customPrefix), {"split" : {"prepend" : "```", "append" : "```"}}); // Display help message with the custom prefix. /;;/g makes it replace all occurances of ;;
         } else {
-          dmChannel.send(helpMessage); // Display help message normally
+          dmChannel.send(helpMessage, {"split" : {"prepend" : "```", "append" : "```"}}); // Display help message normally
         }
       }
     });

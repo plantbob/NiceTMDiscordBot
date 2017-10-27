@@ -14,6 +14,22 @@ const token = require('../config/token.js');
 module.exports = {};
 
 module.exports.init = function(client) {
+  // Begin dealing with command line input
+
+  module.exports.commands = {
+    "savedata" : {
+      description : "Save server data to database",
+      parameters : [],
+      handler : function () {
+        logUtil.log("Saving data...", logUtil.COMMAND_MESSAGE);
+        saveData();
+        logUtil.log("Finished saving data.", logUtil.COMMAND_MESSAGE);
+      }
+    }
+  };
+  
+  // End dealing with command line input
+
   mongoose.Promise = global.Promise;
   mongoose.connect(token.databaseUrl);
   var db = mongoose.connection;
@@ -122,23 +138,6 @@ function postDatabaseLoad(client) {
         }
       }
     });
-  
-    // Begin dealing with command line input
-    process.stdin.resume();
-    process.stdin.setEncoding('utf8');
-  
-    process.stdin.on('data', function (text) {
-      if (text.trim() === 'r') {
-        logUtil.log("Reloading command interpreters...", logUtil.STATUS_INFO);
-        loadCommandInterpreters();
-        logUtil.log("Finished reloading command interpreters.", logUtil.STATUS_NOTIFICATION);
-      } else if (text.trim() === 's') {
-        logUtil.log("Saving data...", logUtil.STATUS_INFO);
-        saveData();
-        logUtil.log("Finished saving data.", logUtil.STATUS_NOTIFICATION);
-      }
-    });
-    // End dealing with command line input
   
     setInterval(saveData, 3600000); // Save database every hour
 }

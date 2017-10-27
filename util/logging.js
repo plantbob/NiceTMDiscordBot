@@ -6,6 +6,7 @@ module.exports.STATUS_INFO = 0;
 module.exports.STATUS_WARNING = 1;
 module.exports.STATUS_ERROR = 2;
 module.exports.STATUS_NOTIFICATION = 3;
+module.exports.COMMAND_MESSAGE = 4;
 
 module.exports.log = function(message, status) {
   var prefix = "\x1b[0m";
@@ -21,6 +22,9 @@ module.exports.log = function(message, status) {
     break;
     case module.exports.STATUS_NOTIFICATION:
       prefix = "\x1b[36m"; // Foreground Cyan
+    break;
+    case module.exports.COMMAND_MESSAGE:
+    prefix = "\x1b[92m"; // Foreground Lime
     break;
   }
   console.log(prefix + "[ " + new Date().toString() + " ] - " + message + "\x1b[0m");

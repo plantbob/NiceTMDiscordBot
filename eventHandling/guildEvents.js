@@ -76,3 +76,5 @@ function setClientGame(client, gameName) {
 module.exports.close = function(client) {
 
 }
+
+module.exports.commands = {};

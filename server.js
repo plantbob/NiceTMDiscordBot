@@ -11,13 +11,19 @@ const path = require("path");
 const fs = require("fs");
 const readline = require("readline");
 
+var clUtils = require('command-node');
+var commandNodeCommands = {};
+
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
+  terminal: false
 });
 
 client.on('ready', function() {
   logUtil.log("Logged into Discord successfully as " + client.user.username + ".", logUtil.STATUS_NOTIFICATION);
+
+  clUtils.initialize(commandNodeCommands, 'NiceTMDiscordBot> ');
 });
 
 var handlers = [];
@@ -30,6 +36,12 @@ fs.readdirSync(normalizedPath).forEach(function(file) {
 
     var handler = require("./eventHandling/" + file);
     handler.init(client);
+
+    for (var command in handler.commands) { // Add the commands from the handlers over
+        if (handler.commands.hasOwnProperty(command)) {
+          commandNodeCommands[command] = handler.commands[command];
+        }
+    }
 
     handlers.push(handler); // Load all files and all all their close functions to the end of the array
   }
