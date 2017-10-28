@@ -25,8 +25,19 @@ function reactWithTM(message, params, globals) {
   }
 }
 
+function reactWithNice(message, params, globals) {
+  if (params[0] == null) {
+    message.react("🇳").then(function() {
+      message.react("🇮").then(function() {
+        message.react("🇨").then(function() {
+          message.react("🇪");
+        });
+      });
+    });
+  }
+}
+
 var isNice = /[n]n*[i]i*[c]c*[e]e*/;
-var isTM = /[t]t*[m]m*/;
 
 module.exports.searchFunction = function(command) {
   command = command.toLowerCase();
@@ -34,10 +45,8 @@ module.exports.searchFunction = function(command) {
   if (isNice.test(command)) {
     return reactWithTM;
   } else if (command.indexOf('™') > -1) {
-    return reactWithTM;
-  } else if (isTM.test(command)) {
-    return reactWithTM;
-  }
+    return reactWithNice;
+  } 
 
   return commands[command];
 }
