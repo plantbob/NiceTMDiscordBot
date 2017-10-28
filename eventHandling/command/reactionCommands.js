@@ -26,11 +26,16 @@ function reactWithTM(message, params, globals) {
 }
 
 var isNice = /[n]n*[i]i*[c]c*[e]e*/;
+var isTM = /[t]t*[m]m*/;
 
 module.exports.searchFunction = function(command) {
   command = command.toLowerCase();
 
   if (isNice.test(command)) {
+    return reactWithTM;
+  } else if (command.indexOf('™') > -1) {
+    return reactWithTM;
+  } else if (isTM.test(command)) {
     return reactWithTM;
   }
 
