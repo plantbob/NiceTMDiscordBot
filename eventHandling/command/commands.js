@@ -45,6 +45,10 @@ helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
 helpMessage += "\n25. ;;changeprefix [prefix] - Changes the command prefix.";
 helpMessage += "\n26. ;;resetprefix - Resets the prefix to two semicolons.";
 
+helpMessage += "\n\nPfp (ProFile Picture) commands: ";
+helpMessage += "\n26. ;;pfp [user] - Gets the user's profile picture.";
+helpMessage += "\n26. ;;doittoem [user] - Crops the user's pfp onto the head of the \"Had to do it to them\" meme.";
+
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
 helpMessage += "\n27. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
 helpMessage += "\n28. ;;removejoinmessage - Removes the join message.";

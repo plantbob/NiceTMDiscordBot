@@ -99,3 +99,28 @@ module.exports.isChannelNSFW = function(channel) {
 
   return (/^nsfw(-|$)/.test(channel.name));
 }
+
+module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets avatar url from string and guild
+      var member = guild.members.find(member => member.user.username == query);
+      if (member) {
+          var avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+          if (avatarURL) {
+              return avatarURL;
+          } else {
+              return null;
+          }
+      } else {
+          member = guild.members.find("nickname", query);
+          if (member) {
+              var avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+              if (avatarURL) {
+                  return avatarURL;
+              } else {
+                  return null;
+              }
+          } else {
+            return null;
+          }
+      }
+  
+}

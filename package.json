@@ -22,6 +22,7 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^19.0.0",
+    "jimp": "^0.2.28",
     "libsodium-wrappers": "^0.5.2",
     "moment": "^2.18.1",
     "mongoose": "^4.12.3",
