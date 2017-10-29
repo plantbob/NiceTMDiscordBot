@@ -10,7 +10,7 @@ const fs = require('fs');
 
 // image loading begin
 var jimp74x74mask;
-Jimp.read(path.normalize(__dirname + "\\..\\..\\") + "\\images\\74x74mask.png", function (err, image) {
+Jimp.read(path.normalize(__dirname + "/../../") + "/images/74x74mask.png", function (err, image) {
     if (err) {
         logUtil.log("Error loading 74x74 mask image: ", logUtil.STATUS_ERROR);
         throw err;
@@ -21,7 +21,7 @@ Jimp.read(path.normalize(__dirname + "\\..\\..\\") + "\\images\\74x74mask.png", 
 });
 
 var jimpdoitdoem;
-Jimp.read(path.normalize(__dirname + "\\..\\..\\") + "\\images\\5994dada1c215.png", function (err, image) {
+Jimp.read(path.normalize(__dirname + "/../../") + "/images/5994dada1c215.png", function (err, image) {
     if (err) {
         logUtil.log("Error loading 74x74 mask image: ", logUtil.STATUS_ERROR);
         throw err;
