@@ -63,7 +63,10 @@ var commands = {
                     image.mask(jimp74x74mask, 0, 0);
                     jimpdoitdoem.blit(image, 35, 1);
                     jimpdoitdoem.write("doittoem.png");
-                    message.channel.send({files: ["doittoem.png"]});
+                    setTimeout(() => {
+                        message.channel.send({files: ["doittoem.png"]});
+                    }, 1000);
+                    
                 }
             });
         } else {
