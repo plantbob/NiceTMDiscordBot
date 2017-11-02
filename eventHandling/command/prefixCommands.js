@@ -9,6 +9,8 @@ var commands = {
       message.channel.send("You need to specify a prefix to change to.");
     } else if (!message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR)) { // You need ADMINISTRATOR permission to run this command
       message.channel.send("You need administrator permission to run this command.");
+    } else if (params[1]) {
+      message.channel.send("Prefixes can't have spaces");
     } else {
       globals.set("prefix", params[0]);
 
