@@ -8,9 +8,16 @@ var Jimp = require("jimp");
 const path = require("path");
 const fs = require('fs');
 
+var isWin = /^win/.test(process.platform);
+
+function convertPathIfWindows(path) {
+    if (isWin) return path.replace("/", "\\")
+    else return path;
+}
+
 // image loading begin
 var jimp74x74mask;
-Jimp.read(path.normalize(__dirname + "/../../") + "/images/74x74mask.png", function (err, image) {
+Jimp.read(convertPathIfWindows(path.normalize(__dirname + "/../../") + "/images/74x74mask.png"), function (err, image) {
     if (err) {
         logUtil.log("Error loading 74x74 mask image: ", logUtil.STATUS_ERROR);
         throw err;
@@ -21,7 +28,7 @@ Jimp.read(path.normalize(__dirname + "/../../") + "/images/74x74mask.png", funct
 });
 
 var jimpdoitdoem;
-Jimp.read(path.normalize(__dirname + "/../../") + "/images/5994dada1c215.png", function (err, image) {
+Jimp.read(convertPathIfWindows(path.normalize(__dirname + "/../../") + "/images/5994dada1c215.png"), function (err, image) {
     if (err) {
         logUtil.log("Error loading 74x74 mask image: ", logUtil.STATUS_ERROR);
         throw err;
@@ -61,10 +68,13 @@ var commands = {
                 } else {
                     image.resize(74, 74);
                     image.mask(jimp74x74mask, 0, 0);
-                    jimpdoitdoem.blit(image, 35, 1);
-                    jimpdoitdoem.write("doittoem.png");
+                    jimpdoitdoem.composite(image, 35, 1);
+                    jimpdoitdoem.write(message.member.user.id + ".png");
                     setTimeout(() => {
-                        message.channel.send({files: ["doittoem.png"]});
+                        message.channel.send({files: [message.member.user.id + ".png"]});
+                        setTimeout(() => {
+                            fs.unlink(message.member.user.id + ".png");
+                        }, 1000);
                     }, 1000);
                     
                 }
