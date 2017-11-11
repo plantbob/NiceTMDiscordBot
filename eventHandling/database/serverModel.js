@@ -4,15 +4,17 @@ var nodecache = require('node-cache');
 var logUtil = require('../../util/logging.js');
 
 var serverSchema = mongoose.Schema({
-    _id: String, // fuck it
+    _id: String, // If its a number everything breaks :/
     prefix: String,
-    newMemberMessage: String
+    newMemberMessage: String,
+    newMemberMessageChannel: String
 });
 
 serverSchema.statics.updateWithIdFromNodeCache = function(id, cache) {
     this.findByIdAndUpdate(id, {
         prefix: cache.get('prefix'), 
         newMemberMessage: cache.get('newMemberMessage'),
+        newMemberMessageChannel: cache.get('newMemberMessageChannel'),
         _id: id
     }, {
         upsert: true // Makes it so it will created a new document if this one doesn't exist
@@ -28,6 +30,7 @@ serverSchema.methods.getFilledNodeCache = function() {
     var newCache = new nodecache();
     newCache.set("prefix", this.prefix);
     newCache.set("newMemberMessage", this.newMemberMessage);
+    newCache.set("newMemberMessageChannel", this.newMemberMessage);
     return newCache;
 }
 

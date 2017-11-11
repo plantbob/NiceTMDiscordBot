@@ -9,9 +9,10 @@ var commands = {
       if (message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
         var joinMessage = params.join(" ");
         globals.set("newMemberMessage", joinMessage);
+        globals.set("newMemberMessageChannel", message.channel.id);
         message.channel.send("Join message set to: " + joinMessage);
       } else {
-        message.channel.send("You need to be an administrator to run this command.");
+        message.reply("You need to be an administrator to run this command.");
       }
     } else {
       message.channel.send("Please specify a join message.");
@@ -19,7 +20,10 @@ var commands = {
   },
   ";;removejoinmessage" : function(message, params, globals) {
     if (message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR)) {
+      message.channel.send("Join message removed!");
       globals.set("newMemberMessage", undefined);
+    } else {
+      message.reply("You need to be an administrator to run this command.");
     }
   }
 }

@@ -131,12 +131,29 @@ function postDatabaseLoad(client) {
   
       var joinMessage = tempGlobals.get("newMemberMessage");
       if (joinMessage) {
-        try {
-          member.guild.defaultChannel.send(joinMessage.replace("{{name}}", member.user.username));
-        } catch (exception) {
-  
+        var joinMessageChannelId = tempGlobals.get("newMemberMessageChannel");
+        if (joinMessageChannelId) {
+          var channel = member.guild.channels.get(joinMessageChannelId);
+          
+          if (channel) {
+            channel.send(joinMessage.replace("{{name}}", member));
+          } else {
+            try {
+              member.guild.defaultChannel.send(joinMessage.replace("{{name}}", member));
+            } catch (exception) {
+      
+            }
+          }
+        } else {
+          try {
+            member.guild.defaultChannel.send(joinMessage.replace("{{name}}", member));
+          } catch (exception) {
+    
+          }
         }
       }
+
+      
     });
   
     setInterval(saveData, 3600000); // Save database every hour
