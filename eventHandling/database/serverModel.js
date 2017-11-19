@@ -30,7 +30,7 @@ serverSchema.methods.getFilledNodeCache = function() {
     var newCache = new nodecache();
     newCache.set("prefix", this.prefix);
     newCache.set("newMemberMessage", this.newMemberMessage);
-    newCache.set("newMemberMessageChannel", this.newMemberMessage);
+    newCache.set("newMemberMessageChannel", this.newMemberMessageChannel);
     return newCache;
 }
 
