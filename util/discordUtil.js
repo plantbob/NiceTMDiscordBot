@@ -16,7 +16,7 @@ module.exports = {};
 // Returns array of all emoji ids in order
 // [0] = modified string, [1] = array with emoji ids
 
-let emojiRegex = /<:[\da-z]{1,}:([\d]{1,})>/g;
+let emojiRegex = /<:.{1,}:(\d{1,})>/g;
 
 module.exports.processEmojis = (text) => {
   text = text.replace('░', '');
@@ -26,7 +26,7 @@ module.exports.processEmojis = (text) => {
   while (next = emojiRegex.exec(text)) {
     idArray.push(next[1]);
   }
-  text = text.replace(/<:[\da-z]{1,}:[\d]{1,}>/g, '░');
+  text = text.replace(/<:.{1,}:\d{1,}>/g, '░');
 
   return [text, idArray];
 }

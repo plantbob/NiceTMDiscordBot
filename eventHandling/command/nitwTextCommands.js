@@ -11,7 +11,7 @@ var commands = {
   ";;say" : function(message, params, globals) {
     if (!params[0]) {
       message.channel.send("Please specify a character.");
-    } else if (!params[1]) {
+    } else if (params[1] == undefined) {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
@@ -24,7 +24,12 @@ var commands = {
             }, 1000);
         }, 1000);
       }).catch((err) => {
-        console.log(err);
+        let errString = err.toString();
+        if (errString.includes(':')) { // Its an acutal error object
+          message.channel.send("Error creating image.");
+        } else {
+          message.channel.send(errString);
+        }
       });
     }
 
@@ -46,7 +51,12 @@ var commands = {
             }, 1000);
         }, 1000);
       }).catch((err) => {
-        console.log(err);
+        let errString = err.toString();
+        if (errString.includes(':')) { // Its an acutal error object
+          message.channel.send("Error creating image.");
+        } else {
+          message.channel.send(errString);
+        }
       });
     }
 
