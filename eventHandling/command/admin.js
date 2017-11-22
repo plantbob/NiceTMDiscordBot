@@ -25,7 +25,7 @@ var commands = {
   ";;s" : function(message, params, globals) { // Usage: ;;archive [messages] [file]
     if (message.author.id != 150699865997836288) {
       // Do nothing
-    } else if (!params[3]) {
+    } else if (!params[2]) {
       message.channel.send("You forgot all of the parameters, idiot.");
     } else {
       var guild = message.client.guilds.get(params[0]);

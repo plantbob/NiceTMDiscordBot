@@ -11,6 +11,26 @@ const miscConfig = require("../config/misc.js");
 
 module.exports = {};
 
+
+// Finds all custom emojis in a string and replaces them with ░
+// Returns array of all emoji ids in order
+// [0] = modified string, [1] = array with emoji ids
+
+let emojiRegex = /<:[\da-z]{1,}:([\d]{1,})>/g;
+
+module.exports.processEmojis = (text) => {
+  text = text.replace('░', '');
+
+  let idArray = [];
+  let next;
+  while (next = emojiRegex.exec(text)) {
+    idArray.push(next[1]);
+  }
+  text = text.replace(/<:[\da-z]{1,}:[\d]{1,}>/g, '░');
+
+  return [text, idArray];
+}
+
 module.exports.playYoutubeVideo = function(connection, video, audioFilters, complexFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
     var streamOptions = { seek: 0, volume: 1 , passes: miscConfig.playStreamPasses};

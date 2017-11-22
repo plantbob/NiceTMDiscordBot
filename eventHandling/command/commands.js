@@ -27,31 +27,33 @@ helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Gener
 helpMessage += "\n10. ;;noice - *POP* Noice!";
 helpMessage += "\n11. ;;philosophy [wikipedia search term] - This explains it http://bit.ly/2gx7U6e. To get a random page don't put in a search term";
 helpMessage += "\n12. ;;owo [text] - owo";
+helpMessage += "\n13. ;;say [character/emoji] [text] - Says a message using text boxes from NITW.";
+helpMessage += "\n14. ;;widesay [character/emoji] [text] - Does that but the character is horizontally stretched.";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n13. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n14. ;;playlist [url/id/search term] - Queue a playlist.";
-helpMessage += "\n15. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n16. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n17. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n18. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n19. ;;drift - GAS GAS GAS!";
-helpMessage += "\n20. ;;woah - WOAH!";
-helpMessage += "\n21. ;;queue - Lists the current queue.";
-helpMessage += "\n22. ;;np - Shows info on the current song.";
-helpMessage += "\n23. ;;skip - Skips the current song.";
-helpMessage += "\n24. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n15. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n16. ;;playlist [url/id/search term] - Queue a playlist.";
+helpMessage += "\n17. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n18. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n19. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n20. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n21. ;;drift - GAS GAS GAS!";
+helpMessage += "\n22. ;;woah - WOAH!";
+helpMessage += "\n23. ;;queue - Lists the current queue.";
+helpMessage += "\n24. ;;np - Shows info on the current song.";
+helpMessage += "\n25. ;;skip - Skips the current song.";
+helpMessage += "\n26. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n25. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n26. ;;resetprefix - Resets the prefix to two semicolons.";
+helpMessage += "\n27. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n28. ;;resetprefix - Resets the prefix to two semicolons.";
 
 helpMessage += "\n\nPfp (ProFile Picture) commands: ";
-helpMessage += "\n26. ;;pfp [user] - Gets the user's profile picture.";
-helpMessage += "\n26. ;;doittoem [user] - Crops the user's pfp onto the head of the \"Had to do it to them\" meme.";
+helpMessage += "\n29. ;;pfp [user] - Gets the user's profile picture.";
+helpMessage += "\n30. ;;doittoem [user] - Crops the user's pfp onto the head of the \"Had to do it to them\" meme.";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n27. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n28. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n31. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n32. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "```";
 
