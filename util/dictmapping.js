@@ -47,16 +47,17 @@ function isHighOrLowSurrogate(charCode) {
 
 let customEmojiList = undefined;
 
-function getLetterPath(char, charIndex, guildEmojis) {
+function getLetterPath(char, charIndex, clientEmojis) {
     console.log(char);
     if (char =='\n') { // New Line
         hardNewLinePoints.push(charIndex);
         return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_SPACE1.png`); 
     } else if (char == '░') {
-        if (guildEmojis && customEmojiList && customEmojiList.length > 0) {
-            let customEmoji = guildEmojis.resolve(customEmojiList.shift());
-            if (customEmoji)
-                return customEmoji.url;
+        if (clientEmojis && customEmojiList && customEmojiList.length > 0) {
+            // let customEmoji = clientEmojis.resolve(customEmojiList.shift());
+            // if (customEmoji)
+            //     return customEmoji.url;
+            return `https://cdn.discordapp.com/emojis/${customEmojiList.shift()}.png`;
         }
     } else {
         let utfString = char.codePointAt(0).toString(16);
@@ -115,16 +116,17 @@ module.exports.getMouthHeight = (headPath) => {
     }
 }
 
-module.exports.init = (character, easteregg, guildEmojis) => {
+module.exports.init = (character, easteregg, clientEmojis) => {
     let emojiPath;
     if (character.codePointAt(0) > 255 && !runes(character)[1]) // Only one emoji
         emojiPath = getLetterPath(character, 0);
     
-    let emoji;
+    let emoji = "";
     let processedCustomEmoji = discordUtil.processEmojis(character);
     console.log(processedCustomEmoji);
     if (processedCustomEmoji[1].length > 0) {
-        emoji = guildEmojis.resolve(processedCustomEmoji[1][0]);
+        //emoji = clientEmojis.resolve(processedCustomEmoji[1][0]).url;
+        emoji = `https://cdn.discordapp.com/emojis/${processedCustomEmoji[1][0]}.png`;
     }
 
     hardNewLinePoints = [];
@@ -135,8 +137,8 @@ module.exports.init = (character, easteregg, guildEmojis) => {
         characterColor = "standard";
         
         return true;
-    } else if (emoji) {
-        headPath = emoji.url;
+    } else if (emoji != "") {
+        headPath = emoji;
         characterColor = 'standard';
 
         return true;
@@ -177,7 +179,7 @@ function getIterableUnicode(string) {
 }
 
 
-module.exports.getLetterPaths = (text, guildEmojis) => {
+module.exports.getLetterPaths = (text, clientEmojis) => {
     let letterPaths = [];
 
     console.log(text);
@@ -189,7 +191,7 @@ module.exports.getLetterPaths = (text, guildEmojis) => {
 
     text = runes(text.toUpperCase());
     for (var i in text) {
-        let path = getLetterPath(text[i], i, guildEmojis);
+        let path = getLetterPath(text[i], i, clientEmojis);
         if (path) {
             letterPaths.push(path);
         }

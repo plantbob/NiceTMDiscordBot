@@ -15,7 +15,7 @@ var commands = {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
-      create(params.join(" "), characterHead, message.guild.emojis).then((image) => {
+      create(params.join(" "), characterHead, message.client.emojis).then((image) => {
         image.write(message.member.user.id + ".png");
         setTimeout(() => {
             message.channel.send({files: [message.member.user.id + ".png"]});
@@ -42,7 +42,7 @@ var commands = {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
-      create(params.join(" "), characterHead, message.guild.emojis, true).then((image) => { // Wide is set to true 
+      create(params.join(" "), characterHead, message.client.emojis, true).then((image) => { // Wide is set to true 
         image.write(message.member.user.id + ".png");
         setTimeout(() => {
             message.channel.send({files: [message.member.user.id + ".png"]});
@@ -72,7 +72,7 @@ module.exports.close = function(globals, guild) {
 
 }
 
-function create(text, characterType, guildEmojis, wide) {
+function create(text, characterType, clientEmojis, wide) {
   return new Promise(function(resolve, reject) {
     let easteregg = false;
     characterType = characterType.toLowerCase();
@@ -96,8 +96,8 @@ function create(text, characterType, guildEmojis, wide) {
       
       //text = text.replace(/\<\:.*?\>/g, "").toUpperCase(); // Removes text between <: and >
 
-      if (dictMapping.init(characterType, easteregg, guildEmojis)) {
-        let letterPaths = dictMapping.getLetterPaths(text, guildEmojis);
+      if (dictMapping.init(characterType, easteregg, clientEmojis)) {
+        let letterPaths = dictMapping.getLetterPaths(text, clientEmojis);
         
         let message = textStitch.stichText(letterPaths, dictMapping.getSoftNewLinePoints(), dictMapping.getHardNewLinePoints());
         message.then((image) => {
