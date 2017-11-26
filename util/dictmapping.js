@@ -6,6 +6,7 @@ const path = require('path');
 const discordUtil = require('../util/discordUtil.js');
 
 const runes = require('runes');
+const twemoji = require('twemoji');
 
 var isWin = /^win/.test(process.platform);
 
@@ -47,33 +48,19 @@ function isHighOrLowSurrogate(charCode) {
 
 let customEmojiList = undefined;
 
-function getLetterPath(char, charIndex, clientEmojis) {
-    console.log(char);
+function getLetterPath(char, charIndex) { 
     if (char =='\n') { // New Line
         hardNewLinePoints.push(charIndex);
         return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_SPACE1.png`); 
     } else if (char == '░') {
-        if (clientEmojis && customEmojiList && customEmojiList.length > 0) {
-            // let customEmoji = clientEmojis.resolve(customEmojiList.shift());
-            // if (customEmoji)
-            //     return customEmoji.url;
+        if (customEmojiList && customEmojiList.length > 0) {
             return `https://cdn.discordapp.com/emojis/${customEmojiList.shift()}.png`;
         }
     } else {
         let utfString = char.codePointAt(0).toString(16);
-        console.log(utfString);
 
         if (utfString.length > 2) { // Emoji
-            let hexString = utfString;
-            console.log(char);
-            char = char.substring(2);
-            while (char.length > 0) {
-                let nextChar = char.codePointAt(0);
-                if (!isHighOrLowSurrogate(nextChar))
-                    hexString += `-${nextChar.toString(16)}`;
-                char = char.substring(String.fromCharCode(nextChar).length);
-                //utfString = utfString.replace(/^\s+|\s+$/g, "").replace(/^0+/, ''); // Remove first, whitespace, and leading zeros
-            }
+            let hexString = twemoji.convert.toCodePoint(char);
 
             let filePath = getGlobalPath(`assets/72x72/${hexString}.png`);
             if (fs.existsSync(filePath)) {
@@ -116,16 +103,15 @@ module.exports.getMouthHeight = (headPath) => {
     }
 }
 
-module.exports.init = (character, easteregg, clientEmojis) => {
+module.exports.init = (character, easteregg) => {
     let emojiPath;
     if (character.codePointAt(0) > 255 && !runes(character)[1]) // Only one emoji
         emojiPath = getLetterPath(character, 0);
     
     let emoji = "";
     let processedCustomEmoji = discordUtil.processEmojis(character);
-    console.log(processedCustomEmoji);
+    
     if (processedCustomEmoji[1].length > 0) {
-        //emoji = clientEmojis.resolve(processedCustomEmoji[1][0]).url;
         emoji = `https://cdn.discordapp.com/emojis/${processedCustomEmoji[1][0]}.png`;
     }
 
@@ -179,19 +165,18 @@ function getIterableUnicode(string) {
 }
 
 
-module.exports.getLetterPaths = (text, clientEmojis) => {
+module.exports.getLetterPaths = (text) => { 
     let letterPaths = [];
 
-    console.log(text);
     let processedEmojis = discordUtil.processEmojis(text);
     text = processedEmojis[0];
     customEmojiList = processedEmojis[1];
 
-    console.log(text);
-
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); // removes accents
     text = runes(text.toUpperCase());
+
     for (var i in text) {
-        let path = getLetterPath(text[i], i, clientEmojis);
+        let path = getLetterPath(text[i], i);
         if (path) {
             letterPaths.push(path);
         }
