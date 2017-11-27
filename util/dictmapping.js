@@ -48,10 +48,10 @@ function isHighOrLowSurrogate(charCode) {
 
 let customEmojiList = undefined;
 
-function getLetterPath(char, charIndex) { 
+function getLetterPath(char, charIndex, frame) { 
     if (char =='\n') { // New Line
         hardNewLinePoints.push(charIndex);
-        return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_SPACE1.png`); 
+        return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_SPACE${frame}.png`); 
     } else if (char == '░') {
         if (customEmojiList && customEmojiList.length > 0) {
             return `https://cdn.discordapp.com/emojis/${customEmojiList.shift()}.png`;
@@ -75,7 +75,7 @@ function getLetterPath(char, charIndex) {
             }
             
             if (char in charMap) {
-                return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_${charMap[char]}1.png`);
+                return getGlobalPath(`assets/${characterColor}_dialogue/Dialogue_standard_1_${charMap[char]}${frame}.png`);
             } else {
                 return false;
             }
@@ -176,9 +176,34 @@ module.exports.getLetterPaths = (text) => {
     text = runes(text.toUpperCase());
 
     for (var i in text) {
-        let path = getLetterPath(text[i], i);
+        let path = getLetterPath(text[i], i, 1);
         if (path) {
             letterPaths.push(path);
+        }
+    }
+
+    return letterPaths;
+}
+
+module.exports.getLetterPaths3Frames = (text) => { 
+    let letterPaths = [[], [], []];
+
+    let processedEmojis = discordUtil.processEmojis(text);
+    text = processedEmojis[0];
+    customEmojiList = processedEmojis[1];
+
+    text = text.normalize('NFD').replace(/[\u0300-\u036f]/g, ""); // removes accents
+    text = runes(text.toUpperCase());
+
+    for (let j = 0; j < 3; j++) {
+        hardNewLinePoints = [];
+        softNewLinePoints = [];
+
+        for (var i in text) {
+            let path = getLetterPath(text[i], i, j + 1);
+            if (path) {
+                letterPaths[j].push(path);
+            }
         }
     }
 
