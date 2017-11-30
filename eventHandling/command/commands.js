@@ -55,6 +55,9 @@ helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators
 helpMessage += "\n31. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
 helpMessage += "\n32. ;;removejoinmessage - Removes the join message.";
 
+helpMessage += "\n\nAdmin Commands: (Can only be run by administrators) (duh)";
+helpMessage += "\n31. ;;archive [messages] - Gets all the messages sent in that channel up to the specified number of messages. Put \"all\" to get all messages.";
+
 helpMessage += "```";
 
 // Message = message object that initiated command

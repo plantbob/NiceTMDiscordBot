@@ -64,38 +64,39 @@ var commands = {
     }
 
     return globals;
-  },
-  ";;sayanim" : function(message, params, globals) {
-    if (!params[0]) {
-      message.channel.send("Please specify a character.");
-    } else if (!params[1]) {
-      message.channel.send("Please give a message to say.");
-    } else {
-      let characterHead = params.shift();
-      createAnim(params.join(" "), characterHead).then((image) => { // Use createAnim
-        fs.writeFile(message.member.user.id + ".gif", image, function (err) {
-          
-        });
-
-        setTimeout(() => {
-            message.channel.send({files: [message.member.user.id + ".gif"]});
-            setTimeout(() => {
-                fs.unlink(message.member.user.id + ".gif");
-            }, 1000);
-        }, 1000);
-      }).catch((err) => {
-        let errString = err.toString();
-        if (errString.includes(':')) { // Its an acutal error object
-          message.channel.send("Error creating image.");
-          console.log(err);
-        } else {
-          message.channel.send(errString);
-        }
-      });
-    }
-
-    return globals;
   }
+  // ,
+  // ";;sayanim" : function(message, params, globals) {
+  //   if (!params[0]) {
+  //     message.channel.send("Please specify a character.");
+  //   } else if (!params[1]) {
+  //     message.channel.send("Please give a message to say.");
+  //   } else {
+  //     let characterHead = params.shift();
+  //     createAnim(params.join(" "), characterHead).then((image) => { // Use createAnim
+  //       fs.writeFile(message.member.user.id + ".gif", image, function (err) {
+          
+  //       });
+
+  //       setTimeout(() => {
+  //           message.channel.send({files: [message.member.user.id + ".gif"]});
+  //           setTimeout(() => {
+  //               fs.unlink(message.member.user.id + ".gif");
+  //           }, 1000);
+  //       }, 1000);
+  //     }).catch((err) => {
+  //       let errString = err.toString();
+  //       if (errString.includes(':')) { // Its an acutal error object
+  //         message.channel.send("Error creating image.");
+  //         console.log(err);
+  //       } else {
+  //         message.channel.send(errString);
+  //       }
+  //     });
+  //   }
+
+  //   return globals;
+  // }
 }
 
 module.exports.searchFunction = function(command) {
