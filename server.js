@@ -20,10 +20,16 @@ const rl = readline.createInterface({
   terminal: false
 });
 
+var alreadyLoaded = false;
+
 client.on('ready', function() {
+  if (alreadyLoaded) return;
+
   logUtil.log("Logged into Discord successfully as " + client.user.username + ".", logUtil.STATUS_NOTIFICATION);
 
   clUtils.initialize(commandNodeCommands, 'NiceTMDiscordBot> ');
+
+  alreadyLoaded = true;
 });
 
 var handlers = [];
