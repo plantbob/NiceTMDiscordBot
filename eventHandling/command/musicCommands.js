@@ -318,6 +318,8 @@ function addListToMusicQueue(data, message, globals, channel, type) { // Used in
         musicQueue = [];
       }
 
+      let totalSongsDuration = 0;
+
       for (var i = 0; i < data.length; i++) {
         var newSong = {"id" : data[i].id,
                        "user" : message.author.username,
@@ -335,10 +337,11 @@ function addListToMusicQueue(data, message, globals, channel, type) { // Used in
         }
 
         musicQueue.push(newSong);
-
-        message.channel.send("`" + newSong.user + "` added `" + newSong.title + "` to the queue. `" + formatDurationHHMMSS(moment.duration(newSong.duration)) + "`");
+        totalSongsDuration += newSong.duration;
       }
-
+      
+      message.channel.send("`" + newSong.user + "` added `" + data.length + "` sonsg to the queue. `" + formatDurationHHMMSS(moment.duration(totalSongsDuration)) + "`");
+      
       globals.set("musicQueue", musicQueue); // Set queue
 
       var playing = globals.get("playing");
