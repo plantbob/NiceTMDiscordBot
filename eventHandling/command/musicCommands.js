@@ -340,7 +340,7 @@ function addListToMusicQueue(data, message, globals, channel, type) { // Used in
         totalSongsDuration += newSong.duration;
       }
       
-      message.channel.send("`" + newSong.user + "` added `" + data.length + "` sonsg to the queue. `" + formatDurationHHMMSS(moment.duration(totalSongsDuration)) + "`");
+      message.channel.send("`" + newSong.user + "` added `" + data.length + "` songs to the queue. `" + formatDurationHHMMSS(moment.duration(totalSongsDuration)) + "`");
       
       globals.set("musicQueue", musicQueue); // Set queue
 
