@@ -70,10 +70,10 @@ module.exports.stichText = (letterPaths, softNewLinePoints, hardNewLinePoints) =
   }); 
 }
 
-module.exports.addSpeechBubble = (image, headPath, wide = false) => {
+module.exports.addSpeechBubble = (image, headPath, wide = false, discordBackground = false, animationIteration = -1) => {
   let mouthposition = dictmapping.getMouthHeight(headPath) || 20;
 
-  image = addSpeechBorders(image);
+  image = addSpeechBorders(image, animationIteration);
   image = new Jimp(image.bitmap.width + triangleWidth, image.bitmap.height, 0).composite(image, triangleWidth, 0);
 
   drawTriangle(image, 0, image.bitmap.height - mouthposition, 20 + triangleWidth, image.bitmap.height - 15, 20 + triangleWidth, image.bitmap.height - 65, 0x000000FF)
@@ -85,10 +85,14 @@ module.exports.addSpeechBubble = (image, headPath, wide = false) => {
         headImage.resize(headImage.bitmap.width * 2, headImage.bitmap.height);
       }
 
-      let final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height));
+      let final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x36393EFF);
 
       final.composite(headImage, 0, final.bitmap.height - headImage.bitmap.height);
       final.composite(image, headImage.bitmap.width, final.bitmap.height - image.bitmap.height);
+
+      // if (discordBackground) {
+      //   replaceColorWithColor(0x00000000, 0x36393E00, image);
+      // }
 
       resolve(final);
     }).catch((err) => {
@@ -97,6 +101,14 @@ module.exports.addSpeechBubble = (image, headPath, wide = false) => {
       console.log(err);
       reject("Error getting head image.")
     });
+  });
+}
+
+function replaceColorWithColor(a, b, image) {
+  image.scan(0, 0, image.bitmap.width, image.bitmap.height, function(x, y, idx) {
+    if (this.bitmap.data.readUInt32BE(idx) == a) {
+      this.bitmap.data.writeUInt32BE(b, idx, true);
+    }
   });
 }
 
@@ -127,30 +139,31 @@ function pointInTriangle(x0, y0, x1, y1, x2, y2, xp, yp) {
     return ((b1 == b2) && (b2 == b3));
 }
 
-function addSpeechBorders(image) {
+function addSpeechBorders(image, animationIteration) {
     let background = new Jimp(image.bitmap.width + padding + padding, image.bitmap.height + padding + padding, 0x000000FF);
     background.composite(image, padding, padding);
     let background2 = new Jimp(background.bitmap.width + padding + padding, background.bitmap.height + padding + padding, 0x00000000);
     background2.composite(background, padding, padding);
     
-    drawChord(background2, padding, padding, padding + background.bitmap.width, padding, 0, 5, 0x000000FF);
-    drawChord(background2, padding, padding + background.bitmap.height - 1, padding + background.bitmap.width, padding + background.bitmap.height - 1, 2, 5, 0x000000FF);
+    drawChord(background2, padding, padding, padding + background.bitmap.width, padding, 0, 5, 0x000000FF, animationIteration);
+    drawChord(background2, padding, padding + background.bitmap.height - 1, padding + background.bitmap.width, padding + background.bitmap.height - 1, 2, 5, 0x000000FF, animationIteration);
   
-    drawChord(background2, padding, padding, padding, padding + background.bitmap.height, 1, 10, 0x000000FF);
-    drawChord(background2, padding + background.bitmap.width - 1, padding, padding + background.bitmap.width - 1, padding + background.bitmap.height, 3, 10, 0x000000FF);
+    drawChord(background2, padding, padding, padding, padding + background.bitmap.height, 1, 10, 0x000000FF, animationIteration);
+    drawChord(background2, padding + background.bitmap.width - 1, padding, padding + background.bitmap.width - 1, padding + background.bitmap.height, 3, 10, 0x000000FF, animationIteration);
 
     return background2;
 }
 
-
+let sineAmplitude = 2;
+let sinePeriod = 100;
 
 // dir = 0, up
 // dir = 3, right
 // dir = 2, down
 // dir = 1, left
-function drawChord(image, x0, y0, x1, y1, dir, height, color) {
+function drawChord(image, x0, y0, x1, y1, dir, height, color, animationIteration) {
     let circlex, radius, circley;
-  
+
     switch (dir) {
       case 0:
         circlex = (x0 + x1) / 2;
@@ -158,7 +171,12 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color) {
         circley = y0 + radius - height;
   
         image.scan(x0, y0 - height, (x1 - x0), height, function(x, y, idx) {
-          if (getDistance(x, y, circlex, circley) < radius) {
+          let offset = 0;
+          if (animationIteration != -1) {
+            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+          }
+
+          if (getDistance(x, y, circlex, circley) < radius + offset) {
             this.bitmap.data.writeUInt32BE(color, idx, true);
           }
         });
@@ -169,7 +187,12 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color) {
         circlex = x0 + radius - height;
   
         image.scan(x0 - height, y0, height, (y1 - y0), function(x, y, idx) {
-          if (getDistance(x, y, circlex, circley) < radius) {
+          let offset = 0;
+          if (animationIteration != -1) {
+            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+          }
+
+          if (getDistance(x, y, circlex, circley) < radius + offset) {
             this.bitmap.data.writeUInt32BE(color, idx, true);
           }
         });
@@ -180,7 +203,12 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color) {
         circley = y0 - radius + height;
   
         image.scan(x0, y0, (x1 - x0), height, function(x, y, idx) {
-          if (getDistance(x, y, circlex, circley) < radius) {
+          let offset = 0;
+          if (animationIteration != -1) {
+            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+          }
+
+          if (getDistance(x, y, circlex, circley) < radius + offset) {
             this.bitmap.data.writeUInt32BE(color, idx, true);
           }
         });
@@ -191,7 +219,12 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color) {
         circlex = x0 - radius + height;
   
         image.scan(x0, y0, height, (y1 - y0), function(x, y, idx) {
-          if (getDistance(x, y, circlex, circley) < radius) {
+          let offset = 0;
+          if (animationIteration != -1) {
+            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+          }
+
+          if (getDistance(x, y, circlex, circley) < radius + offset) {
             this.bitmap.data.writeUInt32BE(color, idx, true);
           }
         });
