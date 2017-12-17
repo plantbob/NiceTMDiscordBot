@@ -45,7 +45,7 @@ Jimp.read(convertPathIfWindows(path.normalize(__dirname + "/../../") + "/images/
 var commands = {
   ";;pfp" : function(message, params, globals) {
     if (!params[0]) {
-        var avatarURL = message.author.avatarURL({size: 512, format: "jpg"});
+        var avatarURL = message.author.avatarURL({size: 512, format: "png"});
         if (avatarURL) {
             message.channel.send("Here be their pfp: " + avatarURL);
         } else {
@@ -62,7 +62,7 @@ var commands = {
   },
   ";;doittoem" : function(message, params, globals) {
     if (!params[0]) {
-        var avatarURL = message.author.avatarURL({size: 128, format: "jpg"});
+        var avatarURL = message.author.avatarURL({size: 128, format: "png"});
         if (avatarURL) {
             Jimp.read(avatarURL, function(err, image) {
                 if (err) {

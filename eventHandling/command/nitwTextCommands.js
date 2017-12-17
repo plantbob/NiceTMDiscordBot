@@ -193,7 +193,7 @@ function createAnim(text, characterType) {
 
           encoder.start();
           encoder.setRepeat(0);
-          encoder.setDelay(200);
+          encoder.setDelay(166); // 10 frames at 60 fps
           //encoder.setTransparent(0x36393EFF);
           encoder.setQuality(1);
 

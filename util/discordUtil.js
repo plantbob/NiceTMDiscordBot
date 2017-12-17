@@ -17,7 +17,7 @@ module.exports = {};
 // [0] = modified string, [1] = array with emoji ids
 
 let emojiRegex = /<:.{1,}:(\d{1,})>/g;
-let mentionRegex = /<@!(\d{1,})>|<@(\d{1,})>/; // TODO test to see if this works iwth bot and regular user mentions
+let mentionRegex = /<@!(\d{1,})>|<@(\d{1,})>/; 
 
 module.exports.processEmojis = (text) => {
   text = text.replace('░', '');
@@ -136,7 +136,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
   if (userId) {
     let member = guild.members.resolve(userId);
     if (member) {
-      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"}); // TODO figure out why this doesnt give pngs and instead gives jpgs
       if (avatarURL) {
           return avatarURL;
       } else {
@@ -147,7 +147,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
 
   let member = guild.members.find(member => member.user.username == query);
     if (member) {
-      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"});
       if (avatarURL) {
         return avatarURL;
       } else {
@@ -156,7 +156,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
     } else {
       member = guild.members.find("nickname", query);
       if (member) {
-          let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+          let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"});
           if (avatarURL) {
             return avatarURL;
           } else {
