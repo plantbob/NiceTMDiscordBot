@@ -20,11 +20,11 @@ module.exports.stichText = (letterPaths, softNewLinePoints, hardNewLinePoints) =
     return new Promise(function(resolve, reject) {
       
       Promise.all(letterPromises).then((letterImages) => {
-        for (let i in letterImages) {
-          if (letterPaths[i].includes('http')) { // It's a custom emoji
-            letterImages[i].autocrop();
-          }
-        }
+        // for (let i in letterImages) {
+        //   if (letterPaths[i].includes('http')) { // It's a custom emoji
+        //     letterImages[i].autocrop();
+        //   }
+        // }
 
         let totalWidth = letterImages.map((l) => l.bitmap.width).reduce((a, b) => a + b, 0);
         let maxHeight = Math.max(...letterImages.map((l) => l.bitmap.height));
@@ -80,7 +80,7 @@ module.exports.addSpeechBubble = (image, headPath, wide = false, discordBackgrou
   
   return new Promise(function(resolve, reject) {
     Jimp.read(headPath).then((headImage) => {
-      headImage.autocrop();
+      //headImage.autocrop();
       if (wide) {
         headImage.resize(headImage.bitmap.width * 2, headImage.bitmap.height);
       }
@@ -189,7 +189,7 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color, animationIteration
         image.scan(x0 - height, y0, height, (y1 - y0), function(x, y, idx) {
           let offset = 0;
           if (animationIteration != -1) {
-            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+            offset = sineAmplitude * Math.sin(y / sinePeriod + animationIteration)
           }
 
           if (getDistance(x, y, circlex, circley) < radius + offset) {
@@ -221,7 +221,7 @@ function drawChord(image, x0, y0, x1, y1, dir, height, color, animationIteration
         image.scan(x0, y0, height, (y1 - y0), function(x, y, idx) {
           let offset = 0;
           if (animationIteration != -1) {
-            offset = sineAmplitude * Math.sin(x / sinePeriod + animationIteration)
+            offset = sineAmplitude * Math.sin(y / sinePeriod + animationIteration)
           }
 
           if (getDistance(x, y, circlex, circley) < radius + offset) {

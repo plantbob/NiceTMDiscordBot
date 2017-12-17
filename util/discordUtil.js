@@ -17,6 +17,7 @@ module.exports = {};
 // [0] = modified string, [1] = array with emoji ids
 
 let emojiRegex = /<:.{1,}:(\d{1,})>/g;
+let mentionRegex = /<@!(\d{1,})>|<@(\d{1,})>/; // TODO test to see if this works iwth bot and regular user mentions
 
 module.exports.processEmojis = (text) => {
   text = text.replace('░', '');
@@ -121,26 +122,49 @@ module.exports.isChannelNSFW = function(channel) {
 }
 
 module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets avatar url from string and guild
-      var member = guild.members.find(member => member.user.username == query);
-      if (member) {
-          var avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
-          if (avatarURL) {
-              return avatarURL;
-          } else {
-              return null;
-          }
+  
+  let regexResults = mentionRegex.exec(query);
+  let userId;
+  if (regexResults) {
+    if (regexResults[1]) {
+      userId = regexResults[1];
+    } else {
+      userId = regexResults[2];
+    }
+  }
+  
+  if (userId) {
+    let member = guild.members.resolve(userId);
+    if (member) {
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+      if (avatarURL) {
+          return avatarURL;
       } else {
-          member = guild.members.find("nickname", query);
-          if (member) {
-              var avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
-              if (avatarURL) {
-                  return avatarURL;
-              } else {
-                  return null;
-              }
+          
+      }
+    }
+  }
+
+  let member = guild.members.find(member => member.user.username == query);
+    if (member) {
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+      if (avatarURL) {
+        return avatarURL;
+      } else {
+        return null;
+      }
+    } else {
+      member = guild.members.find("nickname", query);
+      if (member) {
+          let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "jpg"});
+          if (avatarURL) {
+            return avatarURL;
           } else {
             return null;
           }
+      } else {
+        return null;
       }
+  }
   
 }

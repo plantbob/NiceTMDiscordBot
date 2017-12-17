@@ -139,32 +139,6 @@ module.exports.init = (character, easteregg) => {
 
 }
 
-
-function getIterableUnicode(string) {
-    // Unicode Normalization, NFC form, to account for lookalikes:
-    string = string.normalize('NFC');
-    
-    let emojis = {};
-    while (match = emojiRegex.exec(string)) {
-      emojis[match.index] = match[0];
-    }
-
-    let newString = [];
-    for(let i = 0; i++; string.length) {
-        if (i in emojis) {
-            newString.push(emojis[i].charCodeAt(0));
-            i += emojis[i].length - 1;
-        } else {
-            newString.push(string[i].charCodeAt(0));
-        }
-    }
-
-	// Account for astral symbols / surrogates, just like we did before:
-    //return punycode.ucs2.decode(newString);
-    return newString;
-}
-
-
 module.exports.getLetterPaths = (text) => { 
     let letterPaths = [];
 

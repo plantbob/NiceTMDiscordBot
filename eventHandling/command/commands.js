@@ -27,8 +27,11 @@ helpMessage += "\n9. ;;genisland - Not \"genis-land\". It's \"gen-island\" Gener
 helpMessage += "\n10. ;;noice - *POP* Noice!";
 helpMessage += "\n11. ;;philosophy [wikipedia search term] - This explains it http://bit.ly/2gx7U6e. To get a random page don't put in a search term";
 helpMessage += "\n12. ;;owo [text] - owo";
+
+helpMessage += "\n\nNitw Text Commands: ";
 helpMessage += "\n13. ;;say [character/emoji] [text] - Says a message using text boxes from NITW.";
-helpMessage += "\n14. ;;widesay [character/emoji] [text] - Does that but the character is horizontally stretched.";
+helpMessage += "\n14. ;;wsay [character/emoji] [text] - Same thing as ;;say but the character is horizontally stretched.";
+helpMessage += "\n14. ;;asay [character/emoji] [text] - Same thing as ;;say but it's an animated gif.";
 
 helpMessage += "\n\nMusic Commands: ";
 helpMessage += "\n15. ;;play [url/id/search term] - Adds a youtube video to the queue.";

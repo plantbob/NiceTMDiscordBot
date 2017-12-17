@@ -37,7 +37,7 @@ var commands = {
 
     return globals;
   },
-  ";;widesay" : function(message, params, globals) {
+  ";;wsay" : function(message, params, globals) {
     if (!params[0]) {
       message.channel.send("Please specify a character.");
     } else if (!params[1]) {
@@ -66,7 +66,7 @@ var commands = {
     return globals;
   }
   ,
-  ";;animsay" : function(message, params, globals) {
+  ";;asay" : function(message, params, globals) {
     if (!params[0]) {
       message.channel.send("Please specify a character.");
     } else if (!params[1]) {
@@ -173,11 +173,11 @@ function createAnim(text, characterType) {
       //console.log(letterPaths);
       if (dictMapping.init(characterType, easteregg)) {
         let letterPaths = dictMapping.getLetterPaths3Frames(text);
-        console.log(letterPaths);
+        //console.log(letterPaths);
         let letterPromises = [];
 
         for (let j = 0; j < 3; j++) {
-          console.log("test");
+          //console.log("test");
           letterPromises.push(new Promise(function(subResolve, subReject) {
             let message = textStitch.stichText(letterPaths[j], dictMapping.getSoftNewLinePoints(), dictMapping.getHardNewLinePoints());
             message.then((image) => {
@@ -193,7 +193,7 @@ function createAnim(text, characterType) {
 
           encoder.start();
           encoder.setRepeat(0);
-          encoder.setDelay(150);
+          encoder.setDelay(200);
 
           for (let i in frames) {
             //frames[i].write("test" + i + ".png");

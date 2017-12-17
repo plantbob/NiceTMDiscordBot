@@ -45,7 +45,12 @@ Jimp.read(convertPathIfWindows(path.normalize(__dirname + "/../../") + "/images/
 var commands = {
   ";;pfp" : function(message, params, globals) {
     if (!params[0]) {
-        message.channel.send("Specify a user.");
+        var avatarURL = message.author.avatarURL({size: 512, format: "jpg"});
+        if (avatarURL) {
+            message.channel.send("Here be their pfp: " + avatarURL);
+        } else {
+            message.channel.send("Pfp not found.");
+        }
     } else {
         var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 512);
         if (avatarURL) {
