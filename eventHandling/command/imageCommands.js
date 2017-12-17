@@ -62,9 +62,7 @@ var commands = {
   },
   ";;doittoem" : function(message, params, globals) {
     if (!params[0]) {
-        message.channel.send("Specify a user.");
-    } else {
-        var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 128);
+        var avatarURL = message.author.avatarURL({size: 128, format: "jpg"});
         if (avatarURL) {
             Jimp.read(avatarURL, function(err, image) {
                 if (err) {
@@ -84,9 +82,30 @@ var commands = {
                     
                 }
             });
+      } else {
+        var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 128);
+        if (avatarURL) {
+            Jimp.read(avatarURL, function(err, image) {
+                if (err) {
+                    message.channel.send("Error processing image.");
+                    console.log(err);
+                } else {
+                    image.resize(74, 74);
+                    image.mask(jimp74x74mask, 0, 0);
+                    jimpdoitdoem.composite(image, 35, 1);
+                    jimpdoitdoem.write(message.member.user.id + ".png");
+                    setTimeout(() => {
+                        message.channel.send({files: [message.member.user.id + ".png"]});
+                        setTimeout(() => {
+                            fs.unlink(message.member.user.id + ".png");
+                        }, 1000);
+                    }, 1000);
+                }
+            });
         } else {
             message.channel.send("Pfp not found.");
         }
+      }
     }
   }
 }

@@ -31,35 +31,36 @@ helpMessage += "\n12. ;;owo [text] - owo";
 helpMessage += "\n\nNitw Text Commands: ";
 helpMessage += "\n13. ;;say [character/emoji] [text] - Says a message using text boxes from NITW.";
 helpMessage += "\n14. ;;wsay [character/emoji] [text] - Same thing as ;;say but the character is horizontally stretched.";
-helpMessage += "\n14. ;;asay [character/emoji] [text] - Same thing as ;;say but it's an animated gif.";
+helpMessage += "\n15. ;;asay [character/emoji] [text] - Same thing as ;;say but it's an animated gif.";
 
 helpMessage += "\n\nMusic Commands: ";
-helpMessage += "\n15. ;;play [url/id/search term] - Adds a youtube video to the queue.";
-helpMessage += "\n16. ;;playlist [url/id/search term] - Queue a playlist.";
-helpMessage += "\n17. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
-helpMessage += "\n18. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
-helpMessage += "\n19. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
-helpMessage += "\n20. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
-helpMessage += "\n21. ;;drift - GAS GAS GAS!";
-helpMessage += "\n22. ;;woah - WOAH!";
-helpMessage += "\n23. ;;queue - Lists the current queue.";
-helpMessage += "\n24. ;;np - Shows info on the current song.";
-helpMessage += "\n25. ;;skip - Skips the current song.";
-helpMessage += "\n26. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+helpMessage += "\n16. ;;play [url/id/search term] - Adds a youtube video to the queue.";
+helpMessage += "\n17. ;;playlist [url/id/search term] - Queue a playlist.";
+helpMessage += "\n18. ;;earrape [url/id/search term] - Adds a youtube video to the queue but it's better.";
+helpMessage += "\n19. ;;madness [time] [url/id/search term] - Adds a youtube video to the queue and makes it better after the specified time in seconds.";
+helpMessage += "\n20. ;;nightcore [url/id/search term] - Adds a youtube video to the queue but it's even better.";
+helpMessage += "\n21. ;;hospital [url/id/search term] - Adds a youtube video to the queue but it's better and even better.";
+helpMessage += "\n22. ;;drift - GAS GAS GAS!";
+helpMessage += "\n23. ;;woah - WOAH!";
+helpMessage += "\n24. ;;queue - Lists the current queue.";
+helpMessage += "\n25. ;;np - Shows info on the current song.";
+helpMessage += "\n26. ;;skip - Skips the current song.";
+helpMessage += "\n27. ;;dc - Disconnects the bot from the voice channel. Can only be run by members with the \"Manage Channel\" permission.";
+
 helpMessage += "\n\nPrefix Commands: (Can only be run by administrators)";
-helpMessage += "\n27. ;;changeprefix [prefix] - Changes the command prefix.";
-helpMessage += "\n28. ;;resetprefix - Resets the prefix to two semicolons.";
+helpMessage += "\n28. ;;changeprefix [prefix] - Changes the command prefix.";
+helpMessage += "\n29. ;;resetprefix - Resets the prefix to two semicolons.";
 
 helpMessage += "\n\nPfp (ProFile Picture) commands: ";
-helpMessage += "\n29. ;;pfp [user] - Gets the user's profile picture.";
-helpMessage += "\n30. ;;doittoem [user] - Crops the user's pfp onto the head of the \"Had to do it to them\" meme.";
+helpMessage += "\n30. ;;pfp [user] - Gets the user's profile picture.";
+helpMessage += "\n31. ;;doittoem [user] - Crops the user's pfp onto the head of the \"Had to do it to them\" meme.";
 
 helpMessage += "\n\nWelcome Message Commands: (Can only be run by administrators)";
-helpMessage += "\n31. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
-helpMessage += "\n32. ;;removejoinmessage - Removes the join message.";
+helpMessage += "\n32. ;;setjoinmessage [message] - Sets the welcome message of the guild. Wherever you want the new member's name to be in the message, put '{{name}}'.";
+helpMessage += "\n33. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "\n\nAdmin Commands: (Can only be run by administrators) (duh)";
-helpMessage += "\n31. ;;archive [messages] - Gets all the messages sent in that channel up to the specified number of messages. Put \"all\" to get all messages.";
+helpMessage += "\n34. ;;archive [messages] - Gets all the messages sent in that channel up to the specified number of messages. Put \"all\" to get all messages.";
 
 helpMessage += "```";
 

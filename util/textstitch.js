@@ -16,7 +16,7 @@ const triangleWidth = 40;
 module.exports.stichText = (letterPaths, softNewLinePoints, hardNewLinePoints) => {
     let letterPromises = letterPaths.map((path) => Jimp.read(path))
 
-    console.log(letterPaths);
+    //console.log(letterPaths);
     return new Promise(function(resolve, reject) {
       
       Promise.all(letterPromises).then((letterImages) => {
@@ -34,7 +34,7 @@ module.exports.stichText = (letterPaths, softNewLinePoints, hardNewLinePoints) =
         let xOffset = 0, yOffset = 0;
         let currLine = 1;
         let maxLineWidth = 0;
-        console.log(softNewLinePoints);
+        //console.log(softNewLinePoints);
         for (let i in letterImages) {
           newImage.composite(letterImages[i], xOffset, yOffset);
           xOffset += letterImages[i].bitmap.width + letterSpacing;
@@ -85,14 +85,19 @@ module.exports.addSpeechBubble = (image, headPath, wide = false, discordBackgrou
         headImage.resize(headImage.bitmap.width * 2, headImage.bitmap.height);
       }
 
-      let final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x36393EFF);
+      //let final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x36393EFF);
+      //let final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x00000000);
+      let final;
 
+      if (discordBackground) {
+        final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x36393EFF);
+      } else {
+        final = new Jimp(headImage.bitmap.width + image.bitmap.width, Math.max(image.bitmap.height, headImage.bitmap.height), 0x00000000);
+      }
+      
       final.composite(headImage, 0, final.bitmap.height - headImage.bitmap.height);
       final.composite(image, headImage.bitmap.width, final.bitmap.height - image.bitmap.height);
 
-      // if (discordBackground) {
-      //   replaceColorWithColor(0x00000000, 0x36393E00, image);
-      // }
 
       resolve(final);
     }).catch((err) => {

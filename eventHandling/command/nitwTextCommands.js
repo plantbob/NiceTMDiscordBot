@@ -194,6 +194,8 @@ function createAnim(text, characterType) {
           encoder.start();
           encoder.setRepeat(0);
           encoder.setDelay(200);
+          //encoder.setTransparent(0x36393EFF);
+          encoder.setQuality(1);
 
           for (let i in frames) {
             //frames[i].write("test" + i + ".png");
