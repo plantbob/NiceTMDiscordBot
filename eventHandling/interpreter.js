@@ -107,7 +107,7 @@ function postDatabaseLoad(client) {
       }
   
       if (command) { // Command exists
-        logUtil.log("User " + msg.author.username + " running command " + words.join(" "), logUtil.STATUS_INFO);
+        logUtil.log("User " + msg.author.id + " running command " + words.join(" "), logUtil.STATUS_INFO);
         try {
           words.shift(); // Remove first item in words array
           var newGlobals = command(msg, words, globalList[msg.guild.id]);

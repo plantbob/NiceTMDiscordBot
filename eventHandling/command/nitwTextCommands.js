@@ -16,7 +16,14 @@ var commands = {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
-      create(params.join(" "), characterHead).then((image) => {
+
+      let messageText = params.join(" ")
+      if (messageText.length > 500) {
+        message.channel.send("Too many characters, no more than 500");
+        return;
+      }
+
+      create(messageText, characterHead).then((image) => {
         image.write(message.member.user.id + ".png");
         setTimeout(() => {
             message.channel.send({files: [message.member.user.id + ".png"]});
@@ -44,7 +51,14 @@ var commands = {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
-      create(params.join(" "), characterHead, true).then((image) => { // Wide is set to true 
+
+      let messageText = params.join(" ")
+      if (messageText.length > 500) {
+        message.channel.send("Too many characters, no more than 500");
+        return;
+      }
+
+      create(messageText, characterHead, true).then((image) => { // Wide is set to true 
         image.write(message.member.user.id + ".png");
         setTimeout(() => {
             message.channel.send({files: [message.member.user.id + ".png"]});
@@ -73,7 +87,14 @@ var commands = {
       message.channel.send("Please give a message to say.");
     } else {
       let characterHead = params.shift();
-      createAnim(params.join(" "), characterHead).then((image) => { // Use createAnim
+
+      let messageText = params.join(" ")
+      if (messageText.length > 500) {
+        message.channel.send("Too many characters, no more than 500");
+        return;
+      }
+
+      createAnim(messageText, characterHead).then((image) => { // Use createAnim
         fs.writeFile(message.member.user.id + ".gif", image, function (err) {
           
         });
