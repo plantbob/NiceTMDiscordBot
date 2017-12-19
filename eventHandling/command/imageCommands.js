@@ -45,7 +45,7 @@ Jimp.read(convertPathIfWindows(path.normalize(__dirname + "/../../") + "/images/
 var commands = {
   ";;pfp" : function(message, params, globals) {
     if (!params[0]) {
-        var avatarURL = message.author.avatarURL({size: 512, format: "png"});
+        var avatarURL = message.author.avatarURL({size: 512});
         if (avatarURL) {
             message.channel.send("Here be their pfp: " + avatarURL);
         } else {
@@ -83,7 +83,7 @@ var commands = {
                 }
             });
       } else {
-        var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 128);
+        var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 128, "png");
         if (avatarURL) {
             Jimp.read(avatarURL, function(err, image) {
                 if (err) {
