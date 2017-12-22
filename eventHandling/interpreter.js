@@ -110,6 +110,7 @@ function postDatabaseLoad(client) {
         logUtil.log("User " + msg.author.id + " running command " + words.join(" "), logUtil.STATUS_INFO);
         try {
           words.shift(); // Remove first item in words array
+          words = words.filter((x) => x); // Removes empty items from array
           var newGlobals = command(msg, words, globalList[msg.guild.id]);
           if (newGlobals != undefined) {
             globalList[msg.guild.id] = newGlobals;
