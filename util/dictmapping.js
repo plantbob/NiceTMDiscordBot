@@ -9,7 +9,6 @@ const runes = require('runes');
 const twemoji = require('twemoji');
 
 var isWin = /^win/.test(process.platform);
-var seedrandom = require('seedrandom');
 
 function convertPathIfWindows(path) {
     if (isWin) return path.replace(/\//g, "\\");
