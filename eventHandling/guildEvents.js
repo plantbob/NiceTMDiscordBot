@@ -70,6 +70,7 @@ function updateGame(client, updateDiscordBots) {
 }
 
 function setClientGame(client, gameName) {
+  console.log(client);
   client.user.setPresence({ activity: { name: gameName} });
 }
 
