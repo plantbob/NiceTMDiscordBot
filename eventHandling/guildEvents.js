@@ -20,6 +20,10 @@ joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 module.exports.init = function(client) {
   client.on('ready', function() {
     updateGame(client, false);
+
+    setInterval(function() {
+      updateGame(client, false);
+    }, 5000);
   });
 
   client.on('guildCreate', function(guild) {
@@ -37,10 +41,6 @@ module.exports.init = function(client) {
   client.on('guildDelete', function() {
     updateGame(client, true);
   });
-
-  setInterval(function() {
-    updateGame(client, false);
-  }, 5000);
 }
 
 function updateGame(client, updateDiscordBots) {
