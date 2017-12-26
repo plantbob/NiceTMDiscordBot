@@ -9,6 +9,7 @@ const runes = require('runes');
 const twemoji = require('twemoji');
 
 var isWin = /^win/.test(process.platform);
+var seedrandom = require('seedrandom');
 
 function convertPathIfWindows(path) {
     if (isWin) return path.replace(/\//g, "\\");
@@ -174,7 +175,7 @@ module.exports.getLetterPaths3Frames = (text) => {
         softNewLinePoints = [];
 
         for (var i in text) {
-            let path = getLetterPath(text[i], i, j + 1);
+            let path = getLetterPath(text[i], i, (j + i) % 3 + 1); // The "+ i" makes some animations out of phase so it looks better
             if (path) {
                 letterPaths[j].push(path);
             }
