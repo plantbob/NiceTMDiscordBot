@@ -58,9 +58,6 @@ function getSubredditListingHelper(subreddit, nsfw, callback) {
 
       if (!nsfw) { // Remove all nsfw posts if requested
         for (var i = 0; i < children.length; i++) {
-          console.log("child:");
-          console.log(children[i]);
-          console.log(children[i].over_18);
           if (children[i].data && children[i].data.over_18) { // If it's nsfw on a sfw channel
             children.splice(i, 1); // Remove element
           }
