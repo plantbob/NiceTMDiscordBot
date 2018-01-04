@@ -82,6 +82,9 @@ var commands = {
                     
                 }
             });
+        } else {
+            message.channel.send("Pfp not found.");
+        }
       } else {
         var avatarURL = discordUtil.getAvatarURL(params.join(' '), message.guild, 128, "png");
         if (avatarURL) {
@@ -108,7 +111,7 @@ var commands = {
       }
     }
   }
-}
+
 
 module.exports.searchFunction = function(command) {
   return commands[command.toLowerCase()];
