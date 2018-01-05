@@ -107,7 +107,7 @@ var commands = {
 
     thePlayCommand(message, [ woah.WOAH[Math.floor(Math.random() * woah.WOAH.length)] ], globals, 1); // WOAH music
 
-    message.channel.send(woah.WOAHgif); // WOAH Gif
+    message.channel.send(woah.WOAHgif[Math.floor(Math.random() * woah.WOAHgif.length)]); // WOAH Gif
   },
   ";;skip" : function(message, params, globals) {
     if (message.guild.voiceConnection) {
