@@ -49,7 +49,7 @@ module.exports.driftmusic = [
   'https://www.youtube.com/watch?v=ko-mjerzNlY', // Emo but Eurobeat
   'https://www.youtube.com/watch?v=mvs8dX5BkVo', // MegA-MAn
   'https://www.youtube.com/watch?v=WHZKD5se-ZM', // Heart beats
-  'https://www.youtube.com/watch?v=tsmlbypoELY', // More groove
+  'https://www.youtube.com/watch?v=QQ5bGVgu9Go', // More groove
   'https://www.youtube.com/watch?v=EsaBoQi6aZs', // Mr. Rider baby
   'https://www.youtube.com/watch?v=BrbdRm-ud8w', // Speed Speed Lover!
   'https://www.youtube.com/watch?v=9Qam76wlzOw', // D D D Initial D
@@ -57,6 +57,6 @@ module.exports.driftmusic = [
   'https://www.youtube.com/watch?v=prEc0exaLGw', // Get Me Power!
   'https://www.youtube.com/watch?v=OoYx_SfaTA8', // I NEED YOUR LOVE!
   'https://www.youtube.com/watch?v=cTTghKkNnO0', // SS13
-  'https://www.youtube.com/watch?v=NvSxluNgLik', // Speedway!
+  'https://www.youtube.com/watch?v=aDkZ2TS8jwI', // Speedway!
   'https://www.youtube.com/watch?v=O7whipHWu3o'  // Anime City
 ];
