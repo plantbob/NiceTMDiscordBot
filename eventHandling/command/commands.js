@@ -61,6 +61,8 @@ helpMessage += "\n33. ;;removejoinmessage - Removes the join message.";
 
 helpMessage += "\n\nAdmin Commands: (Can only be run by administrators) (duh)";
 helpMessage += "\n34. ;;archive [messages] - Gets all the messages sent in that channel up to the specified number of messages. Put \"all\" to get all messages.";
+helpMessage += "\n35. ;;hackban [userid] - Prevents a user from joining the server. (Note: You need the user's id for this)";
+helpMessage += "\n36. ;;unhackban [userid] - Removes a hackban.";
 
 helpMessage += "```";
 

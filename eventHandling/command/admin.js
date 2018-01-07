@@ -53,6 +53,38 @@ var commands = {
     }
 
     return globals;
+  },
+  ";;hackban" : function(message, params, globals) {
+    if (!(message.author.id == 150699865997836288 || message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR))) {
+      message.channel.send("Only administrators are permitted to run this command.");
+    } else if (!params[0]) {
+      message.channel.send("Specify the id of the user to ban.");
+    } else if (isNaN(params[0])) {
+      message.channel.send("Invalid user id.");
+    } else {
+      message.channel.guild.ban(params[0]).then(() => {
+        message.channel.send(`User ${params[0]} successfully banned.`);
+      }).catch(() => {
+        message.channel.send(`User ${params[0]} was not able to be banned. Try making sure the bot has the correct permissions and that the user's id was correct.`);
+      });
+    }
+  },
+  ";;unhackban" : function(message, params, globals) {
+    if (!(message.author.id == 150699865997836288 || message.member.hasPermission(Discord.Permissions.FLAGS.ADMINISTRATOR))) {
+      message.channel.send("Only administrators are permitted to run this command.");
+    } else if (!params[0]) {
+       message.channel.send("Specify the id of the user to unban.");
+    } else if (isNaN(params[0])) {
+      message.channel.send("Invalid user id.");
+    } else {
+      message.channel.guild.unban(params[0]).then(() => {
+         message.channel.send(`User ${params[0]} successfully unbanned.`);
+      }).catch(() => {
+         message.channel.send(`User ${params[0]} was not able to be unbanned. Try making sure the bot has the correct permissions and that the user's id was correct.`);
+      });
+    }
+
+    return globals;
   }
 }
 
