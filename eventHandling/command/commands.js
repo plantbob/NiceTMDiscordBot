@@ -63,6 +63,11 @@ helpMessage += "\n\nAdmin Commands: (Can only be run by administrators) (duh)";
 helpMessage += "\n34. ;;archive [messages] - Gets all the messages sent in that channel up to the specified number of messages. Put \"all\" to get all messages.";
 helpMessage += "\n35. ;;hackban [userid] - Prevents a user from joining the server. (Note: You need the user's id for this)";
 helpMessage += "\n36. ;;unhackban [userid] - Removes a hackban.";
+helpMessage += "\n37. ;;addshortcut [shortcut] [command] {params} - Adds a shortcut to a Matrix command. Example:";
+helpMessage += "\n\";;addshortcut testing m test\" would make it so when you ran ;;testing it would get reddit posts from /r/test";
+helpMessage += "\n38. ;;removeshortcut [shortcut] - Removes a shortcut.";
+helpMessage += "\n39. ;;listshortcuts - Lists current shortcuts.";
+
 
 helpMessage += "```";
 

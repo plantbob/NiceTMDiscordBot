@@ -121,7 +121,7 @@ module.exports.isChannelNSFW = function(channel) {
   return (/^nsfw(-|$)/.test(channel.name));
 }
 
-module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets avatar url from string and guild
+module.exports.getAvatarURL = function(query, guild, sizeOfAvatar, type) { // Gets avatar url from string and guild
   
   let regexResults = mentionRegex.exec(query);
   let userId;
@@ -136,7 +136,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
   if (userId) {
     let member = guild.members.resolve(userId);
     if (member) {
-      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"}); // TODO figure out why this doesnt give pngs and instead gives jpgs
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: type}); // TODO figure out why this doesnt give pngs and instead gives jpgs
       if (avatarURL) {
           return avatarURL;
       } else {
@@ -147,7 +147,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
 
   let member = guild.members.find(member => member.user.username == query);
     if (member) {
-      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"});
+      let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: type});
       if (avatarURL) {
         return avatarURL;
       } else {
@@ -156,7 +156,7 @@ module.exports.getAvatarURL = function(query, guild, sizeOfAvatar) { // Gets ava
     } else {
       member = guild.members.find("nickname", query);
       if (member) {
-          let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: "png"});
+          let avatarURL = member.user.avatarURL({size: sizeOfAvatar, format: type});
           if (avatarURL) {
             return avatarURL;
           } else {

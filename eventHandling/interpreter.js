@@ -84,6 +84,10 @@ function postDatabaseLoad(client) {
       if (!msg.guild) { // Message was sent in DM
         return; // Don't process DM messages
       }
+
+      if (msg.author.id == client.user.id) { // If message from bot
+        return; // Don't process messages from Matrix itself
+      }
   
       if (!globalList[msg.guild.id]) { // If global variables don't exist for this scene
         globalList[msg.guild.id] = new nodecache(); // Make empty nodecache
@@ -97,15 +101,41 @@ function postDatabaseLoad(client) {
         words[0] = words[0].replace(";;", "") // Invalidate the default prefix
         words[0] = words[0].replace(customPrefix, ";;"); // Replace the custom prefix with the prefix that is recognized
       }
+
+      // Begin processing shortcuts
+      let shortcuts = globalList[msg.guild.id].get("shortcuts");
+      if (shortcuts) {
+        for (let i = 0; i < shortcuts.length; i++) {
+          if (";;" + shortcuts[i].shortcut == words[0]) {
+            words = shortcuts[i].command.split(" ");
+
+            let command = getCommand(";;" + words[0]);
+            runCommand(command, msg, words);
+
+            return;
+          }
+        }
+      }
+      // End processing shortcuts
   
+      let command = getCommand(words[0]);
+
+      runCommand(command, msg, words);
+    });
+
+    function getCommand(firstWord) {
       var command;
       for (var i in commandInterpreters) { // Search for command
-        command = commandInterpreters[i].searchFunction(words[0]); // Replace the custom prefix with the template
+        command = commandInterpreters[i].searchFunction(firstWord); // Replace the custom prefix with the template
   
         if (command) // Exit for loop if command is found
           break;
       }
-  
+
+      return command;
+    }
+
+    function runCommand (command, msg, words) {
       if (command) { // Command exists
         logUtil.log("User " + msg.author.id + " running command " + words.join(" "), logUtil.STATUS_INFO);
         try {
@@ -122,7 +152,7 @@ function postDatabaseLoad(client) {
       } else { // Command doesn't exist so do nothing
   
       }
-    });
+    }
   
     client.on("guildMemberAdd", function(member) { // For displaying guild join messages
       var tempGlobals = globalList[member.guild.id];
