@@ -3,6 +3,7 @@ Thumbs.db
 node_modules
 config/token.js
 database.json
+BROADCAST.js
 .gitignore
 
 # Folder config file

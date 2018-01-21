@@ -1,6 +1,7 @@
 module.exports = {};
 
 const discordBotsUtil = require("../util/discordBots.js");
+const discordUtil = require("../util/discordUtil.js");
 
 var joinMessage = "```";
 
@@ -29,13 +30,26 @@ module.exports.init = function(client) {
   client.on('guildCreate', function(guild) {
     updateGame(client, true);
 
-    if (guild.defaultChannel) {
+    let messageableChannels = guild.channels.filterArray((channel) => channel.permissionsFor(guild.me).has(`SEND_MESSAGES`) );
+    if (messageableChannels && messageableChannels.length > 0) {
       try {
-        guild.defaultChannel.send(joinMessage);
-      } catch (exeception) {
-
+        messageableChannels[0].send(joinMessage);
+      } catch (exception) {
+        console.error(exception);
       }
     }
+
+    discordUtil.getDMChannel(guild.owner, function onDMChannelGet(dmChannel) {
+      if (dmChannel) {
+        try {
+          dmChannel.send(joinMessage + `\n P.S. none of these commands will work in DMs, run them in a server channel.`);
+        } catch (exeception) {
+          console.error(exception);
+        }
+      } else {
+        // Couldn't get DM channel
+      }
+    });
   });
 
   client.on('guildDelete', function() {

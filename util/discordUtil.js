@@ -88,7 +88,6 @@ module.exports.getDMChannel = function(user, callback) { // Attempts to get DM c
     });
     return;
   }
-
   callback(dmChannel);
 }
 
