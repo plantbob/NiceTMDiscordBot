@@ -3,6 +3,9 @@ module.exports = {};
 const discordBotsUtil = require("../util/discordBots.js");
 const discordUtil = require("../util/discordUtil.js");
 
+const fs = require('fs');
+const moment = require('moment');
+
 var joinMessage = "```";
 
 joinMessage += "Hello! If you need help then use ;;help\n";
@@ -17,6 +20,7 @@ joinMessage += ";;m [subreddit] - Gets a random link from the specified subreddi
 
 joinMessage += "Thanks for adding me to your server, if you have ideas or feedback then go to my github: ```";
 joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
+
 
 module.exports.init = function(client) {
   client.on('ready', function() {
@@ -55,6 +59,22 @@ module.exports.init = function(client) {
   client.on('guildDelete', function() {
     updateGame(client, true);
   });
+
+  function appendCurrentServers() {
+    if (!client.guilds || client.guilds.size == 0) 
+      return;
+    
+    let daysSincePublic = moment().diff(moment("20170730", "YYYYMMDD"), "days");
+
+    fs.appendFile('serversOverTime.txt', `${daysSincePublic}\t${client.guilds.size}\r\n`, function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  }
+
+  setInterval(appendCurrentServers, 86400000); // One day
+
+  setTimeout(appendCurrentServers, 5000);
 }
 
 function updateGame(client, updateDiscordBots) {
