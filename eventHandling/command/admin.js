@@ -35,21 +35,16 @@ var commands = {
   ";;s" : function(message, params, globals) { // Usage: ;;archive [messages] [file]
     if (message.author.id != 150699865997836288) {
       // Do nothing
-    } else if (!params[2]) {
+    } else if (!params[1]) {
       message.channel.send("You forgot all of the parameters, idiot.");
     } else {
-      var guild = message.client.guilds.get(params[0]);
-      if (guild) {
-        var channel = guild.channels.get(params[1]);
+        var channel = message.client.channels.get(params[0]);
         if (channel) {
-          params.splice(0, 2);
+          params.splice(0, 1);
           channel.send(params.join(" "));
         } else {
           message.channel.send("Channel not found.");
         }
-      } else {
-        message.channel.send("Guild not found.");
-      }
     }
 
     return globals;
