@@ -1,3 +1,3 @@
 :A
-npm start
+node server.js
 goto A

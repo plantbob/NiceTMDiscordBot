@@ -68,13 +68,13 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
       console.log(error);
     });
 
-    var dispatcher = connection.playStream(audioStream, streamOptions);
+    var dispatcher = connection.play(audioStream, streamOptions);
 
     return dispatcher;
   } catch (exception) {
-    if (exception.name != "TypeError") {
+    //if (exception.name != "TypeError") {
       return exception; // It always throws a TypeError so just return true
-    }
+    //}
   }
 }
 

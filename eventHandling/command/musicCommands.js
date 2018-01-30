@@ -170,8 +170,8 @@ var commands = {
       globals.set("musicQueue", []);
 
       endSong(message.guild, globals);
-      message.guild.voiceConnection.disconnect();
       globals.set("playing", false);
+      message.guild.voiceConnection.disconnect();
     } else {
       message.channel.send("You need administrator permission to run this command")
     }
@@ -464,6 +464,7 @@ function playNextSong(globals, guild) {
           var result = discordUtil.playYoutubeVideo(guild.voiceConnection, songToPlay.id, undefined, ["volume=enable='between(t," + songToPlay.type.substr(1) + ",t)':volume=50"]); // Remove first letter of string to leave just the number
       }
 
+      //if (false) { // I'll change this later
       if (result instanceof Error) { // Check to see if an error was returned
         logUtil.log("There was an error playing a song.", logUtil.STATUS_ERROR);
         console.log(result);
