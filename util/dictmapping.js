@@ -28,13 +28,13 @@ let charMap =  {'A': 'A', '\'': "APOSTROPHE", '*': 'ASTERISK', 'B': 'B', 'C': 'C
 
 let characterTextMap = {'gregg': 'gregg', 'mae': 'standard', 'bea': 'bea', 'lori': 'lori', 'coffinwolf': 'coffinwolf', 'germ': 'germ', 'angus': 'angus',
 'adina': 'standard', 'selmers': 'standard', 'jackie': 'standard', 'pumpkinhead': 'standard', 'garbo': 'standard', 'molly': 'standard',
-'malloy': 'standard', 'dad': 'standard', 'mom': 'standard', 'cole': 'standard', 'deer': 'standard', 'sharkle': 'standard'}
+'malloy': 'standard', 'dad': 'standard', 'mom': 'standard', 'cole': 'standard', 'deer': 'standard', 'sharkle': 'standard', 'tj': 'gregg'}
 
 let newLineChars = [' ', '!', '?', ',']
 
 let mouthHeightDict = {'jackie': 32, 'angus': 35, 'mae': 30, 'bea': 60, 'lori': 55, 'coffinwolf': 50, 'germ': 45, 'pumpkinhead': 40,
 'adina': 40, 'selmers': 25, 'garbo': 70, 'molly': 40, 'malloy': 65, 'dad': 40, 'mom': 40, 'cole': 40,
-'deer': 42, 'sharkle': 80, 'gregg': 45};
+'deer': 42, 'sharkle': 80, 'gregg': 45, 'tj': 45};
 
 let hardNewLinePoints = [];
 let softNewLinePoints = [];
