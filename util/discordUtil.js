@@ -34,33 +34,46 @@ module.exports.processEmojis = (text) => {
 
 module.exports.playYoutubeVideo = function(connection, video, audioFilters, complexFilters) { // Will play the youtube video through the voiceConnection, will return true if success and the exception if fail
   try {
-    var streamOptions = { seek: 0, volume: 1 , passes: miscConfig.playStreamPasses};
-    var audioStream;
+    let audioStream, rawAudioStream;
+    audioStream = new PassThrough();
+    rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
     if ((audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {
-      var rawAudioStream = ytdl(video, { filter : 'audioonly' });
 
-      audioStream = ffmpeg(rawAudioStream)
+      ffmpeg(rawAudioStream)
+              .withAudioCodec('libvorbis')
+              .audioFilters(audioFilters) // Add audio filters
+              .complexFilter(complexFilters)
+              .format('webm')
+              .on('end', () => console.log('Finished!'))
+              .on('error', (err) => console.err("Error", err))
+              .pipe(audioStream, {
+                end: true
+            });
+    } else if (!(audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {
+
+      ffmpeg(rawAudioStream)
+      .withAudioCodec('libvorbis')
+      .complexFilter(complexFilters)
+      .format('webm')
+      .on('end', () => console.log('Finished!'))
+      .on('error', (err) => console.err("Error", err))
+      .pipe(audioStream, {
+        end: true
+    });
+    } else if ((audioFilters && audioFilters.length > 0) && !(complexFilters && complexFilters.length > 0)) {
+
+      ffmpeg(rawAudioStream)
       .withAudioCodec('libvorbis')
       .audioFilters(audioFilters) // Add audio filters
-      .complexFilter(complexFilters)
-      .format('webm');
-    } else if (!(audioFilters && audioFilters.length > 0) && (complexFilters && complexFilters.length > 0)) {
-        var rawAudioStream = ytdl(video, { filter : 'audioonly' });
-
-        audioStream = ffmpeg(rawAudioStream)
-        .withAudioCodec('libvorbis')
-        .complexFilter(complexFilters)
-        .format('webm');
-    } else if ((audioFilters && audioFilters.length > 0) && !(complexFilters && complexFilters.length > 0)) {
-        var rawAudioStream = ytdl(video, { filter : 'audioonly' });
-
-        audioStream = ffmpeg(rawAudioStream)
-        .withAudioCodec('libvorbis')
-        .audioFilters(audioFilters) // Add audio filters
-        .format('webm');
+      .format('webm')
+      .on('end', () => console.log('Finished!'))
+      .on('error', (err) => console.err("Error", err))
+      .pipe(audioStream, {
+        end: true
+    });
     } else {
-      audioStream = ytdl(video, { filter : 'audioonly' });
+      audioStream = rawAudioStream;
     }
 
     audioStream.on('error', function(error) {
@@ -68,7 +81,7 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
       console.log(error);
     });
 
-    var dispatcher = connection.play(audioStream, streamOptions);
+    let dispatcher = connection.play(audioStream, { seek: 0, volume: 1 , passes: miscConfig.playStreamPasses});
 
     return dispatcher;
   } catch (exception) {
