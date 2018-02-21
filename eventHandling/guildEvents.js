@@ -26,9 +26,9 @@ module.exports.init = function(client) {
   client.on('ready', function() {
     // updateGame(client, false);
 
-    // setInterval(function() {
-    //   updateGame(client, false);
-    // }, 5000);
+    setTimeout(function() {
+      setClientGame(client, `Gaining Sentience...`);
+    }, 5000);
   });
 
   client.on('guildCreate', function(guild) {
@@ -86,6 +86,7 @@ module.exports.init = function(client) {
 
   setTimeout(appendCurrentServers, 5000);
 }
+
 
 function setClientGame(client, gameName) {
   client.user.setPresence({ activity: { name: gameName} });
