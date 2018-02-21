@@ -24,15 +24,20 @@ joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
 module.exports.init = function(client) {
   client.on('ready', function() {
-    updateGame(client, false);
+    // updateGame(client, false);
 
-    setInterval(function() {
-      updateGame(client, false);
-    }, 5000);
+    // setInterval(function() {
+    //   updateGame(client, false);
+    // }, 5000);
   });
 
   client.on('guildCreate', function(guild) {
-    updateGame(client, true);
+    discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
+      if (error) {
+        console.log("Error: ");
+        console.log(error);
+      }
+    });
 
     let messageableChannels = guild.channels.filterArray((channel) => channel.permissionsFor(guild.me).has(`SEND_MESSAGES`) );
     if (messageableChannels && messageableChannels.length > 0) {
@@ -57,7 +62,12 @@ module.exports.init = function(client) {
   });
 
   client.on('guildDelete', function() {
-    updateGame(client, true);
+    discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
+      if (error) {
+        console.log("Error: ");
+        console.log(error);
+      }
+    });
   });
 
   function appendCurrentServers() {
@@ -75,32 +85,6 @@ module.exports.init = function(client) {
   setInterval(appendCurrentServers, 86400000); // One day
 
   setTimeout(appendCurrentServers, 5000);
-}
-
-function updateGame(client, updateDiscordBots) {
-  if (((new Date).getTime() % 10000) < 5000) { // Toggle every 5 seconds
-    setClientGame(client, `;;help - ${client.guilds.size} servers.`);
-  } else {
-    var userCount = 0;
-
-    var guilds = Array.from(client.guilds.values());
-    for (var k in guilds) {
-      if (guilds[k] && guilds[k].members) {
-        userCount += guilds[k].members.size;
-      }
-    }
-
-    setClientGame(client, `;;help - ${userCount} users.`);
-  }
-
-  if (updateDiscordBots) {
-    discordBotsUtil.postGuildCount(client.guilds.size, function(error, response, body) {
-      if (error) {
-        console.log("Error: ");
-        console.log(error);
-      }
-    });
-  }
 }
 
 function setClientGame(client, gameName) {
