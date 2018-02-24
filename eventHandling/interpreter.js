@@ -31,7 +31,7 @@ module.exports.init = function(client) {
   // End dealing with command line input
 
   mongoose.Promise = global.Promise;
-  mongoose.connect(token.databaseUrl);
+  mongoose.connect(token.databaseUrl, {useMongoClient: true});
   var db = mongoose.connection;
   
   db.on('error', function(err) {
