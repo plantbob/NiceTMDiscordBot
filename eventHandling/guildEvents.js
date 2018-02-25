@@ -29,6 +29,10 @@ module.exports.init = function(client) {
     setTimeout(function() {
       setClientGame(client, `Gaining Sentience...`);
     }, 5000);
+
+    setInterval(function() {
+      updateGame(client);
+    }, 300000); // 5 minutes
   });
 
   client.on('guildCreate', function(guild) {
@@ -87,6 +91,23 @@ module.exports.init = function(client) {
   setTimeout(appendCurrentServers, 5000);
 }
 
+
+function updateGame(client) {
+  if (((new Date).getTime() % 600000) < 300000) { // Toggle every 5 minutes
+    setClientGame(client, `;;help - ${client.guilds.size} servers.`);
+  } else {
+    let userCount = 0;
+
+    let guilds = Array.from(client.guilds.values());
+    for (let k in guilds) {
+      if (guilds[k] && guilds[k].members) {
+        userCount += guilds[k].members.size;
+      }
+    }
+
+    setClientGame(client, `;;help - ${userCount} users.`);
+  }
+}
 
 function setClientGame(client, gameName) {
   client.user.setPresence({ activity: { name: gameName} });
