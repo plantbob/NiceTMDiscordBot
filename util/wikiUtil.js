@@ -7,7 +7,11 @@ const fs = require("fs");
 const request = require("request");
 
 module.exports.getFirstLink = (html, callback) => {
-    const $ = cheerio.load(html); 
+    try {
+        var $ = cheerio.load(html);  
+    } catch (err) {
+        callback(null);
+    }
 
     //var firstLink = $("div.mw-parser-output").find('a:not(.reference *, .hatnote *, #coordinates *, table *, span *, .thumbinner *)').eq(0); // Excludes references
     
@@ -57,7 +61,8 @@ module.exports.getFirstLink = (html, callback) => {
 }
 
 module.exports.getWikiPageHTML = (page, callback) => {
- request("https://en.wikipedia.org/wiki/" + page, function (error, response, body) {
+    console.log(page);
+ request("https://en.wikipedia.org/wiki/" + encodeURIComponent(page), function (error, response, body) {
     if (error) {
         console.log('Error getting wikipedia page:', error); 
     }
