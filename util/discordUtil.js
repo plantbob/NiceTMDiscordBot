@@ -46,7 +46,7 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
               .complexFilter(complexFilters)
               .format('webm')
               .on('end', () => console.log('Finished!'))
-              .on('error', (err) => console.err("Error", err))
+              .on('error', (err) => console.error("Error", err))
               .pipe(audioStream, {
                 end: true
             });
@@ -57,7 +57,7 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
       .complexFilter(complexFilters)
       .format('webm')
       .on('end', () => console.log('Finished!'))
-      .on('error', (err) => console.err("Error", err))
+      .on('error', (err) => console.error("Error", err))
       .pipe(audioStream, {
         end: true
     });
@@ -68,7 +68,7 @@ module.exports.playYoutubeVideo = function(connection, video, audioFilters, comp
       .audioFilters(audioFilters) // Add audio filters
       .format('webm')
       .on('end', () => console.log('Finished!'))
-      .on('error', (err) => console.err("Error", err))
+      .on('error', (err) => console.error("Error", err))
       .pipe(audioStream, {
         end: true
     });
