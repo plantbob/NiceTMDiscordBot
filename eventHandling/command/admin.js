@@ -57,7 +57,7 @@ var commands = {
     } else if (isNaN(params[0])) {
       message.channel.send("Invalid user id.");
     } else {
-      message.channel.guild.ban(params[0]).then(() => {
+      message.channel.guild.members.ban(params[0]).then(() => {
         message.channel.send(`User ${params[0]} successfully banned.`);
       }).catch(() => {
         message.channel.send(`User ${params[0]} was not able to be banned. Try making sure the bot has the correct permissions and that the user's id was correct.`);
@@ -72,7 +72,7 @@ var commands = {
     } else if (isNaN(params[0])) {
       message.channel.send("Invalid user id.");
     } else {
-      message.channel.guild.unban(params[0]).then(() => {
+      message.channel.guild.members.unban(params[0]).then(() => {
          message.channel.send(`User ${params[0]} successfully unbanned.`);
       }).catch(() => {
          message.channel.send(`User ${params[0]} was not able to be unbanned. Try making sure the bot has the correct permissions and that the user's id was correct.`);
