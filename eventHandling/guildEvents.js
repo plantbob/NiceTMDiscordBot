@@ -21,6 +21,10 @@ joinMessage += ";;m [subreddit] - Gets a random link from the specified subreddi
 joinMessage += "Thanks for adding me to your server, if you have ideas or feedback then go to my github: ```";
 joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
+joinMessage += "If you want help with Matrix or just want to hang out come here:"
+joinMessage += "https://discord.gg/R3VputJ";
+
+//let stream;
 
 module.exports.init = function(client) {
   client.on('ready', function() {
@@ -89,10 +93,34 @@ module.exports.init = function(client) {
   setInterval(appendCurrentServers, 86400000); // One day
 
   setTimeout(appendCurrentServers, 5000);
+
+  // client.on('message', message => {
+  //   debugger
+  //   if (message.author.id === "150699865997836288" && message.content.startsWith(";;stream")) {
+  //     stream = message.content.split(" ")[1]; // quick streaming functionality
+  //     debugger
+  //     if (stream) {
+  //       client.user.setPresence({
+  //         game: {
+  //           name: "programming Matrix",
+  //           url: stream,
+  //           type: "STREAMING"
+  //         }
+  //       });
+
+  //       debugger
+  //     } else {
+  //       setClientGame(client, `;;help - ${client.guilds.size} servers.`);
+  //     }
+  //   }
+  // });
 }
 
 
 function updateGame(client) {
+  // if (stream)
+  //   return;
+
   if (((new Date).getTime() % 600000) < 300000) { // Toggle every 5 minutes
     setClientGame(client, `;;help - ${client.guilds.size} servers.`);
   } else {

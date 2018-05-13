@@ -211,7 +211,7 @@ function createAnim(text, characterType) {
 
         Promise.all(letterPromises).then(frames => { // 36393E
           let encoder = new GIFEncoder(frames[0].bitmap.width, frames[0].bitmap.height);
-
+          
           encoder.start();
           encoder.setRepeat(0);
           encoder.setDelay(166); // 10 frames at 60 fps
@@ -224,6 +224,12 @@ function createAnim(text, characterType) {
           }
 
           encoder.finish();
+
+          // console.debug(frames[0].bitmap.width);
+          // console.debug(frames[0].bitmap.height);
+          // fs.writeFileSync(`frame1.dat`, frames[0].bitmap.data);
+          // fs.writeFileSync(`frame2.dat`, frames[1].bitmap.data);
+          // fs.writeFileSync(`frame3.dat`, frames[2].bitmap.data);
 
           resolve(encoder.out.getData());
         }).catch(reject);
