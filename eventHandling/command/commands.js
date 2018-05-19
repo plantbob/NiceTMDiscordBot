@@ -70,7 +70,7 @@ helpMessage += "\n39. ;;listshortcuts - Lists current shortcuts.";
 
 
 helpMessage += "```";
-helpMessage += "If you need help with Matrix or just want to hang out come here: https://discord.gg/R3VputJ"
+helpMessage += "If you need help with Matrix or just want to hang out come here: https://discord.gg/QgTueQ"
 
 // Message = message object that initiated command
 // Params = The parameters of the command

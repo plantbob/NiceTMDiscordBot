@@ -22,7 +22,7 @@ joinMessage += "Thanks for adding me to your server, if you have ideas or feedba
 joinMessage += "https://github.com/tjpc3/NiceTMDiscordBot";
 
 joinMessage += "If you want help with Matrix or just want to hang out come here:"
-joinMessage += "https://discord.gg/R3VputJ";
+joinMessage += "https://discord.gg/QgTueQ";
 
 //let stream;
 
